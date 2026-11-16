@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#f3efff"><title>Математика ЕГЭ</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#f5f2ff;--card:#fff;--ink:#28243b;--muted:#817b96;--purple:#8066d8;--pale:#eee8ff;--line:#e9e4f3;--green:#278b68;--red:#d45d70}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:0 0 86px}
+header{padding:22px 18px 17px;background:linear-gradient(135deg,#e9e1ff,#f7f3ff);border-radius:0 0 25px 25px}
+.top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}.pill{background:#fff9;padding:7px 11px;border-radius:20px}
+h1{font-size:26px;line-height:1.15;margin:18px 0 6px}header p{margin:0;color:#716b84}
+.xpbox{margin-top:17px;background:#ffffffa8;padding:12px 14px;border-radius:16px}.xphead{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}.bar{height:8px;background:#ded6f3;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--purple);border-radius:9px}
+main{padding:17px 15px}.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:5px 2px 12px}.sectionhead h2{font-size:18px;margin:0}.muted{color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tile,.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 3px 12px #4c36700a}.tile{min-height:112px;text-align:left;color:inherit}.tile .emoji{font-size:23px}.tile b{display:block;margin:8px 0 3px}.tile small{color:var(--muted)}
+.card{margin-bottom:11px}.topic{display:flex;align-items:center;gap:12px}.topic .emoji{width:42px;height:42px;display:grid;place-items:center;background:var(--pale);border-radius:13px;font-size:21px}.topic b{display:block}.topic small{color:var(--muted)}
+button{font:inherit;border:0;cursor:pointer}.primary{background:var(--purple);color:white;padding:13px 17px;border-radius:14px;font-weight:650;width:100%;margin-top:12px}.secondary{background:var(--pale);color:var(--purple);padding:10px 13px;border-radius:12px;font-weight:600}
+nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:5}
+nav button{background:none;color:var(--muted);font-size:11px;display:grid;gap:4px;justify-items:center;min-width:55px}nav button span{font-size:20px}nav button.active{color:var(--purple);font-weight:700}
+.page{display:none}.page.active{display:block}.question{font-size:19px;line-height:1.45;font-weight:650;margin:14px 0}.answers{display:grid;gap:9px}.answer{background:#fff;border:1px solid var(--line);padding:13px;border-radius:13px;text-align:left;color:var(--ink)}.answer.selected{border:2px solid var(--purple);background:var(--pale)}.answer.correct{border:2px solid var(--green)}.answer.wrong{border:2px solid var(--red)}
+.explain{background:#f2effa;border-radius:13px;padding:12px;margin-top:12px;line-height:1.5}.hidden{display:none!important}
+input{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;font-size:16px;background:#fff;color:var(--ink)}
+.formula{font-size:18px;background:#f4f0ff;border-radius:12px;padding:12px;margin:8px 0;text-align:center}
+</style></head>
+<body>
+<header><div class="top"><span>✦ ТВОЯ ПОДГОТОВКА К ЕГЭ</span><span class="pill">📐 Математика</span></div>
+<h1>Математика —<br>это реально 💜</h1><p>Готовься к ЕГЭ небольшими шагами каждый день</p>
+<div class="xpbox"><div class="xphead"><b>Твой прогресс</b><span id="xp">0 XP</span></div><div class="bar"><i id="xpbar"></i></div></div></header>
+<main>
+<section id="home" class="page active">
+<div class="sectionhead"><h2>Продолжим учиться?</h2><span class="muted">Выбери раздел</span></div>
+<div class="grid">
+<button class="tile" onclick="openPage('topics')"><span class="emoji">📚</span><b>Темы ЕГЭ</b><small>Теория и примеры</small></button>
+<button class="tile" onclick="startQuiz()"><span class="emoji">✍️</span><b>Тренировка</b><small>Задачи с ответами</small></button>
+<button class="tile" onclick="openPage('formula')"><span class="emoji">🧠</span><b>Формулы</b><small>Всё важное рядом</small></button>
+<button class="tile" onclick="openPage('progress')"><span class="emoji">🏆</span><b>Мой прогресс</b><small>Баллы и результаты</small></button>
+</div>
+<div class="sectionhead" style="margin-top:24px"><h2>План на сегодня</h2><span class="muted">10–15 минут</span></div>
+<div class="card"><div class="topic"><div class="emoji">🎯</div><div><b>Реши 5 заданий</b><small>Закрепи знания и получи XP</small></div></div><button class="primary" onclick="startQuiz()">Начать тренировку</button></div>
+</section>
+<section id="topics" class="page"><div class="sectionhead"><h2>Темы математики</h2><span class="muted">База ЕГЭ</span></div><div id="topiclist"></div></section>
+<section id="lesson" class="page"><button class="secondary" onclick="openPage('topics')">← Все темы</button><div id="lessonbody"></div></section>
+<section id="quiz" class="page"><div class="sectionhead"><h2>Тренировка</h2><span class="muted" id="qcount"></span></div><div class="card"><div id="qtopic" class="muted"></div><div id="qtext" class="question"></div><div id="answers" class="answers"></div><div id="explain" class="explain hidden"></div><button id="next" class="primary hidden" onclick="nextQ()">Следующее задание</button></div></section>
+<section id="formula" class="page"><div class="sectionhead"><h2>Справочник формул</h2></div><div class="card"><b>Проценты</b><div class="formula">p% от a = a · p / 100</div><div class="formula">Увеличить на p%: a · (1 + p/100)</div></div><div class="card"><b>Степени</b><div class="formula">aᵐ · aⁿ = aᵐ⁺ⁿ</div><div class="formula">(aᵐ)ⁿ = aᵐⁿ</div><div class="formula">a⁰ = 1 (a ≠ 0)</div></div><div class="card"><b>Квадратное уравнение</b><div class="formula">D = b² − 4ac</div><div class="formula">x = (−b ± √D) / 2a</div></div><div class="card"><b>Геометрия</b><div class="formula">S прямоугольника = ab</div><div class="formula">S треугольника = ah / 2</div><div class="formula">C окружности = 2πR</div><div class="formula">S круга = πR²</div></div><div class="card"><b>Тригонометрия</b><div class="formula">sin²x + cos²x = 1</div><div class="formula">tg x = sin x / cos x</div></div></section>
+<section id="progress" class="page"><div class="sectionhead"><h2>Мой прогресс 🏆</h2></div><div class="grid"><div class="card"><div class="muted">Набрано опыта</div><h2 id="totalxp">0 XP</h2></div><div class="card"><div class="muted">Верных ответов</div><h2 id="rightcount">0</h2></div></div><div class="card"><b>Продолжай в том же духе!</b><p class="muted">Каждый правильный ответ приносит 10 XP. Результаты сохраняются на этом устройстве.</p></div></section>
+</main>
+<nav><button class="active" data-page="home" onclick="openPage('home')"><span>⌂</span>Главная</button><button data-page="topics" onclick="openPage('topics')"><span>📚</span>Темы</button><button data-page="quiz" onclick="startQuiz()"><span>✍️</span>Тесты</button><button data-page="formula" onclick="openPage('formula')"><span>🧠</span>Формулы</button><button data-page="progress" onclick="openPage('progress')"><span>🏆</span>Прогресс</button></nav>
+<script>
+const tg=window.Telegram?.WebApp; if(tg){tg.ready();tg.expand();tg.setHeaderColor('#e9e1ff');tg.setBackgroundColor('#f5f2ff')}
+let xp=+(localStorage.mathXp||0),right=+(localStorage.mathRight||0);
+function update(){document.getElementById('xp').textContent=xp+' XP';document.getElementById('xpbar').style.width=(xp%100)+'%';document.getElementById('totalxp').textContent=xp+' XP';document.getElementById('rightcount').textContent=right}
+function openPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo(0,0);if(id==='progress')update()}
+const topics=[
+['🔢','Числа и вычисления','Дроби, проценты, степени и корни.','Процент от числа: чтобы найти 15% от 240, вычисли 240 · 0,15 = 36. Дробь a/b означает деление a на b.'],
+['📈','Функции и графики','Линейная и квадратичная функции.','Линейная функция: y = kx + b. Число k задаёт наклон прямой, b — точку пересечения с осью y. Вершина параболы y=ax²+bx+c имеет x = −b/(2a).'],
+['🧮','Уравнения и неравенства','Линейные и квадратные уравнения.','Для ax²+bx+c=0 вычисли дискриминант D=b²−4ac. Если D>0 — два корня, D=0 — один, D<0 — действительных корней нет.'],
+['📐','Планиметрия','Треугольники, окружности, площади.','Площадь треугольника равна половине произведения основания на высоту: S=ah/2. Сумма углов треугольника — 180°.'],
+['📦','Стереометрия','Объёмы и площади тел.','Объём прямоугольного параллелепипеда: V=abc. Объём цилиндра: V=πR²h. Объём конуса: V=πR²h/3.'],
+['🎲','Вероятность и статистика','Среднее, вероятность событий.','Вероятность события при равновозможных исходах: P=m/n, где m — число подходящих исходов, n — общее число исходов. Среднее арифметическое — сумма значений, делённая на их количество.']
+];
+document.getElementById('topiclist').innerHTML=topics.map((t,i)=>`<button class="card topic" style="width:100%;text-align:left;color:inherit" onclick="lesson(${i})"><span class="emoji">${t[0]}</span><span><b>${t[1]}</b><small>${t[2]}</small></span><span style="margin-left:auto;color:#9a91ae">›</span></button>`).join('');
+function lesson(i){openPage('lesson');let t=topics[i];document.getElementById('lessonbody').innerHTML=`<h2>${t[0]} ${t[1]}</h2><p style="color:#817b96">${t[2]}</p><div class="card" style="line-height:1.65">${t[3]}</div><button class="primary" onclick="startQuiz()">Потренироваться по математике</button>`}
+const questions=[
+{topic:'Проценты',q:'Найди 20% от 150.',a:['20','25','30','35'],c:2,e:'20% = 0,2. Умножаем: 150 · 0,2 = 30.'},
+{topic:'Уравнения',q:'Реши уравнение: 3x − 7 = 11.',a:['4','5','6','7'],c:2,e:'3x = 11 + 7 = 18, поэтому x = 6.'},
+{topic:'Геометрия',q:'Чему равна площадь прямоугольника со сторонами 5 и 8?',a:['13','26','40','80'],c:2,e:'Площадь прямоугольника: S = a · b = 5 · 8 = 40.'},
+{topic:'Степени',q:'Чему равно 2³ · 2²?',a:['2⁵ = 32','2⁶ = 64','4⁵','2'],c:0,e:'При умножении степеней с одинаковым основанием показатели складываются: 2³⁺² = 2⁵ = 32.'},
+{topic:'Вероятность',q:'В коробке 3 красных и 7 синих шаров. Какова вероятность достать красный?',a:['0,3','0,7','0,4','3'],c:0,e:'Всего 10 шаров, красных 3. Вероятность = 3/10 = 0,3.'},
+{topic:'Функции',q:'Какой график у функции y = 2x + 1?',a:['Парабола','Прямая','Окружность','Гипербола'],c:1,e:'Функция вида y=kx+b является линейной, её график — прямая.'}
+];let qi=0,order=[];
+function startQuiz(){order=[...questions.keys()].sort(()=>Math.random()-.5);qi=0;openPage('quiz');showQ()}
+function showQ(){let q=questions[order[qi]];document.getElementById('qcount').textContent=(qi+1)+' / '+order.length;document.getElementById('qtopic').textContent=q.topic;document.getElementById('qtext').textContent=q.q;document.getElementById('answers').innerHTML=q.a.map((a,i)=>`<button class="answer" onclick="choose(${i})">${a}</button>`).join('');document.getElementById('explain').classList.add('hidden');document.getElementById('next').classList.add('hidden')}
+function choose(i){let q=questions[order[qi]],buttons=[...document.querySelectorAll('.answer')];buttons.forEach((b,j)=>{b.disabled=true;if(j===q.c)b.classList.add('correct');else if(j===i)b.classList.add('wrong')});let ok=i===q.c;if(ok){xp+=10;right++;localStorage.mathXp=xp;localStorage.mathRight=right;update()}let ex=document.getElementById('explain');ex.textContent=(ok?'✅ Верно! +10 XP. ':'❌ Пока неверно. ')+q.e;ex.classList.remove('hidden');let n=document.getElementById('next');n.textContent=qi===order.length-1?'Завершить':'Следующее задание';n.classList.remove('hidden')}
+function nextQ(){if(qi<order.length-1){qi++;showQ()}else{document.getElementById('qtext').textContent='Тренировка завершена! 🎉';document.getElementById('answers').innerHTML='';document.getElementById('explain').textContent='Ты молодец! Вернись к темам, чтобы закрепить материал.';document.getElementById('explain').classList.remove('hidden');document.getElementById('next').classList.add('hidden')}}
+update();
+</script></body></html>
