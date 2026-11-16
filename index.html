@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f0ff">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<title>Подготовка к ЕГЭ</title>
+<style>
+:root{--bg:#0b1020;--card:#141b30;--text:#edf1ff;--muted:#9aa7c7;--accent:#7c6cff;--ok:#35c995;--bad:#ff6b78;--border:rgba(174,190,235,.16);--surface:#1a2340;--radius:18px;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);line-height:1.55;background:radial-gradient(900px 500px at 5% -10%,rgba(124,108,255,.22),transparent 65%),radial-gradient(800px 500px at 105% 5%,rgba(34,211,238,.12),transparent 60%),var(--bg)}
+header,main{width:min(100% - 32px,1040px);margin:0 auto}header{padding:28px 0 10px}h1{font-size:clamp(1.65rem,5vw,2.35rem);font-weight:850;letter-spacing:-.04em;margin:0;background:linear-gradient(90deg,#fff,#c4b5fd 55%,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}.sub{color:var(--muted);margin:4px 0 18px}.tabs{display:flex;gap:8px;overflow-x:auto;padding:3px 2px 12px;scrollbar-width:thin}.tab,button{font:inherit;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}.tab{flex:0 0 auto;border:1px solid var(--border);background:rgba(255,255,255,.045);color:var(--muted);padding:9px 14px;border-radius:999px}.tab:hover,button:hover{transform:translateY(-1px);border-color:rgba(160,145,255,.65)}.tab.active{color:#fff;border-color:transparent;background:linear-gradient(120deg,var(--accent),#259fc2);box-shadow:0 8px 24px -12px var(--accent)}
+.card,section,.panel{background:linear-gradient(155deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--border);border-radius:var(--radius);padding:clamp(15px,3vw,22px);margin:0 0 15px;backdrop-filter:blur(12px);box-shadow:0 18px 44px -28px #000}.card h2{font-size:1.12rem;margin:0 0 10px}.card h3{color:#c9d2f2}.muted{color:var(--muted);font-size:.92rem}.btn{border:1px solid var(--accent);background:var(--accent);color:#fff;padding:9px 15px;border-radius:10px;font-size:.94rem}.btn.ghost{background:transparent;color:#b9b0ff;border-color:var(--border)}button:disabled{opacity:.55;cursor:not-allowed;transform:none}select,input,textarea{font:inherit;color:var(--text);background:#10182c;border:1px solid var(--border);border-radius:9px;padding:9px 11px;max-width:100%}input:focus,select:focus,textarea:focus,button:focus-visible,.tab:focus-visible{outline:2px solid #9b8cff;outline-offset:2px}textarea{resize:vertical}.progress-bar{height:9px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:8px}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--ok),#67e8f9);transition:width .25s}.topic{border-top:1px solid var(--border);padding:10px 0}.topic:first-of-type{border-top:0}.topic-row{display:flex;gap:10px;align-items:flex-start}.topic-row input{margin-top:5px;width:18px;height:18px;flex-shrink:0;accent-color:var(--accent)}.topic-row label{flex:1;cursor:pointer}.topic.done label{color:var(--muted);text-decoration:line-through}details{margin:7px 0 0 28px}summary{cursor:pointer;color:#b9b0ff;font-size:.92rem}.theory{background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:10px;padding:11px 13px;margin-top:7px;font-size:.95rem}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:12px}.cell{min-height:70px;border-radius:11px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;font-size:.9rem;padding:7px;user-select:none}.cell.open{background:var(--accent);color:#fff}.cell.matched{background:rgba(53,201,149,.2);border-color:var(--ok);color:#8cf0c8;cursor:default}.option{display:block;width:100%;text-align:left;margin:7px 0;padding:10px 13px;border:1px solid var(--border);background:rgba(255,255,255,.035);color:var(--text);border-radius:10px;cursor:pointer;font-size:.95rem}.option.right{border-color:var(--ok);background:rgba(53,201,149,.13)}.option.wrong{border-color:var(--bad);background:rgba(255,107,120,.13)}.feedback{margin-top:9px;font-weight:600}.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--bad)}canvas{width:100%;max-width:600px;height:auto;background:rgba(0,0,0,.18);border-radius:12px;display:block}.slider{display:flex;align-items:center;gap:10px;margin:9px 0;flex-wrap:wrap}.slider span{min-width:90px}.slider input{flex:1}.result{margin-top:9px;font-size:.95rem;overflow-wrap:anywhere}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}th,td{padding:9px;border-bottom:1px solid var(--border);text-align:left;font-size:.92rem;white-space:nowrap}tr.me td{color:#b9b0ff;font-weight:700}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#eef1ff;color:#14182a;padding:11px 16px;border-radius:12px;font-size:.9rem;z-index:20;box-shadow:0 8px 30px #0006;max-width:calc(100% - 30px)}footer{text-align:center;color:var(--muted);font-size:.85rem;padding:22px 16px 30px}.empty{text-align:center;color:var(--muted);padding:28px 12px}@media(max-width:600px){header,main{width:min(100% - 22px,1040px)}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.card{border-radius:15px}.slider{align-items:stretch}.slider input{min-width:120px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* Telegram Mini App compatibility */
+body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+header{padding-top:max(18px,env(safe-area-inset-top))}
+main{padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+button,.tab{touch-action:manipulation}
+input,select,textarea{font-size:16px}
+@media(max-width:600px){header,main{width:min(100% - 18px,1040px)}}
+
+/* ЕГЭ — светлая лавандовая тема для Telegram Mini App */
+:root{
+  color-scheme:light;
+  --bg:#f4f0ff;
+  --card:#ffffff;
+  --text:#28243d;
+  --muted:#77718f;
+  --accent:#8065e8;
+  --ok:#28a879;
+  --bad:#df586c;
+  --border:rgba(99,78,160,.16);
+  --surface:#f0ebff;
+  --radius:22px;
+}
+html,body{background:#f4f0ff!important;color:var(--text)}
+body{
+  background:
+    radial-gradient(900px 430px at 0% -10%,rgba(176,151,255,.32),transparent 65%),
+    radial-gradient(700px 420px at 100% 0%,rgba(255,190,220,.24),transparent 62%),
+    #f4f0ff!important;
+}
+header,main{width:min(100% - 28px,1040px)}
+header{padding-top:max(26px,env(safe-area-inset-top));padding-bottom:14px}
+h1{
+  color:#3b2d68;
+  background:linear-gradient(100deg,#5b43b5,#9a69df 58%,#d17ab5);
+  -webkit-background-clip:text;background-clip:text;
+}
+.sub{color:#77718f}
+.tab{
+  color:#655b83;background:#fff;border-color:rgba(111,86,177,.18);
+  box-shadow:0 4px 14px rgba(80,58,140,.06)
+}
+.tab.active{color:#fff;background:linear-gradient(120deg,#8065e8,#ad7de8);box-shadow:0 8px 22px rgba(128,101,232,.22)}
+.card,section,.panel{
+  background:rgba(255,255,255,.94);
+  border:1px solid rgba(111,86,177,.15);
+  box-shadow:0 12px 30px rgba(74,54,130,.08);
+  backdrop-filter:blur(12px)
+}
+.card h3{color:#5e4c91}
+.muted{color:#77718f}
+.btn{background:linear-gradient(120deg,#8065e8,#a77be8);border-color:#8065e8;color:#fff}
+.btn.ghost{background:#f4f0ff;color:#7056cb;border-color:#ded4fb}
+select,input,textarea{
+  color:#302a49;background:#fbfaff;border-color:#ded7ef
+}
+.option{color:#302a49;background:#f8f6ff;border-color:#e4def2}
+.option.right{background:#e8f8f0}
+.option.wrong{background:#fff0f2}
+.topic{border-color:#ece7f5}
+.topic.done label{color:#918aa5}
+.theory{background:#f8f6ff;border-color:#e5def5}
+.cell{background:#f5f1ff;border-color:#e2daf5;color:#40365f}
+.cell.open{background:#8065e8;color:#fff}
+.cell.matched{background:#e5f7ef;border-color:#8dd4b3;color:#247c59}
+.progress-bar{background:#e9e3f5}
+.progress-fill{background:linear-gradient(90deg,#9a7bf0,#d28bd0)}
+tr.me td{color:#7056cb}
+.toast{background:#30264e;color:#fff}
+footer{color:#8b849e}
+canvas{background:#f7f4ff}
+@media(max-width:600px){
+  header,main{width:min(100% - 22px,1040px)}
+  .card{border-radius:20px}
+}
+
+</style>
+</head>
+<body>
+<header>
+  <h1>Подготовка к ЕГЭ</h1>
+  <p class="sub">Темы с теорией, тренажёры и интерактив</p>
+  <nav class="tabs" id="tabs"></nav>
+</header>
+<main id="app">
+</main>
+<noscript><div class="card" style="max-width:1040px;margin:16px auto">Для работы тренажёров нужно открыть этот HTML-файл в браузере с включённым JavaScript, например Safari.</div></noscript>
+<footer>Темы составлены по структуре ЕГЭ. Актуальные требования уточняйте на fipi.ru</footer>
+
+<script>
+/* Telegram Mini App initialization */
+(function(){
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (!tg) return;
+  try {
+    tg.ready();
+    tg.expand();
+    if (tg.setHeaderColor) tg.setHeaderColor('#f4f0ff');
+    if (tg.setBackgroundColor) tg.setBackgroundColor('#f4f0ff');
+    if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+    document.documentElement.style.setProperty('--tg-viewport-height', (tg.viewportHeight || window.innerHeight) + 'px');
+    if (tg.onEvent) tg.onEvent('viewportChanged', function(){
+      document.documentElement.style.setProperty('--tg-viewport-height', (tg.viewportHeight || window.innerHeight) + 'px');
+    });
+  } catch(e) { console.warn('Telegram WebApp init:', e); }
+})();
+</script>
+<script>
+// ---------- ДАННЫЕ: темы с теорией ----------
+const SUBJECTS = {
+  "Математика": [
+    { title: "Часть 1 (задания 1–12)", topics: [
+      ["Планиметрия: треугольники, окружности, площади", "Сумма углов треугольника 180°. Площадь треугольника S = ½·a·h. Теорема Пифагора: a² + b² = c². Длина окружности C = 2πR."],
+      ["Стереометрия: объёмы и площади поверхностей", "Объём призмы V = S·h. Объём шара V = 4/3·πR³. Объём конуса V = 1/3·S·h. Площадь боковой поверхности цилиндра 2πRh."],
+      ["Простейшие задачи теории вероятностей", "P = m / n, где m — число благоприятных исходов, n — число всех равновозможных исходов."],
+      ["Сложные задачи теории вероятностей", "P(A или B) = P(A) + P(B) − P(A и B). Для независимых событий P(A и B) = P(A)·P(B). Формула Бернулли: P = C(n,k)·p^k·(1−p)^(n−k)."],
+      ["Уравнения: линейные, квадратные, рациональные", "Дискриминант D = b² − 4ac, корни x = (−b ± √D) / 2a. У дроби знаменатель не равен нулю (ОДЗ)."],
+      ["Иррациональные и показательные уравнения", "При возведении в степень проверяйте ОДЗ и отбирайте корни. Если a^x = a^y и a > 0, a ≠ 1, то x = y."],
+      ["Производная и касательная к графику", "Уравнение касательной: y = f(x₀) + f′(x₀)·(x − x₀). Производная (xⁿ)′ = n·xⁿ⁻¹."],
+      ["Исследование функций с помощью производной", "Если f′(x) > 0, функция возрастает; если f′(x) < 0, убывает. Экстремумы там, где f′ меняет знак."],
+      ["Текстовые задачи: проценты, движение, работа", "v = s / t. Рост на p%: a·(1 + p/100). Работа = производительность · время."],
+      ["Экономические задачи", "Записывайте все суммы в таблицу по годам. Для кредита важны остаток долга и проценты на него."],
+      ["Наибольшее и наименьшее значения функции", "На отрезке сравнивайте значения в критических точках (f′ = 0) и на концах отрезка."],
+      ["Задачи на графики функций", "Знак производной показывает рост/убывание. Сдвиг: y = f(x + a) + b сдвигает график на −a по x и на b по y."]
+    ]},
+    { title: "Часть 2 (задания 13–19)", topics: [
+      ["Уравнения повышенной сложности и отбор корней", "Отбор корней по ОДЗ или по тригонометрической окружности. Проверяйте каждый найденный корень."],
+      ["Стереометрия: сечения, углы, расстояния", "Метод координат: векторы, скалярное произведение, cos φ = |a·b| / (|a|·|b|). Расстояние от точки до плоскости по формуле."],
+      ["Неравенства: методы решения", "Метод интервалов: нули функции делят ось на промежутки, знак чередуется. Замена переменной упрощает сложные неравенства."],
+      ["Экономическая задача с параметром", "Составьте уравнение на суммы платежей. Параметр ищите через условие на все года выплат."],
+      ["Геометрия: планиметрические доказательства и вычисления", "Теорема синусов a/sin A = 2R. Теорема косинусов c² = a² + b² − 2ab·cos C. Вписанный угол равен половине дуги."],
+      ["Задачи с параметром", "Сначала найдите значения параметра, при которых уравнение меняет число корней (дискриминант, касание графиков)."],
+      ["Задачи на свойства натуральных чисел", "Делимость, остатки от деления, оценки. Разложите число на простые множители, используйте НОД и НОК."]
+    ]}
+  ],
+  "Информатика": [
+    { title: "Теория", topics: [
+      ["Системы счисления и перевод чисел", "Перевод в систему с основанием k: делите на k и выписывайте остатки снизу вверх. Цифры в k-ичной системе — от 0 до k − 1."],
+      ["Логика: высказывания и таблицы истинности", "A → B = ¬A ∨ B. Законы де Моргана: ¬(A ∧ B) = ¬A ∨ ¬B. Строите таблицу по всем наборам значений."],
+      ["Кодирование информации и объём данных", "Объём I = K · i, где K — число символов, i — бит на символ. Для алфавита из N символов i = ⌈log₂ N⌉."],
+      ["Файловая система и пути к файлам", "Абсолютный путь начинается от корня (C:\\папка\\файл). Относительный — от текущей папки. Переходы через «..» — на уровень вверх."],
+      ["Электронные таблицы и формулы", "Адрес ячейки A1. Абсолютная ссылка $A$1 не меняется при копировании. Функции: СУММ, СЧЁТЕСЛИ, ЕСЛИ."],
+      ["Базы данных и поиск по запросам", "Запрос с И сужает выборку, с ИЛИ — расширяет. Скобки задают порядок выполнения."],
+      ["Сети: IP-адреса, маски, протоколы", "IP — 4 байта. Адрес сети получается побитовым И адреса и маски. Число адресов узла: 2^(32 − префикс) − 2."],
+      ["Графы и обходы", "Обход в ширину использует очередь, в глубину — стек или рекурсию. Пути считаются динамикой: число путей в вершину = сумма путей в предыдущие."],
+      ["Теория игр", "Решайте с конца: позиция выигрышная, если есть ход в проигрышную позицию для соперника."],
+      ["Исполнители и алгоритмы", "Трассировка: выписывайте значения переменных на каждом шаге в таблицу. Так ошибки видны сразу."]
+    ]},
+    { title: "Программирование (задания 24–27)", topics: [
+      ["Обработка строк и поиск подстрок", "s.find(t), срезы s[i:j], s.count(t). Индексы начинаются с 0, срез не включает правую границу."],
+      ["Работа с массивами и сортировка", "Одна проходка по массиву за O(n). Для сортировки используйте sorted(). Аккуратно с индексами на границах."],
+      ["Перебор и оптимальные решения", "Перебор всех вариантов с условием. Для оптимизации меняйте порядок: сначала отсечение заведомо неподходящих."],
+      ["Рекурсия и динамическое программирование", "f(n) = f(n−1) + f(n−2): запишите базовые случаи, затем заполняйте таблицу значений по возрастанию n."],
+      ["Анализ программ и трассировка", "Выписывайте значения переменных на каждом шаге цикла. Проверяйте граничные значения и условие выхода из цикла."]
+    ]}
+  ],
+  "Русский язык": [
+    { title: "Анализ текста (задания 1–3)", topics: [
+      ["Смысловой анализ текста и средства связи", "Тема — о чём текст, идея — что хотел сказать автор. Связь предложений: повтор слова, синоним, местоимение, союз."],
+      ["Определение стилей и языковых средств", "Стили: разговорный, научный, публицистический, художественный. Тропы: эпитет, метафора, сравнение, олицетворение."],
+      ["Поиск лексических и грамматических ошибок", "Лексическая ошибка — неверное значение слова. Грамматическая — нарушение согласования или управления."]
+    ]},
+    { title: "Языковые нормы", topics: [
+      ["Ударение и орфоэпия", "Ударение проверяйте по орфоэпическому словарю. Типичные ошибки: звонит, по-прежнему, кремнистый."],
+      ["Паронимы и лексические нормы", "Паронимы — близкие по звучанию слова разного значения: одеть/надеть, эффективный/эффектный."],
+      ["Морфология: части речи и их формы", "Определите часть речи по морфологическим признакам: у глагола — наклонение и время, у прилагательного — род, число, падеж."],
+      ["Словообразование и морфемика", "Структура слова: приставка + корень + суффикс + окончание. Проверяйте разбор по значению слова."],
+      ["Орфография: корни, приставки, суффиксы", "Проверяемая безударная гласная в корне — подбирайте однокоренное слово с ударением. Приставки на з/с: пишем з перед звонкими, с перед глухими."],
+      ["Орфография: Н и НН, НЕ и НИ", "В прилагательных на -ан, -ян пишется НН в производных от существительных с Н. НЕ с глаголами пишется раздельно. НИ-местоимения пишутся слитно."],
+      ["Слитное, раздельное и дефисное написание", "Производные предлоги (в течение, в продолжение) — раздельно, если есть существительное с падежом. Дефис — в сложных словах: северо-восток."],
+      ["Пунктуация: однородные члены и обособления", "Однородные члены без союзов — запятая. Обороты с причастием и деепричастием обособляются."],
+      ["Пунктуация: сложные предложения", "Перед союзами И, А, НО в сложносочинённом ставим запятую. В сложноподчинённом запятая — перед придаточным."],
+      ["Пунктуация: прямая речь и цитаты", "Прямая речь — в кавычках или после тире. Слова автора и речь разделяются знаками препинания по схеме."]
+    ]},
+    { title: "Письменная часть", topics: [
+      ["Синтаксис: словосочетания и грамматические ошибки", "Согласование: сложный синтаксис — согласуем по смыслу. Управление: оплатить долг (что?), оплатить за проезд (ошибка)."],
+      ["Сочинение-рассуждение (задание 27)", "Структура: тезис, аргумент, пример из текста, пример из жизни, вывод. Формулируйте позицию в одном предложении."]
+    ]}
+  ]
+};
+
+// ---------- ИГРА «ПАРЫ» ----------
+const PAIRS = [
+  ["Площадь круга", "πR²"],
+  ["Объём шара", "4/3·πR³"],
+  ["Сумма прогрессии", "(a₁+aₙ)/2·n"],
+  ["Формула Виета", "x₁+x₂ = −b/a"],
+  ["Производная xⁿ", "n·xⁿ⁻¹"],
+  ["Площадь треугольника", "½·ab·sin C"]
+];
+
+// ---------- ВИКТОРИНА ----------
+const QUIZ = {
+  "Математика": [
+    { q: "Чему равен дискриминант уравнения x² − 5x + 6 = 0?", o: ["1", "25", "−1"], a: 0, e: "D = 25 − 24 = 1." },
+    { q: "Производная функции x³ равна...", o: ["3x²", "x²", "3x"], a: 0, e: "По правилу (xⁿ)′ = n·xⁿ⁻¹ получаем 3x²." },
+    { q: "Вероятность выпадения орла при броске монеты:", o: ["1/2", "1", "1/4"], a: 0, e: "Два равновозможных исхода, один благоприятный." }
+  ],
+  "Информатика": [
+    { q: "Сколько бит нужно, чтобы закодировать 8 символов алфавита?", o: ["3", "8", "4"], a: 0, e: "2³ = 8, значит нужно 3 бита." },
+    { q: "Чему равно число 10₂ в десятичной системе?", o: ["2", "10", "3"], a: 0, e: "1·2¹ + 0·2⁰ = 2." },
+    { q: "Какой логический результат у A → B при A = 1, B = 0?", o: ["0", "1"], a: 0, e: "Импликация ложна только при 1 → 0." }
+  ],
+  "Русский язык": [
+    { q: "Как правильно пишется название химического элемента?", o: ["кремний", "кремень"], a: 0, e: "Правильно: кремний. Это название химического элемента; слово «кремень» имеет другое значение." },
+    { q: "Выберите правильное написание:", o: ["в течение дня", "в течении дня"], a: 0, e: "Производный предлог «в течение» пишется раздельно." },
+    { q: "Где нужна запятая?", o: ["Он пришёл, и мы начали работать", "Он пришёл и мы начали работать"], a: 0, e: "Перед И в сложносочинённом предложении ставится запятая." }
+  ]
+};
+
+// ---------- ПОШАГОВЫЙ РАЗБОР ----------
+const STEPS = {
+  "Уравнение 2x² − 5x + 2 = 0": [
+    { q: "Какой дискриминант?", o: ["D = 25 − 16 = 9", "D = 25 + 16 = 41", "D = −5 − 4 = −9"], a: 0, e: "D = b² − 4ac = 25 − 16 = 9." },
+    { q: "Чему равны корни?", o: ["x = 2 и x = 1/2", "x = 2 и x = −1/2", "x = 4 и x = 1"], a: 0, e: "x = (5 ± 3) / 4, отсюда x = 2 и x = 1/2." },
+    { q: "Что делаем последним шагом?", o: ["Проверка подстановкой", "Умножить на 2", "Сразу записать ответ"], a: 0, e: "Подставьте x = 2: 8 − 10 + 2 = 0. Проверка подтверждает корни." }
+  ],
+  "Перевод 45 в двоичную систему": [
+    { q: "Первый остаток при делении 45 на 2?", o: ["1", "0", "45"], a: 0, e: "45 = 2·22 + 1, остаток 1." },
+    { q: "Как читаем остатки?", o: ["Первый остаток — старший разряд", "Последний остаток — старший разряд", "Частное — младший разряд"], a: 1, e: "Остатки читаем снизу вверх: последний остаток — старший разряд." },
+    { q: "Какой итог?", o: ["101101", "110101", "101011"], a: 0, e: "32 + 8 + 4 + 1 = 45, значит 45 = 101101₂." }
+  ],
+  "Слитно или раздельно: «в течение / в течении» недели": [
+    { q: "Какой это предлог?", o: ["Производный предлог, пишется раздельно", "Существительное, пишется слитно"], a: 0, e: "«В течение» — производный предлог, поэтому раздельно." },
+    { q: "Как пишется?", o: ["в течение недели", "в течении недели"], a: 0, e: "Правильно: в течение недели." },
+    { q: "Почему?", o: ["Это устойчивый предлог", "Это существительное с окончанием -ии"], a: 0, e: "Предлоги такого типа пишутся раздельно по нормам." }
+  ]
+};
+
+// ---------- ОСНОВНОЙ КОД ----------
+const app = document.getElementById("app");
+const tabsEl = document.getElementById("tabs");
+const TABS = [
+  ["topics", "Темы и теория"], ["pairs", "Игра на пары"], ["quiz", "Викторина"],
+  ["graph", "Интерактивный график"], ["steps", "Пошаговый разбор"],
+  ["game", "Прогресс"], ["board", "Рейтинг"],
+  ["plan", "Мой план"], ["custom", "Оформление"],
+  ["motiv", "Мотивация"], ["notes", "Разборы"], ["chat", "Чат"],
+  ["exam", "Тренажёр"], ["mistakes", "Ошибки"], ["dash", "Дашборд"]
+];
+let currentTab = "topics";
+let done = new Set();
+try { done = new Set(JSON.parse(localStorage.getItem("ege-done") || "[]")); } catch (e) {}
+const saveDone = () => { try { localStorage.setItem("ege-done", JSON.stringify([...done])); } catch (e) {} };
+
+function h(tag, props = {}, ...children) {
+  const el = document.createElement(tag);
+  Object.assign(el, props);
+  children.forEach(c => el.append(c));
+  return el;
+}
+
+function renderTabs() {
+  tabsEl.innerHTML = "";
+  TABS.forEach(([id, name]) => {
+    tabsEl.append(h("button", {
+      className: "tab" + (id === currentTab ? " active" : ""),
+      textContent: name,
+      onclick: () => { currentTab = id; renderAll(); }
+    }));
+  });
+}
+
+function renderAll() {
+  clearInterval(examTimer);
+  renderTabs();
+  app.innerHTML = "";
+  ({ topics: renderTopics, pairs: renderPairs, quiz: renderQuiz, graph: renderGraph, steps: renderSteps, game: renderProfile, board: renderBoard, plan: renderPlan, custom: renderCustom, motiv: renderMotiv, notes: renderNotes, chat: renderChat, exam: renderExam, mistakes: renderMistakes, dash: renderDash })[currentTab]();
+}
+
+// --- Темы ---
+function renderTopics() {
+  let total = 0, checked = 0;
+  Object.keys(SUBJECTS).forEach(s => SUBJECTS[s].forEach(b => b.topics.forEach(() => total++)));
+  const validIds = new Set(allTopics().map(t => t.id));
+  done.forEach(id => { if (validIds.has(id)) checked++; });
+  const pct = total ? Math.round(checked / total * 100) : 0;
+  const fill = h("div", { className: "progress-fill" });
+  fill.style.width = pct + "%";
+  app.append(h("div", { className: "card" },
+    h("div", { className: "progress-bar" }, fill),
+    h("div", { className: "muted", textContent: `Отмечено: ${checked} из ${total} (${pct}%)` }),
+    h("button", { className: "btn ghost", textContent: "Сбросить отметки", onclick: () => {
+      if (confirm("Сбросить все отметки?")) { done.clear(); saveDone(); renderAll(); }
+    }})
+  ));
+  const search = h("input", { type: "search", placeholder: "Найти тему или правило…", style: "width:100%;margin:0 0 12px" });
+  const subjectFilter = h("select", { style: "margin:0 0 12px;width:100%" },
+    h("option", { value: "Все предметы", textContent: "Все предметы" }),
+    ...Object.keys(SUBJECTS).map(s => h("option", { value: s, textContent: s })));
+  const topicCards = h("div", {});
+  function drawTopicCards() {
+    topicCards.innerHTML = "";
+    const term = search.value.trim().toLocaleLowerCase("ru");
+    Object.keys(SUBJECTS).filter(subj => subjectFilter.value === "Все предметы" || subjectFilter.value === subj).forEach(subj => {
+    const card = h("div", { className: "card" }, h("h2", { textContent: subj }));
+    SUBJECTS[subj].forEach((block, bi) => {
+      card.append(h("h3", { textContent: block.title, style: "font-size:1rem;margin:14px 0 4px" }));
+      block.topics.forEach(([title, theory], ti) => {
+        if (term && !(title + " " + theory).toLocaleLowerCase("ru").includes(term)) return;
+        const id = `${subj}|${bi}|${ti}`;
+        const cb = h("input", { type: "checkbox", checked: done.has(id), id });
+        const row = h("div", { className: "topic" + (done.has(id) ? " done" : "") },
+          h("div", { className: "topic-row" }, cb, h("label", { htmlFor: id, textContent: title })),
+          h("details", {}, h("summary", { textContent: "Теория" }),
+            h("div", { className: "theory", textContent: theory }))
+        );
+        cb.onchange = () => {
+          const wasDone = done.has(id);
+          cb.checked ? done.add(id) : done.delete(id);
+          saveDone();
+          if (cb.checked && !wasDone) gain(3, "topic");
+          row.classList.toggle("done", cb.checked);
+        };
+        card.append(row);
+      });
+    });
+    if (card.querySelector(".topic")) topicCards.append(card);
+  });
+    if (!topicCards.children.length) topicCards.append(h("div", { className: "card empty", textContent: "Ничего не найдено. Измените запрос или предмет." }));
+  }
+  search.oninput = drawTopicCards;
+  subjectFilter.onchange = drawTopicCards;
+  app.append(h("div", { className: "card" }, h("h2", { textContent: "Поиск по темам" }), search, subjectFilter), topicCards);
+  drawTopicCards();
+}
+
+// --- Игра на пары ---
+function renderPairs() {
+  let cards = [];
+  PAIRS.forEach(([name, f], i) => { cards.push({ id: i, text: name }); cards.push({ id: i, text: f }); });
+  cards.sort(() => Math.random() - 0.5);
+  let first = null, lock = false, matched = 0;
+  const info = h("div", { className: "muted", textContent: "Соедините название формулы с самой формулой." });
+  const grid = h("div", { className: "grid" });
+  cards.forEach(c => {
+    const el = h("div", { className: "cell", textContent: "?" });
+    el.onclick = () => {
+      if (lock || el.classList.contains("open") || el.classList.contains("matched")) return;
+      el.classList.add("open"); el.textContent = c.text;
+      if (!first) { first = { el, c }; return; }
+      lock = true;
+      if (first.c.id === c.id && first.c !== c) {
+        first.el.classList.add("matched"); el.classList.add("matched");
+        matched++; first = null; lock = false;
+        gain(5, "pair");
+        if (matched === PAIRS.length) info.textContent = "Все пары найдены!";
+      } else {
+        const a = first; first = null;
+        setTimeout(() => {
+          a.el.classList.remove("open"); a.el.textContent = "?";
+          el.classList.remove("open"); el.textContent = "?";
+          lock = false;
+        }, 800);
+      }
+    };
+    grid.append(el);
+  });
+  app.append(h("div", { className: "card" }, h("h2", { textContent: "Игра «Пары»: формулы" }), info, grid,
+    h("button", { className: "btn", textContent: "Новая игра", style: "margin-top:12px", onclick: renderAll })));
+}
+
+// --- Викторина ---
+function renderQuiz() {
+  const sel = h("select", {}, ...Object.keys(QUIZ).map(s => h("option", { value: s, textContent: s })));
+  const box = h("div", {});
+  let qi = 0, score = 0;
+  function show() {
+    box.innerHTML = "";
+    const list = QUIZ[sel.value];
+    if (qi >= list.length) {
+      box.append(h("div", { className: "result", textContent: `Результат: ${score} из ${list.length}` }),
+        h("button", { className: "btn", textContent: "Пройти ещё раз", onclick: () => { qi = 0; score = 0; show(); } }));
+      return;
+    }
+    const item = list[qi];
+    box.append(h("div", { className: "muted", textContent: `Вопрос ${qi + 1} из ${list.length}` }),
+      h("p", { textContent: item.q, style: "font-weight:600" }));
+    const fb = h("div", { className: "feedback" });
+    item.o.forEach((text, i) => {
+      const b = h("button", { className: "option", textContent: text });
+      b.onclick = () => {
+        box.querySelectorAll(".option").forEach(x => x.disabled = true);
+        if (i === item.a) { b.classList.add("right"); score++; gainCorrect(sel.value, 10); fb.className = "feedback ok"; fb.textContent = "Верно! " + item.e; }
+        else {
+          b.classList.add("wrong"); resetStreak();
+          box.querySelectorAll(".option")[item.a].classList.add("right");
+          fb.className = "feedback bad"; fb.textContent = "Неверно. " + item.e;
+        }
+        box.append(h("button", { className: "btn", textContent: "Дальше", style: "margin-top:10px",
+          onclick: () => { qi++; show(); } }));
+      };
+      box.append(b);
+    });
+    box.append(fb);
+  }
+  sel.onchange = () => { qi = 0; score = 0; show(); };
+  app.append(h("div", { className: "card" }, h("h2", { textContent: "Викторина на скорость" }), sel, box));
+  show();
+}
+
+// --- Интерактивный график ---
+function renderGraph() {
+  const sliders = [["a", -3, 3, 1, 0.1], ["b", -6, 6, 0, 0.5], ["c", -6, 6, -2, 0.5]];
+  const vals = {};
+  const canvas = h("canvas", { width: 600, height: 400 });
+  const result = h("div", { className: "result" });
+  const ctx = canvas.getContext("2d");
+
+  function draw() {
+    const { a, b, c } = vals;
+    const W = 600, H = 400, S = 20;
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = "#8a93a6"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2); ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H); ctx.stroke();
+    ctx.strokeStyle = "#3b6fd8"; ctx.lineWidth = 2.5; ctx.beginPath();
+    for (let px = 0; px <= W; px++) {
+      const x = (px - W / 2) / S;
+      const y = a * x * x + b * x + c;
+      const py = H / 2 - y * S;
+      px === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    const D = b * b - 4 * a * c;
+    let text = `f(x) = ${a}x² + ${b}x + ${c}. `;
+    if (a !== 0) {
+      text += `Вершина: x = ${(-b / (2 * a)).toFixed(2)}. `;
+      if (D > 0) text += `Корни: ${((-b + Math.sqrt(D)) / (2 * a)).toFixed(2)} и ${((-b - Math.sqrt(D)) / (2 * a)).toFixed(2)}.`;
+      else if (D === 0) text += `Один корень: x = ${(-b / (2 * a)).toFixed(2)}.`;
+      else text += "Действительных корней нет.";
+    } else {
+      text += b !== 0 ? `Линейная функция, корень x = ${(-c / b).toFixed(2)}.` : "Константа.";
+    }
+    result.textContent = text;
+  }
+
+  const panel = h("div", {});
+  sliders.forEach(([name, min, max, init, step]) => {
+    vals[name] = init;
+    const out = h("span", { textContent: `${name} = ${init}` });
+    const inp = h("input", { type: "range", min, max, step, value: init });
+    inp.oninput = () => { vals[name] = parseFloat(inp.value); out.textContent = `${name} = ${inp.value}`; draw(); };
+    panel.append(h("div", { className: "slider" }, out, inp));
+  });
+  app.append(h("div", { className: "card" },
+    h("h2", { textContent: "Интерактивный график квадратичной функции" }),
+    h("p", { className: "muted", textContent: "Двигайте ползунки и смотрите, как меняется график, вершина и корни." }),
+    canvas, panel, result));
+  draw();
+}
+
+// --- Пошаговый разбор ---
+function renderSteps() {
+  const names = Object.keys(STEPS);
+  const sel = h("select", {}, ...names.map(n => h("option", { value: n, textContent: n })));
+  const box = h("div", {});
+  let si = 0;
+  function show() {
+    box.innerHTML = "";
+    const steps = STEPS[sel.value];
+    if (si >= steps.length) {
+      finishSteps();
+      box.append(h("div", { className: "feedback ok", textContent: "Разбор завершён. Попробуйте решить такую же задачу самостоятельно." }),
+        h("button", { className: "btn", textContent: "Заново", style: "margin-top:10px", onclick: () => { si = 0; show(); } }));
+      return;
+    }
+    const st = steps[si];
+    box.append(h("div", { className: "muted", textContent: `Шаг ${si + 1} из ${steps.length}` }),
+      h("p", { textContent: st.q, style: "font-weight:600" }));
+    const fb = h("div", { className: "feedback" });
+    st.o.forEach((text, i) => {
+      const b = h("button", { className: "option", textContent: text });
+      b.onclick = () => {
+        if (i === st.a) {
+          box.querySelectorAll(".option").forEach(x => x.disabled = true);
+          b.classList.add("right");
+          fb.className = "feedback ok"; fb.textContent = "Верно. " + st.e;
+          gainCorrect(subjOf(sel.value), 5);
+          box.append(h("button", { className: "btn", textContent: "Следующий шаг", style: "margin-top:10px",
+            onclick: () => { si++; show(); } }));
+        } else {
+          b.classList.add("wrong");
+          b.disabled = true; resetStreak();
+          fb.className = "feedback bad"; fb.textContent = "Попробуйте ещё раз.";
+        }
+      };
+      box.append(b);
+    });
+    box.append(fb);
+  }
+  sel.onchange = () => { si = 0; show(); };
+  app.append(h("div", { className: "card" }, h("h2", { textContent: "Пошаговый разбор" }),
+    h("p", { className: "muted", textContent: "Выбирайте следующий шаг решения сами. Неверный выбор можно исправить." }),
+    sel, box));
+  show();
+}
+
+// ---------- ГЕЙМИФИКАЦИЯ ----------
+const PROFILE_KEY = "ege-profile";
+const FRIENDS_KEY = "ege-friends";
+const DAILY = [
+  { id: "solved", text: "Решить 3 задачи (викторина или разбор)", need: 3 },
+  { id: "topics", text: "Отметить 2 темы как изученные", need: 2 },
+  { id: "steps", text: "Пройти 1 пошаговый разбор до конца", need: 1 }
+];
+const BADGES = {
+  first: { name: "Первый шаг", desc: "Решите первое задание", test: p => p.solvedTotal >= 1 },
+  first100: { name: "Первые 100 задач", desc: "Решите 100 заданий", test: p => p.solvedTotal >= 100 },
+  master: { name: "Мастер функций", desc: "10 верных ответов по математике", test: p => (p.solvedBy["Математика"] || 0) >= 10 },
+  owl: { name: "Ночной сова", desc: "Занимайтесь между 0:00 и 5:00", test: p => !!p.nightSession },
+  week: { name: "Неделя подряд", desc: "Серия 7 дней", test: p => p.streak >= 7 }
+};
+
+function defaultProfile() {
+  return { name: "Ученик", xp: 0, solvedTotal: 0, solvedBy: {}, streak: 0, lastDay: "",
+           correctRun: 0, badges: [], nightSession: false,
+           daily: { day: "", solved: 0, topics: 0, steps: 0, claimed: false } };
+}
+function loadProfile() {
+  try { return Object.assign(defaultProfile(), JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}")); }
+  catch (e) { return defaultProfile(); }
+}
+let profile = loadProfile();
+function saveProfile() { try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch (e) {} }
+
+function dayStr(offset = 0) {
+  const d = new Date(); d.setDate(d.getDate() + offset);
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+}
+function todayDaily() {
+  return profile.daily.day === dayStr() ? profile.daily
+    : { solved: 0, topics: 0, steps: 0, claimed: false };
+}
+function touchDay() {
+  const t = dayStr();
+  if (profile.daily.day !== t) profile.daily = { day: t, solved: 0, topics: 0, steps: 0, claimed: false };
+  if (profile.lastDay !== t) {
+    profile.streak = profile.lastDay === dayStr(-1) ? profile.streak + 1 : 1;
+    profile.lastDay = t;
+  }
+  if (new Date().getHours() < 5) profile.nightSession = true;
+}
+function toast(msg) {
+  const t = h("div", { className: "toast", textContent: msg });
+  document.body.append(t);
+  setTimeout(() => t.remove(), 2600);
+}
+function checkBadges() {
+  Object.entries(BADGES).forEach(([id, b]) => {
+    if (!profile.badges.includes(id) && b.test(profile)) {
+      profile.badges.push(id);
+      toast("🏅 Новый бейдж: " + b.name);
+    }
+  });
+}
+function checkDaily() {
+  const d = profile.daily;
+  if (!d.claimed && DAILY.every(t => d[t.id] >= t.need)) {
+    d.claimed = true; profile.xp += 30;
+    toast("Ежедневные задания выполнены! +30 XP");
+  }
+}
+function commit() { checkBadges(); checkDaily(); saveProfile(); }
+
+function gain(pts, reason) {
+  touchDay();
+  profile.xp += pts;
+  if (reason === "topic") profile.daily.topics++;
+  commit();
+  toast(`+${pts} XP`);
+}
+function gainCorrect(subject, pts) {
+  touchDay();
+  profile.correctRun++;
+  const bonus = profile.correctRun % 3 === 0 ? 15 : 0;
+  profile.xp += pts + bonus;
+  profile.solvedTotal++;
+  profile.solvedBy[subject] = (profile.solvedBy[subject] || 0) + 1;
+  profile.daily.solved++;
+  bumpWeek();
+  commit();
+  toast(`+${pts + bonus} XP${bonus ? " (бонус за серию из 3!)" : ""}`);
+}
+function resetStreak() { profile.correctRun = 0; saveProfile(); }
+function finishSteps() {
+  touchDay();
+  profile.xp += 20; profile.daily.steps++;
+  commit();
+  toast("+20 XP за разбор");
+}
+function subjOf(name) {
+  return /Уравнение/.test(name) ? "Математика" : /Перевод/.test(name) ? "Информатика" : "Русский язык";
+}
+
+function encodeCode(obj) {
+  return btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(obj))));
+}
+function decodeCode(str) {
+  return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(str.trim()), c => c.charCodeAt(0))));
+}
+function levelOf(xp) { return Math.floor(xp / 100) + 1; }
+
+// --- Вкладка «Прогресс» ---
+function renderProfile() {
+  const into = profile.xp % 100;
+  const fill = h("div", { className: "progress-fill" });
+  fill.style.width = into + "%";
+  const nameInput = h("input", { type: "text", value: profile.name, maxLength: 30 });
+  nameInput.onchange = () => { profile.name = nameInput.value.trim() || "Ученик"; saveProfile(); };
+  const daily = todayDaily();
+
+  const stats = h("div", { className: "muted", textContent:
+    `Уровень ${levelOf(profile.xp)} · ${profile.xp} XP · серия ${profile.streak} дн. · заданий решено: ${profile.solvedTotal}` });
+
+  const dailyBox = h("div", {}, ...DAILY.map(t => {
+    const v = Math.min(daily[t.id] || 0, t.need);
+    return h("div", { className: "topic" + (v >= t.need ? " done" : "") },
+      h("div", { textContent: `${t.text}: ${v} / ${t.need}` }));
+  }));
+
+  const badgeBox = h("div", { className: "grid" }, ...Object.entries(BADGES).map(([id, b]) => {
+    const has = profile.badges.includes(id);
+    return h("div", { className: "cell" + (has ? " matched" : ""),
+      textContent: has ? b.name : b.name + " 🔒", title: b.desc });
+  }));
+
+  const code = encodeCode({ n: profile.name, x: profile.xp, s: profile.streak,
+                            t: profile.solvedTotal, b: profile.badges.length });
+  const codeBox = h("textarea", { readOnly: true, rows: 3, value: code, style: "width:100%" });
+
+  app.append(
+    h("div", { className: "card" },
+      h("h2", { textContent: "Уровень и опыт" }),
+      h("div", { className: "progress-bar" }, fill),
+      stats,
+      h("div", { className: "slider" }, h("span", { textContent: "Имя:" }), nameInput)),
+    h("div", { className: "card" },
+      h("h2", { textContent: "Ежедневные задания" }),
+      h("p", { className: "muted", textContent: "Выполните все три, чтобы получить +30 XP и продлить серию." }),
+      dailyBox),
+    h("div", { className: "card" },
+      h("h2", { textContent: "Достижения" }), badgeBox),
+    h("div", { className: "card" },
+      h("h2", { textContent: "Код для друзей" }),
+      h("p", { className: "muted", textContent: "Скопируйте код и отправьте друзьям. Они добавят его на вкладке «Рейтинг»." }),
+      codeBox),
+    h("div", { className: "card" },
+      h("h2", { textContent: "Резервная копия прогресса" }),
+      h("p", { className: "muted", textContent: "Сохраните файл, чтобы перенести темы, опыт, заметки и результаты на другое устройство. Импорт заменит текущие данные." }),
+      h("button", { className: "btn", textContent: "Скачать резервную копию", onclick: () => {
+        const backup = { version: 1, exportedAt: new Date().toISOString(), done: [...done], profile, chatLog };
+        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob); const a = h("a", { href: url, download: "ege-progress-backup.json" });
+        document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } }),
+      h("div", { style: "margin-top:12px" },
+        h("input", { type: "file", accept: "application/json,.json", id: "backup-file" }),
+        h("button", { className: "btn ghost", textContent: "Восстановить из файла", style: "margin-left:6px", onclick: async () => {
+          const file = document.getElementById("backup-file").files[0];
+          if (!file) return toast("Сначала выберите файл резервной копии");
+          try {
+            const data = JSON.parse(await file.text());
+            if (data.version !== 1 || !Array.isArray(data.done) || !data.profile || typeof data.profile !== "object") throw new Error("bad backup");
+            if (!confirm("Заменить текущий прогресс данными из файла?")) return;
+            done = new Set(data.done.filter(x => typeof x === "string"));
+            profile = Object.assign(defaultProfile(), data.profile);
+            profile.levels = profile.levels || {}; profile.srs = profile.srs || {}; profile.notes = profile.notes || {};
+            profile.scores = profile.scores || []; profile.videos = profile.videos || {}; profile.badges = profile.badges || [];
+            chatLog = Array.isArray(data.chatLog) ? data.chatLog.slice(-100) : [];
+            saveDone(); saveProfile(); saveChat(); applyTheme(); applyAvatar(); renderAll(); toast("Прогресс восстановлен");
+          } catch (e) { toast("Не удалось прочитать резервную копию"); }
+        } })
+      )
+    )
+  );
+}
+
+// --- Вкладка «Рейтинг» ---
+function renderBoard() {
+  let friends = [];
+  try { friends = JSON.parse(localStorage.getItem(FRIENDS_KEY) || "[]"); } catch (e) {}
+  const me = { name: profile.name + " (вы)", xp: profile.xp, streak: profile.streak,
+               solved: profile.solvedTotal, badges: profile.badges.length, me: true };
+  const ta = h("textarea", { rows: 3, placeholder: "Вставьте код друга", style: "width:100%" });
+  const status = h("div", { className: "muted" });
+
+  const rows = [me, ...friends.map((f, i) => ({ ...f, idx: i }))].sort((a, b) => b.xp - a.xp);
+  const table = h("table", {},
+    h("tr", {}, ...["#", "Имя", "Уровень", "XP", "Серия", "Бейджи", ""].map(t => h("th", { textContent: t }))));
+  rows.forEach((r, i) => {
+    const del = r.me ? "" : "Удалить";
+    const delBtn = r.me ? h("td") : h("td", {}, h("button", { className: "btn ghost", textContent: del,
+      onclick: () => {
+        friends.splice(r.idx, 1);
+        localStorage.setItem(FRIENDS_KEY, JSON.stringify(friends));
+        renderAll();
+      } }));
+    table.append(h("tr", { className: r.me ? "me" : "" },
+      h("td", { textContent: i + 1 }), h("td", { textContent: r.name }),
+      h("td", { textContent: levelOf(r.xp) }), h("td", { textContent: r.xp }),
+      h("td", { textContent: r.streak }), h("td", { textContent: r.badges }), delBtn));
+  });
+
+  const addBtn = h("button", { className: "btn", textContent: "Добавить друга", onclick: () => {
+    try {
+      const f = decodeCode(ta.value);
+      if (typeof f.n !== "string" || typeof f.x !== "number") throw new Error();
+      friends.push({ name: f.n.slice(0, 30), xp: f.x, streak: f.s || 0, solved: f.t || 0, badges: f.b || 0 });
+      localStorage.setItem(FRIENDS_KEY, JSON.stringify(friends));
+      renderAll();
+    } catch (e) { status.textContent = "Код не распознан. Проверьте, что скопировали его полностью."; }
+  } });
+
+  app.append(h("div", { className: "card" },
+    h("h2", { textContent: "Рейтинг" }),
+    h("p", { className: "muted", textContent: "Рейтинг хранится на вашем устройстве: друзья добавляются по коду, без регистрации." }),
+    table),
+    h("div", { className: "card" },
+      h("h2", { textContent: "Добавить друга или одноклассника" }),
+      ta, h("div", { style: "margin-top:8px" }, addBtn), status));
+}
+
+// ---------- ПЕРСОНАЛИЗАЦИЯ ----------
+profile.levels = profile.levels || {};
+profile.srs = profile.srs || {};
+profile.avatar = profile.avatar || "🙂";
+profile.theme = profile.theme || "Классика";
+if (profile.testDone === undefined) profile.testDone = false;
+
+const AVATARS = [["🙂", 0], ["🤓", 100], ["🧠", 300], ["🦉", 500], ["🚀", 800], ["🏆", 1200]];
+const THEMES = [["Классика", "#3b6fd8", 0], ["Океан", "#0e7490", 200], ["Закат", "#e0703b", 400],
+                ["Лес", "#2e8b57", 700], ["Ночь", "#7c5cff", 1000]];
+const LEVEL_TEXT = ["Не знаю", "Частично", "Знаю"];
+
+function dayNum() { return Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000); }
+function allTopics() {
+  const out = [];
+  Object.keys(SUBJECTS).forEach(s => SUBJECTS[s].forEach((b, bi) => b.topics.forEach(([t, th], ti) =>
+    out.push({ id: `${s}|${bi}|${ti}`, subj: s, title: t, theory: th }))));
+  return out;
+}
+function applyTheme() {
+  const th = THEMES.find(t => t[0] === profile.theme) || THEMES[0];
+  document.documentElement.style.setProperty("--accent", th[1]);
+}
+function applyAvatar() {
+  document.querySelector("h1").textContent = profile.avatar + " Подготовка к ЕГЭ";
+}
+function questionEl(item, subj) {
+  const box = h("div", { className: "card", style: "margin:8px 0" }, h("p", { textContent: item.q, style: "font-weight:600" }));
+  const fb = h("div", { className: "feedback" });
+  item.o.forEach((text, i) => {
+    const b = h("button", { className: "option", textContent: text });
+    b.onclick = () => {
+      box.querySelectorAll(".option").forEach(x => x.disabled = true);
+      if (i === item.a) { b.classList.add("right"); fb.className = "feedback ok"; fb.textContent = "Верно! " + item.e; gainCorrect(subj, 10); }
+      else {
+        b.classList.add("wrong"); box.querySelectorAll(".option")[item.a].classList.add("right");
+        fb.className = "feedback bad"; fb.textContent = "Неверно. " + item.e; resetStreak();
+      }
+    };
+    box.append(b);
+  });
+  box.append(fb);
+  return box;
+}
+
+// --- Стартовый тест ---
+function renderTest() {
+  const topics = allTopics();
+  const answers = {};
+  const status = h("div", { className: "muted" });
+  const card = h("div", { className: "card" },
+    h("h2", { textContent: "Стартовый тест" }),
+    h("p", { className: "muted", textContent: "Отметьте, насколько уверенно вы знаете каждую тему. По ответам составим слабые места и план." }));
+  let curSubj = "";
+  topics.forEach(t => {
+    if (t.subj !== curSubj) { curSubj = t.subj; card.append(h("h3", { textContent: curSubj, style: "font-size:1rem;margin-top:14px" })); }
+    const btns = h("div", { style: "margin-top:4px" });
+    [0, 1, 2].forEach(lv => {
+      const b = h("button", { className: "btn ghost", textContent: LEVEL_TEXT[lv], style: "margin-right:6px;font-size:0.85rem" });
+      b.onclick = () => {
+        answers[t.id] = lv;
+        btns.querySelectorAll("button").forEach(x => x.style.background = "");
+        b.style.background = "var(--border)";
+      };
+      btns.append(b);
+    });
+    card.append(h("div", { className: "topic" }, h("div", { textContent: t.title }), btns));
+  });
+  card.append(h("button", { className: "btn", textContent: "Построить план", style: "margin-top:14px", onclick: () => {
+    const missing = topics.length - Object.keys(answers).length;
+    if (missing > 0) { status.textContent = `Ответьте ещё на ${missing} тем.`; return; }
+    profile.levels = answers;
+    profile.testDone = true;
+    topics.forEach(t => { profile.srs[t.id] = { ivl: 1, due: dayNum() + (answers[t.id] === 0 ? 0 : answers[t.id] === 1 ? 1 : 3) }; });
+    profile.xp += 20;
+    commit();
+    toast("Тест пройден! +20 XP");
+    currentTab = "plan";
+    renderAll();
+  } }), status);
+  app.append(card);
+}
+
+// --- Мой план: план, повторение, тренировка ---
+function review(id, remembered) {
+  const s = profile.srs[id] || { ivl: 1 };
+  s.ivl = remembered ? Math.min(s.ivl * 2, 30) : 1;
+  s.due = dayNum() + s.ivl;
+  profile.srs[id] = s;
+  if (remembered) gain(5, "review"); else saveProfile();
+  renderAll();
+}
+function renderPlan() {
+  if (!profile.testDone) return renderTest();
+  const topics = allTopics();
+  const weak = topics.filter(t => profile.levels[t.id] !== undefined && profile.levels[t.id] < 2)
+                     .sort((a, b) => profile.levels[a.id] - profile.levels[b.id]);
+  const due = topics.filter(t => profile.srs[t.id] && profile.srs[t.id].due <= dayNum())
+                    .sort((a, b) => profile.levels[a.id] - profile.levels[b.id]);
+
+  const planCard = h("div", { className: "card" }, h("h2", { textContent: "Индивидуальный план на 7 дней" }));
+  if (!weak.length) planCard.append(h("p", { className: "muted", textContent: "Слабых тем нет. Отличная работа!" }));
+  for (let d = 0; d < 7; d++) {
+    const chunk = weak.slice(d * 3, d * 3 + 3);
+    if (!chunk.length) break;
+    planCard.append(h("div", { style: "margin:6px 0" },
+      h("b", { textContent: `День ${d + 1}: ` }), h("span", { textContent: chunk.map(t => t.title).join("; ") })));
+  }
+  planCard.append(h("button", { className: "btn ghost", textContent: "Пройти тест заново", onclick: () => {
+    profile.testDone = false; saveProfile(); renderAll();
+  } }));
+
+  const reviewCard = h("div", { className: "card" },
+    h("h2", { textContent: "Интервальное повторение" }),
+    h("p", { className: "muted", textContent: due.length ? `Сегодня к повторению: ${due.length} тем.` : "Сегодня повторять нечего." }),
+    h("button", { className: "btn ghost", textContent: "Включить напоминания", onclick: async () => {
+      try {
+        const p = await Notification.requestPermission();
+        toast(p === "granted" ? "Напоминания включены" : "Разрешение не выдано");
+      } catch (e) { toast("Браузер не поддерживает уведомления"); }
+    } }));
+  due.forEach(t => reviewCard.append(h("div", { className: "topic" },
+    h("div", { textContent: t.title }),
+    h("details", {}, h("summary", { textContent: "Теория" }), h("div", { className: "theory", textContent: t.theory })),
+    h("div", { style: "margin-top:6px" },
+      h("button", { className: "btn", textContent: "Вспомнил", onclick: () => review(t.id, true) }), " ",
+      h("button", { className: "btn ghost", textContent: "Не вспомнил", onclick: () => review(t.id, false) })))));
+
+  const trainCard = h("div", { className: "card" }, h("h2", { textContent: "Тренировка по слабым местам" }));
+  if (!weak.length) trainCard.append(h("p", { className: "muted", textContent: "Слабых мест нет." }));
+  weak.forEach(t => trainCard.append(h("div", { className: "topic" },
+    h("div", { textContent: `${t.title} (${LEVEL_TEXT[profile.levels[t.id]]})` }),
+    h("div", { className: "theory", textContent: t.theory }))));
+  [...new Set(weak.map(t => t.subj))].forEach(s => {
+    trainCard.append(h("h3", { textContent: s, style: "font-size:1rem;margin-top:12px" }));
+    (QUIZ[s] || []).forEach(item => trainCard.append(questionEl(item, s)));
+  });
+
+  app.append(planCard, reviewCard, trainCard);
+
+  if ("Notification" in window && Notification.permission === "granted" && due.length) {
+    try { new Notification("Пора повторить темы ЕГЭ", { body: `Тем к повторению: ${due.length}` }); } catch (e) {}
+  }
+}
+
+// --- Оформление ---
+function renderCustom() {
+  const avatars = h("div", { className: "grid" }, ...AVATARS.map(([e, need]) => {
+    const ok = profile.xp >= need;
+    return h("div", { className: "cell" + (profile.avatar === e ? " matched" : ""),
+      textContent: ok ? e : `${e} 🔒 ${need} XP`,
+      onclick: () => {
+        if (!ok) return toast(`Откроется при ${need} XP`);
+        profile.avatar = e; saveProfile(); applyAvatar(); renderAll();
+      } });
+  }));
+  const themes = h("div", { className: "grid" }, ...THEMES.map(([name, color, need]) => {
+    const ok = profile.xp >= need;
+    return h("div", { className: "cell" + (profile.theme === name ? " matched" : ""), style: `border-color:${color}`,
+      textContent: ok ? name : `${name} 🔒 ${need} XP`,
+      onclick: () => {
+        if (!ok) return toast(`Откроется при ${need} XP`);
+        profile.theme = name; saveProfile(); applyTheme(); renderAll();
+      } });
+  }));
+  app.append(h("div", { className: "card" }, h("h2", { textContent: "Аватар" }), avatars),
+             h("div", { className: "card" }, h("h2", { textContent: "Тема оформления" }), themes));
+}
+
+// ---------- МОТИВАЦИЯ И СООБЩЕСТВО ----------
+profile.examDate = profile.examDate || "2027-06-01";
+profile.week = profile.week || { start: dayNum(), count: 0 };
+profile.marathon = profile.marathon || null;
+profile.notes = profile.notes || {};
+profile.chatLink = profile.chatLink || "";
+
+const QUOTES = [
+  "Каждая решённая задача — шаг, который уже никто не отнимет.",
+  "Не нужно идеально. Нужно регулярно.",
+  "Сложное сегодня станет простым через месяц практики.",
+  "Ошибка — это тема, которую вы ещё не выучили. Разберём её вместе."
+];
+// Истории написаны как примеры. Замените их реальными рассказами выпускников.
+const STORIES = [
+  "Пример: ученица начала с 40 баллов по математике. Занималась по 20 минут в день и разбирала ошибки из каждого теста.",
+  "Пример: школьник боялся информатики. Каждую субботу он решал одно задание на программирование и вёл тетрадь с типичными ошибками.",
+  "Пример: выпускник не успевал с сочинением. Он писал одно рассуждение в неделю и просил друга проверять структуру."
+];
+const MARATHON_STEPS = [
+  "Прочитайте теорию и выпишите 3 ключевые формулы или правила",
+  "Решите 3 задачи по теме и проверьте ответы",
+  "Решите одну задачу без подсказок",
+  "Разберите ошибки из прошлых дней",
+  "Решите задачу на время: 10 минут",
+  "Сделайте мини-конспект темы",
+  "Объясните тему своими словами и проверьте себя"
+];
+
+function bumpWeek() {
+  if (dayNum() - profile.week.start >= 7) profile.week = { start: dayNum(), count: 0 };
+  profile.week.count++;
+  if (profile.week.count === 27) { profile.xp += 50; toast("Челлендж «27 задач за неделю» выполнен! +50 XP"); }
+}
+
+// --- Мотивация ---
+function renderMotiv() {
+  const days = Math.max(0, Math.ceil((new Date(profile.examDate + "T00:00:00") - Date.now()) / 86400000));
+  const toRu = iso => { const [y, m, d] = iso.split("-"); return `${d}.${m}.${y}`; };
+  const field = h("input", { type: "text", value: toRu(profile.examDate), placeholder: "ДД.ММ.ГГГГ", style: "width:140px" });
+  const saveDate = () => {
+    const m = field.value.trim().match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})$/);
+    if (!m) return toast("Введите дату в формате ДД.ММ.ГГГГ");
+    const d = new Date(+m[3], +m[2] - 1, +m[1]);
+    if (d.getDate() !== +m[1] || d.getMonth() !== +m[2] - 1) return toast("Такой даты не существует");
+    profile.examDate = `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+    saveProfile(); toast("Дата экзамена сохранена"); renderAll();
+  };
+  field.onkeydown = e => { if (e.key === "Enter") saveDate(); };
+  const examInput = h("div", {}, field, " ", h("button", { className: "btn", textContent: "Сохранить", onclick: saveDate }));
+
+  const wkCount = dayNum() - profile.week.start >= 7 ? 0 : profile.week.count;
+  const wkFill = h("div", { className: "progress-fill" });
+  wkFill.style.width = Math.min(100, wkCount / 27 * 100) + "%";
+
+  const topics = allTopics();
+  const mSel = h("select", {}, ...topics.map(t => h("option", { value: t.id, textContent: t.title })));
+  const marBox = h("div", {});
+  if (profile.marathon) {
+    const m = profile.marathon;
+    const topic = topics.find(x => x.id === m.id);
+    const k = m.days.length;
+    marBox.append(h("p", { className: "muted", textContent: `Тема: ${topic ? topic.title : "—"}. Выполнено дней: ${k} из 7` }));
+    if (k < 7) {
+      marBox.append(h("p", { textContent: `День ${k + 1}: ${MARATHON_STEPS[k]}` }),
+        h("button", { className: "btn", textContent: "День выполнен", onclick: () => {
+          profile.marathon.days.push(k + 1);
+          profile.xp += 10;
+          if (profile.marathon.days.length === 7) { profile.xp += 50; toast("Марафон завершён! +50 XP"); }
+          else toast("+10 XP");
+          commit(); renderAll();
+        } }));
+    } else {
+      marBox.append(h("p", { className: "feedback ok", textContent: "Марафон пройден!" }));
+    }
+    marBox.append(h("button", { className: "btn ghost", textContent: "Новый марафон", style: "margin-top:8px", onclick: () => {
+      profile.marathon = null; saveProfile(); renderAll();
+    } }));
+  } else {
+    marBox.append(h("p", { className: "muted", textContent: "Выберите тему и пройдите её за 7 дней: по одному шагу в день." }),
+      mSel,
+      h("div", { style: "margin-top:8px" }, h("button", { className: "btn", textContent: "Начать марафон", onclick: () => {
+        profile.marathon = { id: mSel.value, days: [] }; saveProfile(); renderAll();
+      } })));
+  }
+
+  app.append(
+    h("div", { className: "card", style: "text-align:center" },
+      h("h2", { textContent: "До экзамена" }),
+      h("div", { style: "font-size:2.4rem;font-weight:700;color:var(--accent)", textContent: `${days} дн.` }),
+      h("p", { className: "muted", textContent: "Дата ЕГЭ:" }), examInput,
+      h("p", { style: "margin-top:12px;font-style:italic", textContent: QUOTES[dayNum() % QUOTES.length] })),
+    h("div", { className: "card" }, h("h2", { textContent: "Истории выпускников" }),
+      ...STORIES.map(s => h("div", { className: "topic", textContent: s }))),
+    h("div", { className: "card" }, h("h2", { textContent: "Челлендж «27 задач за неделю»" }),
+      h("div", { className: "progress-bar" }, wkFill),
+      h("div", { className: "muted", textContent: `Решено: ${wkCount} из 27. Награда: +50 XP` })),
+    h("div", { className: "card" }, h("h2", { textContent: "Марафон по одной теме" }), marBox)
+  );
+}
+
+// --- Разборы и чат ---
+function safeWebUrl(value) {
+  try { const u = new URL(value); return ["http:", "https:"].includes(u.protocol) ? u.href : ""; }
+  catch (e) { return ""; }
+}
+function renderNotes() {
+  const topics = allTopics();
+  const sel = h("select", {}, ...topics.map(t => h("option", { value: t.id, textContent: t.title })));
+  const ta = h("textarea", { rows: 5, style: "width:100%", placeholder: "Условие, ход решения, где ошиблись" });
+  ta.value = profile.notes[sel.value] || "";
+  sel.onchange = () => { ta.value = profile.notes[sel.value] || ""; };
+
+  const saved = topics.filter(t => profile.notes[t.id]);
+  const list = h("div", {}, ...saved.map(t => h("details", { style: "margin-top:6px" },
+    h("summary", { textContent: t.title }),
+    h("div", { className: "theory", textContent: profile.notes[t.id] }))));
+
+  const linkInput = h("input", { type: "url", value: profile.chatLink, placeholder: "https://… ссылка на чат группы", style: "width:100%" });
+
+  app.append(
+    h("div", { className: "card" }, h("h2", { textContent: "Мои разборы" }),
+      h("p", { className: "muted", textContent: "Записывайте разбор задач и ошибок. Разборы хранятся на вашем устройстве." }),
+      sel, ta,
+      h("div", { style: "margin-top:8px" },
+        h("button", { className: "btn", textContent: "Сохранить разбор", onclick: () => {
+          profile.notes[sel.value] = ta.value.trim(); saveProfile(); toast("Разбор сохранён"); renderAll();
+        } }), " ",
+        h("button", { className: "btn ghost", textContent: "Скачать все (.txt)", onclick: () => {
+          if (!saved.length) return toast("Разборов пока нет");
+          const text = saved.map(t => `${t.subj} — ${t.title}\n${profile.notes[t.id]}\n`).join("\n");
+          const a = h("a", { href: URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" })), download: "ege-razbory.txt" });
+          document.body.append(a); a.click(); a.remove();
+        } })),
+      list),
+    h("div", { className: "card" }, h("h2", { textContent: "Чат с наставниками и одноклассниками" }),
+      h("p", { className: "muted", textContent: "Сайт не хранит сообщения. Создайте чат в Telegram или VK, вставьте ссылку сюда и отправляйте туда свои разборы." }),
+      linkInput,
+      h("div", { style: "margin-top:8px" },
+        h("button", { className: "btn", textContent: "Сохранить ссылку", onclick: () => {
+          const safe = safeWebUrl(linkInput.value.trim());
+        if (linkInput.value.trim() && !safe) return toast("Укажите корректную ссылку, начинающуюся с https:// или http://");
+        profile.chatLink = safe; saveProfile(); renderAll();
+        } }), " ",
+        profile.chatLink ? h("a", { href: profile.chatLink, target: "_blank", rel: "noopener", className: "btn ghost", textContent: "Открыть чат" }) : "")
+    )
+  );
+}
+
+// ---------- ЧАТ И БОТ-НАСТАВНИК ----------
+const CHAT_KEY = "ege-chat";
+let chatLog = [];
+try { chatLog = JSON.parse(localStorage.getItem(CHAT_KEY) || "[]"); } catch (e) {}
+function saveChat() { try { localStorage.setItem(CHAT_KEY, JSON.stringify(chatLog.slice(-100))); } catch (e) {} }
+
+const ENCOURAGE = [
+  "Усталость — это нормально. Сделайте короткий перерыв и вернитесь к одной задаче.",
+  "Вы уже прошли путь, который многие откладывают. Продолжайте!",
+  "Маленький шаг сегодня лучше идеального плана, который так и не начат.",
+  "Ошибка — это подсказка, какую тему повторить. Значит, вы учитесь."
+];
+const ADVICE = [
+  "Решайте задачи каждый день, даже по одной. Регулярность важнее длинных марафонов.",
+  "Сначала закройте слабые темы из вкладки «Мой план», потом тренируйте скорость.",
+  "Разбирайте каждую ошибку и записывайте её во вкладку «Разборы».",
+  "Чередуйте предметы: математика, информатика и русский лучше работают вместе."
+];
+
+function daysToExam() {
+  return Math.max(0, Math.ceil((new Date(profile.examDate + "T00:00:00") - Date.now()) / 86400000));
+}
+function botReply(msg) {
+  const t = msg.toLowerCase();
+  const dueCount = allTopics().filter(x => profile.srs[x.id] && profile.srs[x.id].due <= dayNum()).length;
+  const pick = arr => arr[dayNum() % arr.length];
+  if (/привет|здрав|добр|hello|hi/.test(t))
+    return "Здравствуйте! Я бот-наставник. Напишите «устал», «прогресс», «план» или «совет», и я отвечу.";
+  if (/устал|не могу|трудно|сложно|надоел|бросить|страшно/.test(t))
+    return pick(ENCOURAGE) + " Предлагаю 15 минут: одна тема или три задачи.";
+  if (/прогресс|статист|сколько|как я|уровень/.test(t))
+    return `Уровень ${levelOf(profile.xp)}, ${profile.xp} XP, серия ${profile.streak} дн., решено заданий: ${profile.solvedTotal}. До экзамена ${daysToExam()} дн.`;
+  if (/план|что делать|сегодня|повтор/.test(t))
+    return dueCount
+      ? `Сегодня к повторению ${dueCount} тем. Начните с вкладки «Мой план».`
+      : "На сегодня повторять нечего. Можно решить несколько задач для тренировки.";
+  if (/совет|как готов|с чего начать|начать/.test(t)) return pick(ADVICE);
+  return "Понял вас. " + pick(ENCOURAGE);
+}
+
+function renderChat() {
+  if (!chatLog.length)
+    chatLog.push({ from: "bot", text: "Привет! Я бот-наставник. Напишите «устал», «прогресс», «план» или «совет»." });
+  const list = h("div", { style: "max-height:420px;overflow-y:auto;padding:8px 0" });
+  const draw = () => {
+    list.innerHTML = "";
+    chatLog.forEach(m => {
+      const mine = m.from === "me";
+      list.append(h("div", { style: `margin:6px 0;text-align:${mine ? "right" : "left"}` },
+        h("span", { style: `display:inline-block;max-width:80%;padding:8px 12px;border-radius:12px;border:1px solid var(--border);` +
+          `background:${mine ? "var(--accent)" : "var(--bg)"};color:${mine ? "#fff" : "var(--text)"}`, textContent: m.text })));
+    });
+    list.scrollTop = list.scrollHeight;
+  };
+  const input = h("input", { type: "text", placeholder: "Напишите сообщение", style: "flex:1" });
+  const send = () => {
+    const text = input.value.trim();
+    if (!text) return;
+    chatLog.push({ from: "me", text });
+    input.value = "";
+    draw(); saveChat();
+    setTimeout(() => { chatLog.push({ from: "bot", text: botReply(text) }); saveChat(); draw(); }, 500);
+  };
+  input.onkeydown = e => { if (e.key === "Enter") send(); };
+  draw();
+  app.append(h("div", { className: "card" },
+    h("h2", { textContent: "Чат с наставником" }),
+    h("p", { className: "muted", textContent: "Бот отвечает сразу и знает ваш прогресс. Живые наставники общаются в группе: ссылка на вкладке «Разборы»." }),
+    list,
+    h("div", { style: "display:flex;gap:8px;margin-top:8px" }, input, h("button", { className: "btn", textContent: "Отправить", onclick: send })),
+    h("button", { className: "btn ghost", textContent: "Очистить чат", style: "margin-top:8px", onclick: () => {
+      chatLog = []; saveChat(); renderAll();
+    } })));
+}
+
+// ---------- ПОЛЕЗНЫЕ ДОПОЛНЕНИЯ ----------
+profile.scores = profile.scores || [];
+profile.videos = profile.videos || {};
+let examTimer = null;
+const pad = n => String(n).padStart(2, "0");
+
+// --- Тренажёр с таймером ---
+function renderExam() {
+  const subjSel = h("select", {}, ...Object.keys(QUIZ).map(s => h("option", { value: s, textContent: s })));
+  const durSel = h("select", {},
+    h("option", { value: 10, textContent: "Демо: 10 минут" }),
+    h("option", { value: 235, textContent: "Профильная математика: 3 ч 55 мин" }),
+    h("option", { value: 210, textContent: "Русский язык или информатика: 3 ч 30 мин" }));
+  const area = h("div", {});
+
+  const start = () => {
+    const subj = subjSel.value, items = QUIZ[subj], mins = +durSel.value;
+    const ans = {};
+    let finished = false;
+    const endAt = Date.now() + mins * 60000;
+    area.innerHTML = "";
+    const clock = h("div", { className: "result", style: "font-size:1.3rem;font-weight:700" });
+    area.append(clock);
+
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      clearInterval(examTimer); examTimer = null;
+      const ok = items.filter((it, i) => ans[i] === it.a).length;
+      const pct = Math.round(ok / items.length * 100);
+      profile.scores.push({ d: dayStr(), subj, pct });
+      saveProfile();
+      area.innerHTML = "";
+      area.append(h("div", { className: "feedback ok", textContent: `Результат: ${ok} из ${items.length} (${pct}%)` }));
+      items.forEach((it, i) => {
+        const right = ans[i] === it.a;
+        area.append(h("div", { className: "topic" },
+          h("div", { className: right ? "feedback ok" : "feedback bad", textContent: `${right ? "Верно" : "Неверно"}: ${it.q}` }),
+          h("div", { className: "muted", textContent: it.e })));
+      });
+      area.append(h("button", { className: "btn", textContent: "Пройти ещё раз", style: "margin-top:10px", onclick: () => renderAll() }));
+    };
+
+    items.forEach((it, i) => {
+      const box = h("div", { className: "topic" }, h("p", { textContent: `${i + 1}. ${it.q}`, style: "font-weight:600" }));
+      it.o.forEach((text, j) => {
+        const b = h("button", { className: "option", textContent: text });
+        b.onclick = () => {
+          ans[i] = j;
+          box.querySelectorAll(".option").forEach(x => x.style.background = "");
+          b.style.background = "var(--border)";
+        };
+        box.append(b);
+      });
+      area.append(box);
+    });
+    area.append(h("button", { className: "btn", textContent: "Завершить и проверить", style: "margin-top:12px", onclick: finish }));
+
+    const tick = () => {
+      const left = Math.max(0, endAt - Date.now());
+      const s = Math.floor(left / 1000);
+      clock.textContent = `Осталось: ${pad(Math.floor(s / 3600))}:${pad(Math.floor(s % 3600 / 60))}:${pad(s % 60)}`;
+      if (left <= 0) finish();
+    };
+    clearInterval(examTimer);
+    examTimer = setInterval(tick, 1000);
+    tick();
+  };
+
+  app.append(h("div", { className: "card" },
+    h("h2", { textContent: "Тренажёр в формате экзамена" }),
+    h("p", { className: "muted", textContent: "Все вопросы на одном экране, без подсказок. Ответы проверяются в конце. Длительность проверьте на fipi.ru. Если уйти с вкладки, таймер остановится." }),
+    h("div", { className: "slider" }, subjSel, durSel),
+    h("button", { className: "btn", textContent: "Начать", onclick: start }),
+    area));
+}
+
+// --- Банк ошибок и объяснения ---
+const MISTAKES = [
+  { subj: "Математика", title: "Потеря минуса при раскрытии скобок",
+    why: "Торопятся и держат выражение в голове, не записывая промежуточные шаги.",
+    rule: "Перед скобкой со знаком минус меняйте знак каждого слагаемого внутри, записывая это по шагам." },
+  { subj: "Математика", title: "Не проверен отбор корней",
+    why: "Ответ кажется готовым, и проверку пропускают.",
+    rule: "После решения сверяйте корни с ОДЗ и условием задачи. Посторонние корни отбрасывайте." },
+  { subj: "Математика", title: "Производная сложной функции без множителя",
+    why: "Берут производную внешней функции и забывают умножить на производную внутренней.",
+    rule: "(f(g(x)))′ = f′(g(x))·g′(x). Всегда спрашивайте себя: есть ли внутри что-то, кроме x?" },
+  { subj: "Информатика", title: "Разряды отсчитываются с единицы",
+    why: "Привычка считать позиции от первой цифры, а не от нулевой.",
+    rule: "Самый правый разряд имеет номер 0. Значение цифры: цифра · основание^номер." },
+  { subj: "Информатика", title: "Путаница бит и символов",
+    why: "Слова «объём» и «количество» воспринимают как одно и то же.",
+    rule: "Объём в битах = число символов · бит на символ. Бит на символ берём из N = 2^i." },
+  { subj: "Информатика", title: "Маска сети подобрана без побитового И",
+    why: "Пытаются сразу сложить или вычесть числа, а не работать с двоичной записью.",
+    rule: "Адрес сети = IP И маска побитово. Переводите каждый октет в двоичную запись." },
+  { subj: "Русский язык", title: "НЕ с причастием и прилагательным",
+    why: "Не различают, есть ли у слова зависимые слова или противопоставление.",
+    rule: "Если есть «не, а», или слово с зависимыми словами, пишем раздельно. Без этого часто слитно." },
+  { subj: "Русский язык", title: "Пропущена запятая при деепричастном обороте",
+    why: "Не видят деепричастие, потому что оно похоже на наречие.",
+    rule: "Спросите «что делая?» или «сделав что?». Если отвечает оборот, его выделяют запятыми." },
+  { subj: "Русский язык", title: "Паронимы в сочинении",
+    why: "Слова похожи по звучанию, поэтому их путают в спешке.",
+    rule: "Если сомневаетесь, проверьте значение по словарю и замените на простое слово с точным смыслом." }
+];
+const EXPLAIN = [
+  ["prob", "Сложные вероятности",
+    "Главная ошибка: складывать вероятности там, где нужно умножать. Сначала поймите, связаны ли события. Для независимых событий вероятность их одновременного наступления равна произведению вероятностей."],
+  ["deriv", "Производная сложной функции",
+    "Если внутри функции стоит выражение, например 3x − 1, его производная умножается на внешнюю. Для (3x − 1)² получаем 2(3x − 1)·3."],
+  ["param", "Графики и параметр",
+    "Сначала нарисуйте график без параметра. Потом смотрите, при каких значениях параметра прямая или кривая пересекает его нужное число раз."],
+  ["logic", "Логические выражения",
+    "Импликация A → B ложна только при A = 1 и B = 0. Упрощайте выражение по законам, а потом проверяйте таблицей истинности."]
+];
+
+function renderMistakes() {
+  const card = h("div", { className: "card" }, h("h2", { textContent: "Типичные ошибки" }));
+  MISTAKES.forEach(m => card.append(h("div", { className: "topic" },
+    h("div", { className: "muted", textContent: m.subj }),
+    h("div", { style: "font-weight:600", textContent: m.title }),
+    h("div", { textContent: "Почему это случается: " + m.why }),
+    h("div", { className: "theory", textContent: "Как не ошибаться: " + m.rule }))));
+  app.append(card);
+
+  const vcard = h("div", { className: "card" }, h("h2", { textContent: "Сложные темы: объяснения и видео" }),
+    h("p", { className: "muted", textContent: "Вставьте ссылку на своё видео или разбор. Сайт сам видео не подбирает." }));
+  EXPLAIN.forEach(([key, title, text]) => {
+    const link = h("input", { type: "url", value: profile.videos[key] || "", placeholder: "https://… ссылка на видео (необязательно)", style: "width:100%" });
+    link.onchange = () => {
+      const safe = safeWebUrl(link.value.trim());
+      if (link.value.trim() && !safe) return toast("Ссылка должна начинаться с https:// или http://");
+      profile.videos[key] = safe; saveProfile(); renderAll();
+    };
+    vcard.append(h("div", { className: "topic" },
+      h("div", { style: "font-weight:600", textContent: title }),
+      h("div", { className: "theory", textContent: text }),
+      link,
+      profile.videos[key] ? h("a", { href: profile.videos[key], target: "_blank", rel: "noopener", className: "btn ghost",
+        style: "display:inline-block;margin-top:6px", textContent: "Открыть видео" }) : ""));
+  });
+  app.append(vcard);
+}
+
+// --- Дашборд роста результатов ---
+function renderDash() {
+  const colors = { "Математика": "#3b6fd8", "Информатика": "#2e9d6a", "Русский язык": "#e0703b" };
+  const W = 600, H = 220, P = 30;
+  const scores = profile.scores;
+  let lines = "";
+  Object.keys(colors).forEach(s => {
+    const arr = scores.filter(x => x.subj === s);
+    if (!arr.length) return;
+    const n = arr.length;
+    const xy = arr.map((x, i) => {
+      const px = n === 1 ? W / 2 : P + i * (W - 2 * P) / (n - 1);
+      const py = H - P - x.pct / 100 * (H - 2 * P);
+      return [px, py];
+    });
+    lines += `<polyline points="${xy.map(p => p.join(",")).join(" ")}" fill="none" stroke="${colors[s]}" stroke-width="2.5"/>`;
+    xy.forEach(p => lines += `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${colors[s]}"/>`);
+  });
+  const chart = h("div", {});
+  chart.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:600px;background:var(--bg);border-radius:8px">
+    <line x1="${P}" y1="${H - P}" x2="${W - P}" y2="${H - P}" stroke="#8a93a6"/>
+    <line x1="${P}" y1="${P}" x2="${P}" y2="${H - P}" stroke="#8a93a6"/>
+    <text x="2" y="${P + 4}" font-size="11" fill="#8a93a6">100</text>
+    <text x="2" y="${H - P}" font-size="11" fill="#8a93a6">0</text>${lines}</svg>`;
+
+  const legend = h("div", { className: "muted" }, ...Object.keys(colors).map(s =>
+    h("span", { style: `color:${colors[s]};margin-right:14px`, textContent: "● " + s })));
+
+  const stats = h("div", {}, ...Object.keys(colors).map(s => {
+    const arr = scores.filter(x => x.subj === s);
+    if (!arr.length) return h("div", { className: "topic muted", textContent: `${s}: результатов пока нет` });
+    const avg = Math.round(arr.reduce((a, x) => a + x.pct, 0) / arr.length);
+    const last = arr[arr.length - 1].pct;
+    return h("div", { className: "topic", textContent: `${s}: попыток ${arr.length}, среднее ${avg}, последнее ${last}` });
+  }));
+
+  const manualSubj = h("select", {}, ...Object.keys(colors).map(s => h("option", { value: s, textContent: s })));
+  const manualVal = h("input", { type: "number", min: 0, max: 100, value: 70, style: "width:90px" });
+  const status = h("div", { className: "muted" });
+
+  app.append(
+    h("div", { className: "card" }, h("h2", { textContent: "Рост результатов" }),
+      h("p", { className: "muted", textContent: "Здесь видны результаты тренажёра (в процентах) и пробников, которые вы введёте сами (по вашей шкале 0–100)." }),
+      chart, legend, stats),
+    h("div", { className: "card" }, h("h2", { textContent: "Добавить результат пробника" }),
+      h("div", { className: "slider" }, manualSubj, manualVal),
+      h("button", { className: "btn", textContent: "Добавить", onclick: () => {
+        const v = +manualVal.value;
+        if (!(v >= 0 && v <= 100)) { status.textContent = "Введите число от 0 до 100."; return; }
+        profile.scores.push({ d: dayStr(), subj: manualSubj.value, pct: v, manual: true });
+        saveProfile(); renderAll();
+      } }), status));
+}
+
+applyTheme();
+applyAvatar();
+if (!profile.testDone) currentTab = "plan";
+renderAll();
+</script>
+</body>
+</html>
