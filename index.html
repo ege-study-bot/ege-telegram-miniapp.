@@ -1,0 +1,1263 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eee8ff">
+<title>Математика ЕГЭ — учись и тренируйся</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#f7f4ff;--card:#fff;--ink:#30284a;--muted:#756d8d;--purple:#8062d8;--purple2:#a58be9;--line:#e9e2fa;--green:#25845c;--red:#c34d69}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#eee8ff 0,#f8f6ff 260px,#f7f4ff 100%);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:760px;margin:auto;padding:16px 14px 40px}.hero{background:linear-gradient(135deg,#795bd0,#aa91eb);color:white;border-radius:26px;padding:23px 20px;box-shadow:0 12px 30px #8062d833;position:relative;overflow:hidden}.hero:after{content:"∑  π  √";position:absolute;right:12px;bottom:-8px;font-size:48px;opacity:.18;font-weight:800}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.85}.hero h1{font-size:27px;line-height:1.15;margin:8px 0}.hero p{margin:0;max-width:490px;opacity:.93}.stats{display:flex;gap:9px;margin-top:17px;flex-wrap:wrap}.stat{background:#ffffff24;border:1px solid #ffffff38;border-radius:13px;padding:7px 11px;font-size:13px}
+nav{display:flex;gap:8px;margin:16px 0;overflow:auto;padding-bottom:3px}nav button{border:1px solid var(--line);background:#fff;color:var(--muted);padding:10px 14px;border-radius:14px;font-weight:700;white-space:nowrap}nav button.active{background:var(--purple);border-color:var(--purple);color:#fff}
+.panel{display:none}.panel.active{display:block}.section-title{font-size:21px;margin:19px 2px 11px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.topic{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:15px;text-align:left;color:var(--ink);box-shadow:0 5px 18px #44306a0a}.topic .emoji{font-size:25px}.topic strong{display:block;margin:7px 0 2px}.topic small{color:var(--muted)}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:17px;margin:11px 0;box-shadow:0 5px 18px #44306a08}.tag{display:inline-block;background:#f0eaff;color:#6e51c4;padding:4px 9px;border-radius:99px;font-size:12px;font-weight:700}.topic-detail h2{margin:9px 0}.topic-detail h3{margin:19px 0 6px;font-size:17px}.topic-detail p{margin:7px 0}.formula{background:#f5f0ff;border-left:4px solid var(--purple2);padding:11px 13px;border-radius:10px;margin:9px 0;font-weight:650}.example{background:#f8f7fb;padding:12px;border-radius:12px;margin:9px 0}.btn{border:0;background:var(--purple);color:#fff;padding:12px 16px;border-radius:13px;font-weight:750;font-size:15px;cursor:pointer}.btn.secondary{background:#f0eaff;color:#6549b7}.btn:disabled{opacity:.5}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.question{font-size:20px;font-weight:750;margin:13px 0}.answer{width:100%;padding:13px;border:1.5px solid var(--line);border-radius:12px;font-size:17px;color:var(--ink);outline-color:var(--purple)}.feedback{padding:12px;border-radius:12px;margin-top:10px}.good{background:#e9f7ef;color:#206746}.bad{background:#fff0f2;color:#9e3852}.progress{height:9px;background:#eee9f7;border-radius:99px;overflow:hidden;margin:12px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,#8062d8,#b39bea);width:0}.list{padding-left:20px}.list li{margin:6px 0}.foot{font-size:12px;color:var(--muted);text-align:center;margin:25px 0}
+@media(max-width:430px){.grid{grid-template-columns:1fr 1fr}.topic{padding:12px}.hero h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+<div class="eyebrow">Твой помощник в подготовке</div>
+<h1>Математика ЕГЭ 💜</h1>
+<p>Понятная теория, разобранные примеры и тренировки с новыми вариантами заданий.</p>
+<div class="stats"><span class="stat">⭐ Опыт: <b id="xp">0</b></span><span class="stat">✓ Решено: <b id="solved">0</b></span><span class="stat">Уникальных заданий: <b id="unique">0</b></span></div>
+</header>
+<nav>
+<button class="active" data-tab="topics">📚 Темы</button><button data-tab="practice">✏️ Тренажёр</button><button data-tab="progress">🏆 Прогресс</button>
+</nav>
+<section id="topics" class="panel active">
+<h2 class="section-title">Выбери тему</h2><p class="muted">Внутри каждой темы — теория, формулы, примеры и алгоритмы решения.</p>
+<div class="card"><b>Расширенный конспект по основным разделам</b><p class="muted">В каждой теме собраны определения, свойства, формулы, методы решения и типичные ошибки. Это подробная база для повторения, но она не заменяет сверку с актуальным кодификатором и демоверсией ФИПИ.</p></div><div class="grid" id="topicGrid"></div>
+<div id="topicDetail"></div>
+</section>
+<section id="practice" class="panel">
+<h2 class="section-title">Тренажёр заданий</h2>
+<p class="muted">Каждый пример создаётся из случайных параметров. Уже показанные задания записываются на этом устройстве и повторно не выдаются.</p>
+<div class="card">
+<div class="row"><span class="tag" id="qCategory">Готов к тренировке</span><span class="muted" id="qCount">10 заданий в раунде</span></div>
+<div class="progress"><span id="bar"></span></div>
+<div id="quizArea"><p>Нажми «Начать тренировку». В каждом раунде будут новые примеры из разных разделов.</p><button class="btn" id="start">Начать тренировку</button></div>
+</div>
+<div class="row"><button class="btn secondary" id="resetStats">Сбросить прогресс и историю</button></div>
+<p class="muted" style="font-size:12px">История хранится в памяти браузера этого устройства. Если очистить данные сайта или открыть приложение на другом устройстве, история не перенесётся.</p>
+</section>
+<section id="progress" class="panel">
+<h2 class="section-title">Твой прогресс</h2>
+<div class="card"><h3>Статистика</h3><p>⭐ Опыт: <b id="xp2">0</b></p><p>✓ Решено заданий: <b id="solved2">0</b></p><p>📚 Уникальных заданий показано: <b id="unique2">0</b></p><p>🎯 Правильных ответов: <b id="right2">0</b></p></div>
+</section>
+<div class="foot">Сделано для спокойной и уверенной подготовки к ЕГЭ 💜</div>
+</div>
+<script>
+const tg=window.Telegram?.WebApp;if(tg){tg.ready();tg.expand()}
+const topics=[
+{ id:"percent",emoji:"💯",name:"Проценты и числа",level:"База и практика",intro:"Процент — это одна сотая часть величины. Чтобы уверенно решать задачи, важно переводить проценты в десятичные дроби и понимать, от какой величины они считаются.",sections:[
+["1. Что такое процент","1% = 1/100 = 0,01. Поэтому p% = p/100. Например, 18% = 0,18, а 125% = 1,25."],
+["2. Найти процент от числа","Чтобы найти p% от числа a, умножь a на p/100. Пример: 15% от 240 = 240 × 0,15 = 36."],
+["3. Найти число по его проценту","Если p% числа равны b, то всё число равно b ÷ (p/100). Пример: 30% равны 45. Тогда число: 45 ÷ 0,3 = 150."],
+["4. Увеличение и уменьшение","Увеличить на p% — умножить на (1+p/100). Уменьшить на p% — умножить на (1−p/100). Пример: цена 800 ₽ выросла на 10%: 800 × 1,1 = 880 ₽."],
+["5. Последовательные изменения","Изменения на разные проценты выполняются умножением коэффициентов, а не сложением процентов. Рост на 20%, затем снижение на 20%: 1,2 × 0,8 = 0,96 — итог на 4% меньше начального."],
+["6. Отношения и пропорции","Если a/b = c/d, то ad = bc. В задачах на доли сначала определи целое, затем вырази нужную часть через дробь или процент."]],formulas:["p% = p/100","p% от a = a · p/100","Если p% = b, то a = b · 100/p","Рост: a · (1+p/100); снижение: a · (1−p/100)"],example:"В магазине товар стоил 1500 ₽. Сначала цену снизили на 20%. Новая цена: 1500 × 0,8 = 1200 ₽. Затем цену повысили на 10%: 1200 × 1,1 = 1320 ₽.",algorithm:["Определи исходную величину.","Переведи процент в десятичную дробь.","Выбери действие: умножение или деление.","Для нескольких изменений применяй коэффициенты по очереди.","Проверь, от какой величины взят процент."],mistakes:"Нельзя считать два последовательных изменения от первоначальной цены, если условие говорит, что второе изменение происходит от новой цены."},
+{ id:"equations",emoji:"🧮",name:"Уравнения",level:"Линейные и квадратные",intro:"Уравнение — равенство с неизвестным. Решить его — значит найти все значения переменной, при которых равенство верно.",sections:[
+["1. Линейное уравнение","Вид ax+b=c. Перенеси свободное слагаемое: ax=c−b, затем раздели на a (если a≠0). Пример: 3x+5=17 → 3x=12 → x=4."],
+["2. Раскрытие скобок","Используй распределительный закон: a(b+c)=ab+ac. Если перед скобками минус, знаки всех слагаемых внутри меняются."],
+["3. Квадратное уравнение","Вид ax²+bx+c=0, где a≠0. Дискриминант D=b²−4ac. При D>0 два корня, D=0 один корень, D<0 действительных корней нет."],
+["4. Формула корней","x₁,₂=(-b±√D)/(2a). После вычисления дискриминанта аккуратно подставь коэффициенты с их знаками."],
+["5. Неполные квадратные","ax²+bx=0 → x(ax+b)=0. Уравнение ax²+c=0 решай как x²=−c/a, учитывая знак правой части."],
+["6. Проверка","Подставь найденный корень в исходное уравнение. При преобразованиях с умножением на выражение, содержащее x, проверка особенно важна."]],formulas:["ax+b=c ⇒ x=(c−b)/a","D=b²−4ac","x₁,₂=(-b±√D)/(2a)","x₁+x₂=−b/a; x₁x₂=c/a"],example:"Решим x²−5x+6=0. D=25−24=1. x₁=(5−1)/2=2, x₂=(5+1)/2=3. Проверка: 2²−10+6=0.",algorithm:["Приведи уравнение к стандартному виду.","Раскрой скобки и приведи подобные слагаемые.","Определи тип уравнения.","Выбери подходящий способ решения.","Проверь корни подстановкой."],mistakes:"Следи за знаками b и c. В формуле дискриминанта коэффициент b возводится в квадрат, поэтому его знак не сохраняется."},
+{ id:"geometry",emoji:"📐",name:"Планиметрия",level:"Фигуры на плоскости",intro:"Планиметрия изучает фигуры на плоскости. На экзамене важно знать свойства треугольников, четырёхугольников, окружностей, а также формулы площадей.",sections:[
+["1. Треугольник","Сумма углов треугольника равна 180°. Площадь S=ah/2. Для прямоугольного треугольника гипотенуза c и катеты a,b связаны: a²+b²=c²."],
+["2. Подобие треугольников","У подобных треугольников соответствующие углы равны, а стороны пропорциональны. Если коэффициент подобия k, то периметры относятся как k, площади — как k²."],
+["3. Четырёхугольники","Параллелограмм: S=ah. Прямоугольник: S=ab. Ромб: S=ah или S=d₁d₂/2. Трапеция: S=(a+b)h/2."],
+["4. Окружность и круг","Длина окружности C=2πR. Площадь круга S=πR². Диаметр d=2R. Вписанный угол равен половине центрального угла, опирающегося на ту же дугу."],
+["5. Углы и касательные","Радиус, проведённый в точку касания, перпендикулярен касательной. Угол между касательной и хордой равен вписанному углу, опирающемуся на соответствующую дугу."],
+["6. Теорема синусов и косинусов","a/sin A=b/sin B=c/sin C=2R. Теорема косинусов: c²=a²+b²−2ab cos C. Используй их, когда известны стороны и углы."]],formulas:["S треугольника = ah/2","a²+b²=c²","S трапеции=(a+b)h/2","C=2πR; S круга=πR²","c²=a²+b²−2ab cos C"],example:"Прямоугольный треугольник имеет катеты 6 и 8. Гипотенуза: √(6²+8²)=√100=10. Площадь: 6×8/2=24.",algorithm:["Сделай чертёж и подпиши известные величины.","Определи тип фигуры и нужное свойство.","Выбери формулу, подходящую к данным.","Подставь значения и вычисли.","Проверь единицы измерения и разумность ответа."],mistakes:"Не путай радиус и диаметр. При подобии площадей коэффициент нужно возводить в квадрат."},
+{ id:"stereo",emoji:"🧊",name:"Стереометрия",level:"Объём и площадь тел",intro:"Стереометрия изучает пространственные тела. Полезно представлять фигуру в объёме и отдельно отмечать основание, высоту, боковые рёбра и диагонали.",sections:[
+["1. Призма","Объём призмы V=Sосн·h. Боковая поверхность прямой призмы равна периметру основания, умноженному на высоту: Sбок=Pосн·h."],
+["2. Пирамида","Объём пирамиды V=(1/3)Sосн·h. Высота — перпендикуляр от вершины к плоскости основания, она не всегда совпадает с боковым ребром."],
+["3. Цилиндр","V=πR²h. Боковая поверхность Sбок=2πRh, полная поверхность Sполн=2πR(R+h)."],
+["4. Конус","V=(1/3)πR²h. Образующая l, радиус R и высота h образуют прямоугольный треугольник: l²=R²+h²."],
+["5. Шар","V=(4/3)πR³. Площадь сферы S=4πR². Диаметр равен двум радиусам."],
+["6. Пространственные диагонали","В прямоугольном параллелепипеде d²=a²+b²+c². Часто помогает провести диагональ основания, а затем применить теорему Пифагора ещё раз."]],formulas:["Призма: V=Sосн·h","Пирамида: V=Sосн·h/3","Цилиндр: V=πR²h","Конус: V=πR²h/3","Шар: V=4πR³/3; S=4πR²"],example:"У цилиндра радиус 3, высота 5. Объём V=π·3²·5=45π.",algorithm:["Определи тело и нарисуй схему.","Найди площадь основания.","Найди перпендикулярную высоту.","Подставь данные в формулу объёма или площади.","Не забудь: объём измеряется в кубических единицах."],mistakes:"Высота тела — это перпендикуляр между основаниями, а не наклонное боковое ребро."},
+{ id:"probability",emoji:"🎲",name:"Вероятность",level:"События и подсчёт",intro:"Вероятность показывает, насколько возможно наступление события. В классической модели все элементарные исходы равновозможны.",sections:[
+["1. Классическая вероятность","Если всего n равновозможных исходов и m из них благоприятны событию A, то P(A)=m/n. Вероятность находится от 0 до 1."],
+["2. Противоположное событие","P(не A)=1−P(A). Иногда проще посчитать вероятность того, что событие не произойдёт, и вычесть её из единицы."],
+["3. Сложение вероятностей","Для несовместных событий: P(A или B)=P(A)+P(B). Если события могут произойти одновременно, нужно вычесть вероятность пересечения."],
+["4. Умножение вероятностей","Для независимых событий: P(A и B)=P(A)·P(B). Например, вероятность двух независимых успехов по 1/2 равна 1/4."],
+["5. Хотя бы одно событие","Удобно использовать дополнение: P(хотя бы одно)=1−P(ни одного). Для нескольких независимых испытаний это часто самый короткий путь."],
+["6. Подсчёт исходов","Перечисли исходы или используй правило умножения: если первый выбор можно сделать m способами, второй — n способами, всего m·n пар."]],formulas:["P(A)=m/n","P(не A)=1−P(A)","P(A∪B)=P(A)+P(B) для несовместных событий","P(A∩B)=P(A)·P(B) для независимых событий"],example:"В коробке 3 красных и 2 синих шара. Вероятность достать красный шар: 3/(3+2)=3/5=0,6.",algorithm:["Определи все возможные исходы.","Проверь, равновозможны ли они.","Посчитай благоприятные исходы.","Запиши отношение или используй правило сложения/умножения.","Проверь, что ответ от 0 до 1."],mistakes:"Складывать вероятности можно напрямую только для несовместных событий. Умножать — для независимых событий."},
+{ id:"functions",emoji:"📈",name:"Функции и графики",level:"Зависимости и свойства",intro:"Функция каждому допустимому значению x ставит в соответствие ровно одно значение y. График помогает увидеть поведение функции.",sections:[
+["1. Область определения","Область определения — все x, при которых выражение имеет смысл. Знаменатель не равен нулю; подкоренное выражение чётного корня неотрицательно; аргумент логарифма положителен."],
+["2. Линейная функция","y=kx+b — прямая. k задаёт наклон: при k>0 функция возрастает, при k<0 убывает. b — точка пересечения с осью y."],
+["3. Квадратичная функция","y=ax²+bx+c — парабола. Если a>0, ветви вверх; если a<0, вниз. Абсцисса вершины x₀=−b/(2a)."],
+["4. Нули функции","Нули — значения x, при которых f(x)=0. На графике это точки пересечения с осью Ox."],
+["5. Возрастание и убывание","На промежутке функция возрастает, если при увеличении x значения f(x) увеличиваются. Для параболы направление меняется в вершине."],
+["6. Чтение графика","Сначала внимательно посмотри на подписи осей и масштаб. Значение f(a) считывается как y при x=a; решение f(x)=c — пересечения графика с горизонтальной прямой y=c."]],formulas:["y=kx+b","x вершины параболы: −b/(2a)","D=b²−4ac для нулей квадратной функции","f(a) — значение функции при x=a"],example:"Для y=2x−3 значение при x=4: y=2·4−3=5. Нуль: 2x−3=0, значит x=1,5.",algorithm:["Определи тип функции и её область определения.","Для заданного x подставь его в формулу.","Для нулей приравняй функцию к нулю.","Для графика проверь масштаб и координаты.","Запиши ответ в требуемом формате."],mistakes:"Не путай аргумент x и значение функции y. Точка (2;5) означает f(2)=5, а не f(5)=2."},
+{ id:"powers",emoji:"🔢",name:"Степени и корни",level:"Преобразование выражений",intro:"Свойства степеней позволяют упрощать выражения и вычислять значения без громоздких действий. Важно следить за основаниями и знаками.",sections:[
+["1. Умножение степеней","При одинаковом основании показатели складываются: aᵐ·aⁿ=aᵐ⁺ⁿ."],
+["2. Деление степеней","При одинаковом ненулевом основании показатели вычитаются: aᵐ/aⁿ=aᵐ⁻ⁿ."],
+["3. Степень степени","(aᵐ)ⁿ=aᵐⁿ. Степень произведения: (ab)ⁿ=aⁿbⁿ."],
+["4. Нулевая и отрицательная степень","a⁰=1 при a≠0. a⁻ⁿ=1/aⁿ. Нельзя делить на ноль."],
+["5. Квадратный корень","√(a²)=|a|. Для a≥0: √(ab)=√a·√b. Нельзя без условий выносить выражения из-под корня, забывая модуль."],
+["6. Дробная степень","a^(1/n)=ⁿ√a. Для положительного a: a^(m/n)=ⁿ√(aᵐ). Для чётного корня подкоренное выражение должно быть неотрицательным."]],formulas:["aᵐ·aⁿ=aᵐ⁺ⁿ","aᵐ/aⁿ=aᵐ⁻ⁿ","(aᵐ)ⁿ=aᵐⁿ","a⁻ⁿ=1/aⁿ","√(a²)=|a|"],example:"2³·2²=2⁵=32. А 3⁴/3²=3²=9.",algorithm:["Определи, одинаковые ли основания.","Примени подходящее свойство степеней.","Сократи или преобразуй корни.","Проверь ограничения на основание и знаменатель.","Вычисли итоговое значение."],mistakes:"При сложении степеней показатели не складываются: a²+a³ нельзя превращать в a⁵. Складываются показатели только при умножении одинаковых оснований."}
+];
+
+// Дополнительные главы расширенной теории для всех разделов.
+const extraTheory = {
+percent:[
+["7. Доли и перевод дробей в проценты","Чтобы перевести дробь в проценты, умножь её на 100%. Например, 3/4=0,75=75%. Чтобы получить дробь из процентов, раздели число процентов на 100 и сократи."],
+["8. На сколько процентов одно число больше другого","Вычисли (новое−старое)/старое·100%. В знаменателе всегда исходная величина. Если результат отрицательный, величина уменьшилась."],
+["9. Процентное отношение","Чтобы узнать, сколько процентов a составляет от b, вычисли a/b·100%, где b≠0. Например, 18 от 60 составляет 30%."],
+["10. Среднее арифметическое и средняя скорость","Среднее арифметическое — сумма значений, делённая на их количество. Средняя скорость на всём пути — весь путь, делённый на всё время; скорости на разных участках нельзя просто усреднять, если время различается."],
+["11. Сложные проценты","Если величина каждый период растёт на p%, то после n периодов A=A₀(1+p/100)ⁿ. При снижении используй A=A₀(1−p/100)ⁿ. Каждый следующий процент считается от текущей величины."],
+["12. Составление уравнения по условию","Обозначь неизвестную буквой, вырази остальные величины через неё, составь равенство по смыслу условия. После решения проверь ограничения и единицы измерения."]
+],
+equations:[
+["7. Равносильные преобразования","К обеим частям можно прибавить одно и то же выражение или умножить их на одно и то же ненулевое число. При умножении на выражение с неизвестной могут появиться посторонние корни — нужна проверка."],
+["8. Дробно-рациональные уравнения","Сначала выпиши ОДЗ: знаменатели не равны нулю. Затем умножь обе части на общий знаменатель, реши полученное уравнение и исключи запрещённые значения."],
+["9. Уравнения с модулем","|x|=a не имеет решений при a<0; при a=0 x=0; при a>0 x=±a. Для |f(x)|=g(x) сначала требуется g(x)≥0, затем решаются два случая: f(x)=g(x) и f(x)=−g(x)."],
+["10. Замена переменной","Если повторяется выражение, например x², обозначь его t. Реши уравнение относительно t, затем вернись к исходной переменной и найди все допустимые значения."],
+["11. Системы уравнений","Методы: подстановка, сложение, графический. При подстановке вырази одну переменную и подставь во второе уравнение. При сложении сделай коэффициенты одной переменной противоположными."],
+["12. Теорема Виета","Для ax²+bx+c=0 сумма корней равна −b/a, произведение — c/a. Для x²+px+q=0: сумма равна −p, произведение — q. Используй для подбора и проверки корней."],
+["13. Неравенства","При умножении или делении на отрицательное число знак неравенства меняется. Для квадратного неравенства найди корни, отметь их на прямой и определи знак на каждом промежутке."],
+["14. Метод интервалов","Разложи выражение на множители, отметь нули и точки, где оно не определено. Проверь знак на каждом промежутке. Нули включаются только при нестрогом неравенстве и если выражение определено."]
+],
+geometry:[
+["7. Признаки равенства треугольников","Треугольники равны по трём сторонам; по двум сторонам и углу между ними; по стороне и двум прилежащим углам."],
+["8. Признаки подобия","Подобие устанавливается по двум углам, по двум пропорциональным сторонам и углу между ними, либо по трём пропорциональным сторонам. Отношение площадей подобных фигур равно квадрату коэффициента подобия."],
+["9. Медиана, биссектриса, высота","Медиана соединяет вершину с серединой противоположной стороны. Биссектриса делит угол пополам. Высота перпендикулярна противоположной стороне или её продолжению. В равнобедренном треугольнике медиана к основанию также высота и биссектриса."],
+["10. Свойства четырёхугольников","У параллелограмма противоположные стороны параллельны и равны, диагонали делятся пополам. У прямоугольника диагонали равны. У ромба диагонали перпендикулярны и делят углы пополам. Квадрат сочетает свойства прямоугольника и ромба."],
+["11. Окружность: хорды и касательные","Перпендикуляр из центра к хорде делит её пополам. Равные хорды стягивают равные дуги. Касательные из одной точки равны. Вписанный угол, опирающийся на диаметр, равен 90°."],
+["12. Координаты и расстояние","Расстояние между точками (x₁;y₁) и (x₂;y₂) равно √((x₂−x₁)²+(y₂−y₁)²). Середина отрезка имеет координаты ((x₁+x₂)/2;(y₁+y₂)/2)."],
+["13. Тригонометрия в прямоугольном треугольнике","sin угла — противолежащий катет к гипотенузе; cos — прилежащий катет к гипотенузе; tg — противолежащий катет к прилежащему. Основное тождество: sin²α+cos²α=1."],
+["14. Теоремы синусов и косинусов","a/sin A=b/sin B=c/sin C=2R. Теорема косинусов: c²=a²+b²−2ab·cos C. Применяй их, когда известны стороны и углы, но прямоугольного треугольника нет."]
+],
+stereo:[
+["7. Прямоугольный параллелепипед и куб","V=abc, Sполн=2(ab+bc+ac), d=√(a²+b²+c²). Для куба с ребром a: V=a³, S=6a², диагональ грани a√2, пространственная диагональ a√3."],
+["8. Полная поверхность призмы","Для прямой призмы Sбок=Pосн·h, Sполн=Sбок+2Sосн. Объём любой призмы равен площади основания, умноженной на высоту."],
+["9. Пирамида и апофема","V=Sосн·h/3. Для правильной пирамиды Sбок=Pосн·l/2, где l — апофема боковой грани. Не путай апофему с высотой пирамиды."],
+["10. Сечения","Сечение — фигура пересечения тела с плоскостью. На чертеже точки пересечения плоскости с гранями соединяют внутри соответствующих граней. Часто для вычислений применяют подобие и теорему Пифагора."],
+["11. Угол между прямой и плоскостью","Это угол между прямой и её ортогональной проекцией на плоскость. Перпендикуляр к плоскости перпендикулярен любой прямой этой плоскости, проходящей через основание перпендикуляра."],
+["12. Вписанные тела и единицы","В конусе l²=R²+h². Приводи длины к одним единицам: площади измеряются в квадратных, объёмы — в кубических единицах. При увеличении всех длин в k раз площадь меняется в k², объём — в k³ раз."],
+["13. Алгоритм стереометрической задачи","Нарисуй тело, выдели плоское сечение, отметь высоты и радиусы. Найди недостающие длины, затем площадь основания и только после этого объём или площадь поверхности."]
+],
+probability:[
+["7. Дерево вероятностей","Для последовательных этапов нарисуй дерево исходов. Вероятности вдоль одной ветви перемножаются, вероятности подходящих ветвей складываются."],
+["8. С возвращением и без возвращения","При возвращении состав набора не меняется, поэтому вероятности на следующем шаге те же. Без возвращения состав меняется — вероятность второго шага нужно пересчитать."],
+["9. Формула полной вероятности","Если H₁,…,Hₙ — несовместные гипотезы, покрывающие все варианты, то P(A)=ΣP(Hᵢ)P(A|Hᵢ). Рассчитай вероятность события по каждому сценарию и сложи."],
+["10. Формула Бернулли","Для n независимых испытаний с вероятностью успеха p вероятность ровно k успехов: C(n,k)pᵏ(1−p)ⁿ⁻ᵏ."],
+["11. Комбинаторика","Правило умножения: m вариантов одного выбора и n другого дают mn пар. Перестановки: n!. Размещения: n!/(n−k)!. Сочетания: n!/(k!(n−k)!)."],
+["12. Условная вероятность","P(A|B)=P(A∩B)/P(B), если P(B)>0. Это вероятность A при условии, что B произошло. При независимости P(A|B)=P(A)."],
+["13. Проверка результата","Вероятность всегда от 0 до 1. Для противоположного события P(не A)=1−P(A). Сумма вероятностей всех исходов полного набора равна 1."]
+],
+functions:[
+["7. Обратная пропорциональность","y=k/x определена при x≠0, график — гипербола. При k>0 ветви в I и III четвертях, при k<0 — во II и IV."],
+["8. Показательная функция","y=aˣ при a>0 и a≠1. При a>1 функция возрастает, при 0<a<1 убывает. График проходит через (0;1), значения положительны."],
+["9. Логарифмическая функция","y=logₐx определена при x>0, a>0, a≠1. При a>1 возрастает, при 0<a<1 убывает. logₐb=c означает aᶜ=b."],
+["10. Сдвиги и отражения графиков","y=f(x)+b сдвигает график вверх на b; y=f(x−a) — вправо на a. y=−f(x) отражает относительно Ox, а y=f(−x) — относительно Oy."],
+["11. Производная и касательная","Производная f′(x) описывает скорость изменения. Если f′>0, функция возрастает; если f′<0, убывает. Касательная в x₀: y=f(x₀)+f′(x₀)(x−x₀)."],
+["12. Экстремумы","Критические точки — где производная равна нулю или не существует. Смена знака производной с плюса на минус означает максимум, с минуса на плюс — минимум."],
+["13. Наибольшее и наименьшее на отрезке","Найди критические точки внутри отрезка, вычисли функцию в них и на обоих концах. Сравни полученные значения."],
+["14. Первообразная и интеграл","F — первообразная f, если F′=f. Определённый интеграл описывает накопленную величину; при неотрицательной функции он равен площади под графиком на отрезке."]
+],
+powers:[
+["7. Стандартный вид числа","Число записывают как a·10ⁿ, где 1≤|a|<10. При умножении на 10 запятая сдвигается вправо на один разряд, при делении — влево."],
+["8. Корни n-й степени","Для чётного n действительный корень существует из неотрицательного числа и берётся неотрицательным. Для нечётного n корень существует при любом действительном подкоренном числе."],
+["9. Преобразование корней","√(a²b)=|a|√b при b≥0. При внесении множителя под квадратный корень его возводят в квадрат: a√b=√(a²b) при a≥0."],
+["10. Формулы сокращённого умножения","(a+b)²=a²+2ab+b²; (a−b)²=a²−2ab+b²; a²−b²=(a−b)(a+b); (a+b)(a²−ab+b²)=a³+b³."],
+["11. Рационализация знаменателя","Если в знаменателе есть корень, можно умножить числитель и знаменатель на сопряжённое выражение. Например, для √a−√b сопряжённое — √a+√b."],
+["12. Модуль и корень","|a|=a при a≥0 и −a при a<0. Поэтому √(x−2)²=|x−2|, а не просто x−2 без условия x≥2."],
+["13. Порядок действий и оценка","Сначала скобки, затем степени и корни, потом умножение и деление, затем сложение и вычитание. Приблизительная оценка результата помогает заметить ошибку."]
+]};
+topics.forEach(t=>{(extraTheory[t.id]||[]).forEach(s=>t.sections.push(s));});
+
+const $=id=>document.getElementById(id);
+let xp=+(localStorage.mathXp||0),solved=+(localStorage.mathSolved||0),right=+(localStorage.mathRight||0);
+let seen=new Set(JSON.parse(localStorage.mathSeen||"[]"));
+function save(){localStorage.mathXp=xp;localStorage.mathSolved=solved;localStorage.mathRight=right;localStorage.mathSeen=JSON.stringify([...seen]);updateStats()}
+function updateStats(){["xp","xp2"].forEach(x=>$(x).textContent=xp);["solved","solved2"].forEach(x=>$(x).textContent=solved);["unique","unique2"].forEach(x=>$(x).textContent=seen.size);$("right2").textContent=right}
+updateStats();
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button,.panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")});
+$("topicGrid").innerHTML=topics.map(t=>`<button class="topic" data-id="${t.id}"><span class="emoji">${t.emoji}</span><strong>${t.name}</strong><small>${t.level}</small></button>`).join("");
+document.querySelectorAll(".topic").forEach(b=>b.onclick=()=>showTopic(b.dataset.id));
+function showTopic(id){let t=topics.find(x=>x.id===id);$("topicDetail").innerHTML=`<div class="card topic-detail"><span class="tag">${t.level}</span><h2>${t.emoji} ${t.name}</h2><p>${t.intro}</p><h3>📖 Подробная теория</h3>${t.sections.map(s=>`<h3>${s[0]}</h3><p>${s[1]}</p>`).join("")}<h3>🧠 Главные формулы</h3>${t.formulas.map(f=>`<div class="formula">${f}</div>`).join("")}<h3>✍️ Разобранный пример</h3><div class="example">${t.example}</div><h3>🪜 Алгоритм решения</h3><ol class="list">${t.algorithm.map(a=>`<li>${a}</li>`).join("")}</ol><h3>⚠️ Частые ошибки</h3><p>${t.mistakes}</p><button class="btn" onclick="startQuiz('${t.id}')">Тренироваться по теме</button></div>`; $("topicDetail").scrollIntoView({behavior:"smooth",block:"start"})}
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function makeTask(cat){
+ let a,b,c,q,ans,exp,key;
+ if(cat==="percent"){let type=rand(0,3);if(type===0){a=rand(12,950);b=rand(5,90);ans=+(a*b/100).toFixed(2);q=`Найди ${b}% от ${a}.`;exp=`Переводим проценты в дробь: ${b}/100=${b/100}. Умножаем: ${a}·${b/100}=${ans}.`;key=`p0-${a}-${b}`}
+ else if(type===1){a=rand(8,90);b=rand(2,30);let whole=a* b;ans=a*100/b;q=`${a} составляет ${b}% от какого числа?`;exp=`Искомое число: ${a}÷${b/100}=${ans}.`;key=`p1-${a}-${b}`}
+ else if(type===2){a=rand(100,3000);b=rand(5,45);ans=+(a*(1+b/100)).toFixed(2);q=`Число ${a} увеличили на ${b}%. Найди результат.`;exp=`Умножаем на коэффициент 1+${b}/100=${1+b/100}: ${a}·${1+b/100}=${ans}.`;key=`p2-${a}-${b}`}
+ else{a=rand(100,3000);b=rand(5,45);ans=+(a*(1-b/100)).toFixed(2);q=`Число ${a} уменьшили на ${b}%. Найди результат.`;exp=`Умножаем на коэффициент 1−${b}/100=${1-b/100}: ${a}·${1-b/100}=${ans}.`;key=`p3-${a}-${b}`}
+ }else if(cat==="equations"){let type=rand(0,1);if(type===0){a=rand(2,12);b=rand(-25,25);c=rand(-15,25);ans=c;let rhs=a*c+b;q=`Реши уравнение: ${a}x ${b>=0?"+":"−"} ${Math.abs(b)} = ${rhs}.`;exp=`Переносим ${b} в правую часть: ${a}x=${rhs-b}. Делим на ${a}: x=${ans}.`;key=`e0-${a}-${b}-${c}`}else{a=rand(1,8);b=rand(1,12);ans=a+b;q=`Уравнение x² − ${a+b}x + ${a*b}=0. Найди меньший корень.`;ans=Math.min(a,b);exp=`Подбираем два числа с суммой ${a+b} и произведением ${a*b}: ${a} и ${b}. Корни ${Math.min(a,b)} и ${Math.max(a,b)}, меньший — ${ans}.`;key=`e1-${a}-${b}`}
+ }else if(cat==="geometry"){let type=rand(0,2);if(type===0){a=rand(3,20);b=rand(3,20);ans=a*b/2;q=`Найди площадь прямоугольного треугольника с катетами ${a} и ${b}.`;exp=`S=ab/2=${a}·${b}/2=${ans}.`;key=`g0-${a}-${b}`}else if(type===1){a=rand(2,15);b=rand(2,15);ans=a*b;q=`Найди площадь прямоугольника со сторонами ${a} и ${b}.`;exp=`S=ab=${a}·${b}=${ans}.`;key=`g1-${a}-${b}`}else{a=rand(2,20);b=rand(2,20);ans=a+b;q=`У треугольника два угла ${a*3}° и ${b*3}°. Найди третий угол.`;ans=180-a*3-b*3;exp=`Сумма углов треугольника 180°. Третий угол: 180−${a*3}−${b*3}=${ans}°.`;key=`g2-${a}-${b}`}
+ }else if(cat==="stereo"){let type=rand(0,1);if(type===0){a=rand(2,12);b=rand(2,15);ans=a*a*b;q=`Найди объём цилиндра с радиусом ${a} и высотой ${b}. Ответ запиши через π, то есть коэффициент перед π.`;exp=`V=πR²h=π·${a}²·${b}=${ans}π.`;key=`s0-${a}-${b}`}else{a=rand(2,12);b=rand(2,12);ans=a*a*b/3;q=`Найди коэффициент перед π в объёме конуса с радиусом ${a} и высотой ${b}.`;exp=`V=πR²h/3=π·${a}²·${b}/3=${ans}π.`;key=`s1-${a}-${b}`}
+ }else if(cat==="probability"){a=rand(2,12);b=rand(1,12);ans=+(a/(a+b)).toFixed(3);q=`В мешке ${a} красных и ${b} синих одинаковых шаров. Найди вероятность достать красный шар (округли до тысячных).`;exp=`Всего шаров ${a+b}, благоприятных исходов ${a}. P=${a}/${a+b}=${ans}.`;key=`pr-${a}-${b}`
+ }else if(cat==="functions"){a=rand(-8,12);b=rand(-15,15);ans=2*a+b;q=`Для функции y=2x ${b>=0?"+":"−"} ${Math.abs(b)} найди значение при x=${a}.`;exp=`Подставляем x=${a}: y=2·(${a}) ${b>=0?"+":"−"} ${Math.abs(b)}=${ans}.`;key=`f-${a}-${b}`
+ }else{a=rand(2,12);b=rand(2,5);ans=a**b;q=`Вычисли ${a} в степени ${b}.`;exp=`${a}^${b}=${ans}. При умножении одинаковых оснований показатели складываются.`;key=`pw-${a}-${b}`}
+ return {cat,q,ans,exp,key};
+}
+let round=[],idx=0,correct=0,current=null,locked=false;
+function newUnique(cat){for(let i=0;i<20000;i++){let t=makeTask(cat);if(!seen.has(t.key)){seen.add(t.key);return t}}return null}
+function startQuiz(only){document.querySelectorAll("nav button,.panel").forEach(x=>x.classList.remove("active"));document.querySelector('[data-tab="practice"]').classList.add("active");$("practice").classList.add("active");let cats=only?[only]:["percent","equations","geometry","stereo","probability","functions","powers"];round=[];let used=new Set();for(let i=0;i<10;i++){let available=cats.filter(c=>!used.has(c));let cat=available.length?available[rand(0,available.length-1)]:cats[rand(0,cats.length-1)];used.add(cat);let task=newUnique(cat);if(task)round.push(task)}idx=0;correct=0;save();renderQuestion()}
+window.startQuiz=startQuiz;
+function renderQuestion(){locked=false;if(idx>=round.length){$("quizArea").innerHTML=`<h3>Тренировка завершена! 🎉</h3><p>Правильных ответов: <b>${correct} из ${round.length}</b></p><p>Получено опыта: +${correct*10}</p><button class="btn" id="again">Новая тренировка</button>`;$("again").onclick=()=>startQuiz();$("bar").style.width="100%";$("qCategory").textContent="Результат";return}
+current=round[idx];$("qCategory").textContent=topics.find(t=>t.id===current.cat).name;$("qCount").textContent=`Задание ${idx+1} из ${round.length}`;$("bar").style.width=(idx/round.length*100)+"%";
+$("quizArea").innerHTML=`<div class="question">${current.q}</div><label for="answer" class="muted">Твой ответ</label><input class="answer" id="answer" inputmode="decimal" autocomplete="off" placeholder="Введи число"><div class="row" style="margin-top:12px"><button class="btn" id="check">Проверить</button></div><div id="feedback"></div>`;
+$("check").onclick=checkAnswer;$("answer").addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()});}
+function checkAnswer(){if(locked)return;let raw=$("answer").value.trim().replace(",",".").replace(/\s/g,"");if(raw===""){ $("feedback").innerHTML='<div class="feedback bad">Введи ответ, чтобы проверить себя.</div>';return}let val=Number(raw),ok=Number.isFinite(val)&&Math.abs(val-Number(current.ans))<0.011;locked=true;solved++;if(ok){correct++;right++;xp+=10}else{xp+=2}save();$("feedback").innerHTML=`<div class="feedback ${ok?"good":"bad"}"><b>${ok?"Верно! +10 XP 🎉":"Пока неверно. +2 XP за попытку."}</b><p>Правильный ответ: <b>${current.ans}</b></p><p>${current.exp}</p></div><button class="btn" style="margin-top:10px" id="next">${idx===round.length-1?"Завершить":"Следующее задание"}</button>`;$("next").onclick=()=>{idx++;renderQuestion()};}
+$("start").onclick=()=>startQuiz();
+$("resetStats").onclick=()=>{if(confirm("Удалить опыт, статистику и всю историю заданий на этом устройстве?")){xp=0;solved=0;right=0;seen.clear();save();$("quizArea").innerHTML='<p>История очищена. Можно начать новую тренировку.</p><button class="btn" id="start2">Начать тренировку</button>';$("start2").onclick=()=>startQuiz()}};
+</script>
+<script>
+// ===== Новые модули: план, слабые места, интервалы, игры, графики, помощник =====
+const LS=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}catch(e){return d}};
+const SV=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let tstats=LS("mathTopicStats",{}),errors=LS("mathErrors",[]),review=LS("mathReview",{});
+let daily=LS("mathDaily",{date:"",claimed:false}),avatarIdx=LS("mathAvatar",0),themeIdx=LS("mathTheme",0);
+let mode="normal",gained=0,roundStart=0,perfect=true;
+const CATS=["percent","equations","geometry","stereo","probability","functions","powers"];
+const DAY=864e5,INTERVALS=[1,3,7,14,30];
+const AVATARS=[{e:"🦉",n:"Сова",need:0},{e:"🦊",n:"Лиса",need:100},{e:"🐼",n:"Панда",need:300},{e:"🚀",n:"Ракета",need:600}];
+const THEMES=[{n:"Лаванда",bg:"#f7f4ff",p:"#8062d8",need:0},{n:"Мята",bg:"#f0fbf6",p:"#2f9e7a",need:2},{n:"Персик",bg:"#fff7f0",p:"#e0784a",need:4}];
+const FORMULAS=["S = ah/2","a² + b² = c²","V = S·h","D = b² − 4ac","P(A) = m/n","(a+b)² = a² + 2ab + b²","aᵐ·aⁿ = aᵐ⁺ⁿ","C = 2πR","x₀ = −b/(2a)","V = πR²h","sin²α + cos²α = 1","P(не A) = 1 − P(A)"];
+const topicName=c=>topics.find(t=>t.id===c).name;
+const today=()=>new Date().toDateString();
+const acc=c=>{const s=tstats[c];return s&&s.total?s.ok/s.total:null};
+const sortedWeak=()=>CATS.map(c=>({c,a:acc(c)??0.5})).sort((x,y)=>x.a-y.a);
+const dueList=()=>CATS.filter(c=>review[c]&&review[c].due<=Date.now());
+const level=()=>Math.floor(xp/100)+1;
+
+// Статистика по темам и интервальные повторения
+function recordAnswer(task,ok,raw){
+ const s=tstats[task.cat]||{ok:0,total:0};s.total++;if(ok)s.ok++;tstats[task.cat]=s;SV("mathTopicStats",tstats);
+ if(!ok){
+   errors.unshift({cat:task.cat,q:task.q,your:raw,right:String(task.ans),date:new Date().toLocaleDateString("ru-RU")});
+   errors=errors.slice(0,50);SV("mathErrors",errors);
+   review[task.cat]={due:Date.now()+DAY,step:0};
+ }else if(review[task.cat]){
+   const st=Math.min(review[task.cat].step+1,INTERVALS.length-1);
+   review[task.cat]={due:Date.now()+INTERVALS[st]*DAY,step:st};
+ }
+ SV("mathReview",review);
+}
+
+// Тренировка: переопределяет функции из основного кода (те же имена, расширенная логика)
+function buildRound(cats,n){
+ const out=[];let guard=0;
+ while(out.length<n&&guard++<n*30){
+   const c=mode==="diag"?cats[out.length%cats.length]:cats[rand(0,cats.length-1)];
+   const t=newUnique(c);if(t)out.push(t);
+ }
+ return out;
+}
+function showTab(id){
+ document.querySelectorAll("nav button,.panel").forEach(x=>x.classList.remove("active"));
+ const b=document.querySelector(`nav [data-tab="${id}"]`);if(b)b.classList.add("active");
+ $(id).classList.add("active");
+ if(id==="plan")showPlan();if(id==="progress")renderProfile();if(id==="topics")renderReminders();
+ window.scrollTo(0,0);
+}
+function startQuiz(only){
+ let cats=CATS,n=10;
+ if(only==="weak"){const d=dueList();cats=d.length?d:sortedWeak().slice(0,3).map(x=>x.c);mode="weak"}
+ else if(only==="diag"){n=14;mode="diag"}
+ else if(only==="speed"){cats=["percent","functions","powers","equations"];n=15;mode="speed"}
+ else if(only==="daily"){cats=sortedWeak().slice(0,3).map(x=>x.c);n=3;mode="daily";if(daily.date!==today())daily={date:today(),claimed:false};SV("mathDaily",daily)}
+ else if(CATS.includes(only)){cats=[only];mode="normal"}
+ else mode="normal";
+ round=buildRound(cats,n);idx=0;correct=0;gained=0;perfect=true;roundStart=Date.now();
+ showTab("practice");renderQuestion();
+}
+window.startQuiz=startQuiz;
+function renderQuestion(){
+ locked=false;
+ if(idx>=round.length){finishRound();return}
+ current=round[idx];
+ $("qCategory").textContent=topicName(current.cat);
+ $("qCount").textContent=`Задание ${idx+1} из ${round.length}`;
+ $("bar").style.width=(idx/round.length*100)+"%";
+ $("quizArea").innerHTML=`<div class="question">${current.q}</div><label for="answer" class="muted">Твой ответ</label><input class="answer" id="answer" inputmode="decimal" autocomplete="off" placeholder="Введи число"><div class="row" style="margin-top:12px"><button class="btn" id="check">Проверить</button></div><div id="feedback"></div>`;
+ $("check").onclick=checkAnswer;
+ $("answer").addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()});
+}
+function finishRound(){
+ $("bar").style.width="100%";
+ if(mode==="diag"){$("quizArea").innerHTML="<h3>Диагностика пройдена 🎯</h3><p>План обновлён по твоим ответам.</p>";$("qCategory").textContent="Диагностика";showTab("plan");return}
+ if(mode==="speed"){const sec=Math.round((Date.now()-roundStart)/1000);$("quizArea").innerHTML=`<h3>Готово! ⚡</h3><p>Правильных: <b>${correct} из ${round.length}</b> за <b>${sec} с</b></p><button class="btn" id="again">Ещё раз</button>`;$("qCategory").textContent="Скорость";$("again").onclick=()=>startQuiz("speed");renderProfile();return}
+ let bonus=0;
+ if(mode==="daily"&&correct===round.length&&!daily.claimed){bonus=30;xp+=bonus;daily.claimed=true;SV("mathDaily",daily);save()}
+ if(perfect&&round.length)SV("mathPerfect",true);
+ $("quizArea").innerHTML=`<h3>Тренировка завершена! 🎉</h3><p>Правильных ответов: <b>${correct} из ${round.length}</b></p><p>Получено опыта: +${gained+bonus}${bonus?" (включая бонус дня)":""}</p><button class="btn" id="again">Новая тренировка</button>`;
+ $("qCategory").textContent="Результат";$("again").onclick=()=>startQuiz();
+ renderProfile();dailyRender();
+}
+function checkAnswer(){
+ if(locked)return;
+ const raw=$("answer").value.trim().replace(",",".").replace(/\s/g,"");
+ if(raw===""){$("feedback").innerHTML='<div class="feedback bad">Введи ответ, чтобы проверить себя.</div>';return}
+ const val=Number(raw),ok=Number.isFinite(val)&&Math.abs(val-Number(current.ans))<0.011;
+ locked=true;solved++;
+ if(ok){correct++;right++;xp+=10;gained+=10}else{xp+=2;gained+=2;perfect=false}
+ save();recordAnswer(current,ok,raw);
+ $("feedback").innerHTML=`<div class="feedback ${ok?"good":"bad"}"><b>${ok?"Верно! +10 XP 🎉":"Пока неверно. +2 XP за попытку."}</b><p>Правильный ответ: <b>${current.ans}</b></p><p>${current.exp}</p></div><button class="btn" style="margin-top:10px" id="next">${idx===round.length-1?"Завершить":"Следующее задание"}</button>`;
+ $("next").onclick=()=>{idx++;renderQuestion()};
+}
+
+// 1. Персональный план
+function showPlan(){
+ const rows=sortedWeak();
+ $("planBox").innerHTML=`<div class="card"><b>Фокус сейчас:</b> ${rows.slice(0,3).map(r=>topicName(r.c)).join(", ")}.<p class="muted">План пересчитывается после каждой тренировки: слабые темы получают больше заданий.</p></div>`+
+ rows.map(r=>{const a=acc(r.c);const pct=a===null?"не проверено":Math.round(a*100)+"%";
+   const plan=a===null||a<0.5?"Теория и 5 заданий в неделю":a<0.8?"3 задания в неделю":"1 задание в неделю";
+   return `<div class="card" style="margin:8px 0"><div class="row" style="justify-content:space-between"><b>${topicName(r.c)}</b><span class="tag">${pct}</span></div><div class="muted">${plan}</div></div>`}).join("")+
+ `<div class="row"><button class="btn secondary" onclick="startQuiz('weak')">🎯 Мои слабые места</button></div>`;
+}
+function renderReminders(){
+ const d=dueList();
+ $("reminders").innerHTML=d.length?`<div class="card" style="background:#fff8fa">🔔 Пора повторить: <b>${d.map(c=>topicName(c)).join(", ")}</b></div>`:"";
+}
+
+// 2. Достижения, уровни, аватары, оформление
+function achievements(){return[
+ {t:"Первый шаг",d:"Реши первое задание",ok:solved>=1},
+ {t:"Точность",d:"10 верных ответов",ok:right>=10},
+ {t:"Трудолюбие",d:"50 решённых заданий",ok:solved>=50},
+ {t:"Уровень 5",d:"Набери 400 XP",ok:xp>=400},
+ {t:"Все темы",d:"Реши задание по каждой теме",ok:CATS.every(c=>tstats[c]&&tstats[c].total>0)},
+ {t:"Без ошибок",d:"Закрой тренировку без ошибок",ok:!!LS("mathPerfect",false)}
+]}
+function renderProfile(){
+ const ach=achievements(),earned=ach.filter(a=>a.ok).length,into=xp%100,due=dueList();
+ $("profile").innerHTML=`
+ <div class="card"><h3>Уровень ${level()}</h3><div class="progress"><span style="width:${into}%"></span></div><p class="muted">До следующего уровня: ${100-into} XP</p></div>
+ <div class="card"><h3>Аватар</h3><div class="row">${AVATARS.map((a,i)=>`<button class="btn ${i===avatarIdx?"":"secondary"}" ${xp<a.need?"disabled":""} onclick="setAvatar(${i})">${a.e} ${a.n}${xp<a.need?` · ${a.need} XP`:""}</button>`).join("")}</div></div>
+ <div class="card"><h3>Оформление</h3><div class="row">${THEMES.map((t,i)=>`<button class="btn ${i===themeIdx?"":"secondary"}" ${earned<t.need?"disabled":""} onclick="setTheme(${i})">${t.n}${earned<t.need?` · ${t.need} достижения`:""}</button>`).join("")}</div></div>
+ <div class="card"><h3>Достижения: ${earned} из ${ach.length}</h3>${ach.map(a=>`<p>${a.ok?"🏅":"⬜"} <b>${a.t}</b> <span class="muted">— ${a.d}</span></p>`).join("")}</div>
+ <div class="card"><h3>Точность по темам</h3>${CATS.map(c=>{const a=acc(c);return `<p>${topicName(c)}: <b>${a===null?"—":Math.round(a*100)+"%"}</b></p>`}).join("")}</div>
+ <div class="card"><h3>Повторить сейчас</h3><p>${due.length?due.map(c=>topicName(c)).join(", "):"Ничего не просрочено."}</p></div>
+ <div class="card"><h3>История ошибок</h3>${errors.length?errors.slice(0,10).map(e=>`<p class="muted">${e.date} · ${topicName(e.cat)}: ${e.q} — твой ответ <b>${e.your}</b>, верно <b>${e.right}</b></p>`).join(""):'<p class="muted">Ошибок пока нет.</p>'}</div>`;
+ renderReminders();
+}
+function setAvatar(i){if(xp<AVATARS[i].need)return;avatarIdx=i;SV("mathAvatar",i);heroAv();renderProfile()}
+function setTheme(i){themeIdx=i;SV("mathTheme",i);applyTheme();renderProfile()}
+function applyTheme(){const t=THEMES[themeIdx]||THEMES[0];const r=document.documentElement.style;r.setProperty("--bg",t.bg);r.setProperty("--purple",t.p);document.body.style.background=t.bg}
+function heroAv(){$("av").textContent=(AVATARS[avatarIdx]||AVATARS[0]).e}
+
+// 3. Задания дня
+function dailyRender(){
+ const done=daily.date===today()&&daily.claimed;
+ $("dailyBox").innerHTML=`<p class="muted">3 задания на слабых темах. Если все три верны — бонус +30 XP, один раз в день.</p><div class="row"><button class="btn" onclick="startQuiz('daily')">Задания дня</button>${done?'<span class="muted">Бонус за сегодня уже получен ✅</span>':""}</div>`;
+}
+
+// 4. Сапёр с формулами: безопасные клетки показывают формулу, 💣 — ошибка
+let sap=null;
+function sapperStart(){
+ const N=5,total=N*N,mines=new Set();
+ while(mines.size<4)mines.add(rand(0,total-1));
+ const f={};for(let i=0;i<total;i++)if(!mines.has(i))f[i]=FORMULAS[rand(0,FORMULAS.length-1)];
+ sap={N,mines,f,open:new Set(),over:false,won:false};sapRender();
+}
+function sapRender(){
+ const {N,mines,f,open,over,won}=sap;const left=Object.keys(f).length-open.size;
+ let h=`<div style="display:grid;grid-template-columns:repeat(${N},1fr);gap:6px">`;
+ for(let i=0;i<N*N;i++){
+   let t="",cls="cell";
+   if(open.has(i)){cls+=" open";t=mines.has(i)?"💥":f[i]}
+   else if(over&&mines.has(i))t="💣";
+   h+=`<button class="${cls}" ${open.has(i)||over?"disabled":""} onclick="sapClick(${i})">${t}</button>`;
+ }
+ h+="</div>";
+ $("sapBox").innerHTML=h+`<p class="muted" style="margin-top:10px">${won?"Победа! Все формулы открыты 🎉 +10 XP":over?"Попал на ошибку. Попробуй ещё раз.":"Открой все клетки с формулами и не попади на 💣. Осталось: "+left}</p><button class="btn secondary" onclick="sapperStart()">Новая игра</button>`;
+}
+function sapClick(i){
+ if(!sap||sap.over||sap.open.has(i))return;
+ sap.open.add(i);
+ if(sap.mines.has(i))sap.over=true;
+ else if(sap.open.size===Object.keys(sap.f).length){sap.over=sap.won=true;xp+=10;save();renderProfile()}
+ sapRender();
+}
+
+// 5. Найди ошибку в готовом решении
+const FIND=[
+ {q:"Реши 2x + 6 = 10",s:["2x = 10 + 6 = 16","x = 8","Ответ: x = 8"],bad:0,e:"Число 6 переносят с противоположным знаком: 2x = 10 − 6 = 4, значит x = 2."},
+ {q:"Найди площадь прямоугольника со сторонами 4 и 7",s:["S = a + b = 4 + 7 = 11","Ответ: 11"],bad:0,e:"Площадь прямоугольника равна произведению сторон: S = 4·7 = 28."},
+ {q:"Вычисли 2³ · 2²",s:["2³ · 2² = 2⁶ = 64","Ответ: 64"],bad:0,e:"При умножении степеней с одинаковым основанием показатели складываются: 2³·2² = 2⁵ = 32."}
+];
+let fi=0;
+function findRender(){
+ const P=FIND[fi%FIND.length];
+ $("findBox").innerHTML=`<p><b>${P.q}</b></p><p class="muted">Найди шаг с ошибкой.</p>`+
+ P.s.map((s,i)=>`<button class="btn secondary" style="display:block;width:100%;margin:6px 0;text-align:left" onclick="findPick(${i})">Шаг ${i+1}: ${s}</button>`).join("")+`<div id="findFb"></div>`;
+}
+function findPick(i){
+ const P=FIND[fi%FIND.length],ok=i===P.bad;
+ $("findFb").innerHTML=`<div class="feedback ${ok?"good":"bad"}">${ok?"Верно, ошибка найдена. "+P.e:"Этот шаг верный, ищи дальше."}</div>`+(ok?`<button class="btn" style="margin-top:8px" onclick="fi++;findRender()">Дальше</button>`:"");
+}
+
+// 6. Пошаговые решения: ученик выбирает следующий шаг
+const SOLVE=[
+ {title:"Реши уравнение 3x + 5 = 17",steps:[
+   {q:"Какое первое действие?",o:["Вычесть 5 из обеих частей","Разделить на 3","Прибавить 5 к обеим частям"],c:0,h:"Сначала убираем число, которое не стоит рядом с x.",e:"3x = 17 − 5 = 12."},
+   {q:"Что делаем с 3x = 12?",o:["Разделить обе части на 3","Умножить на 3","Вычесть 3"],c:0,h:"Нужно убрать коэффициент при x.",e:"x = 12 ÷ 3 = 4. Проверка: 3·4 + 5 = 17 ✓."}]},
+ {title:"Найди 15% от 240",steps:[
+   {q:"Как записать 15% в виде числа?",o:["15/100 = 0,15","15 · 100","240 ÷ 15"],c:0,h:"Процент — это доля от 100.",e:"p% = p/100, значит 15% = 0,15."},
+   {q:"Чему равно 240 · 0,15?",o:["36","24","360"],c:0,h:"10% от 240 — это 24, а 15% больше.",e:"240 · 0,15 = 36."}]}
+];
+let sv={p:0,s:0};
+function solveRender(){
+ if(sv.p>=SOLVE.length){$("solveBox").innerHTML=`<p>Все разборы пройдены 🎉</p><button class="btn secondary" onclick="sv={p:0,s:0};solveRender()">Сначала</button>`;return}
+ const P=SOLVE[sv.p],S=P.steps[sv.s];
+ $("solveBox").innerHTML=`<p class="muted">${P.title} · шаг ${sv.s+1} из ${P.steps.length}</p><p><b>${S.q}</b></p>`+
+ S.o.map((o,i)=>`<button class="btn secondary" style="display:block;width:100%;margin:6px 0;text-align:left" onclick="solvePick(${i})">${o}</button>`).join("")+`<div id="solveFb"></div>`;
+}
+function solvePick(i){
+ const P=SOLVE[sv.p],S=P.steps[sv.s];
+ if(i!==S.c){$("solveFb").innerHTML=`<div class="feedback bad">Не совсем. ${S.h}</div>`;return}
+ const last=sv.s===P.steps.length-1;
+ $("solveFb").innerHTML=`<div class="feedback good">Верно! ${S.e}</div><button class="btn" style="margin-top:8px" onclick="solveNext()">${last?"Следующая задача":"Дальше"}</button>`;
+}
+function solveNext(){if(sv.s<SOLVE[sv.p].steps.length-1)sv.s++;else{sv.p++;sv.s=0}solveRender()}
+
+// 7. Графики с ползунками и чертёж треугольника
+function buildGraphs(){
+ $("gbox").innerHTML=`<h2 class="section-title">Интерактивная математика</h2>
+ <div class="card"><h3>Парабола y = ax² + bx + c</h3>
+ <svg viewBox="0 0 300 300" style="width:100%;max-width:320px;background:#fff;border-radius:12px;border:1px solid var(--line)">
+ <line x1="0" y1="150" x2="300" y2="150" stroke="#cfc7e6"/><line x1="150" y1="0" x2="150" y2="300" stroke="#cfc7e6"/>
+ <path id="gpath" fill="none" stroke="#8062d8" stroke-width="2.5"/><circle id="gv" r="4" fill="#c34d69"/></svg>
+ <p id="ginfo" class="muted"></p>
+ <label>a = <span id="sa">1</span><input type="range" min="-3" max="3" step="0.5" value="1" id="ga" style="width:100%"></label>
+ <label>b = <span id="sb">0</span><input type="range" min="-10" max="10" step="1" value="0" id="gb" style="width:100%"></label>
+ <label>c = <span id="sc">-3</span><input type="range" min="-10" max="10" step="1" value="-3" id="gc" style="width:100%"></label></div>
+ <div class="card"><h3>Треугольник по двум сторонам и углу между ними</h3>
+ <svg viewBox="0 0 300 250" style="width:100%;max-width:320px;background:#fff;border-radius:12px;border:1px solid var(--line)"><polygon id="tri" fill="#f0eaff" stroke="#8062d8" stroke-width="2"/></svg>
+ <p id="tinfo" class="muted"></p>
+ <label>Сторона 1: <span id="s1v">4</span><input type="range" min="1" max="10" step="1" value="4" id="t1" style="width:100%"></label>
+ <label>Сторона 2: <span id="s2v">5</span><input type="range" min="1" max="10" step="1" value="5" id="t2" style="width:100%"></label>
+ <label>Угол между ними: <span id="tav">60</span>°<input type="range" min="20" max="150" step="5" value="60" id="ta" style="width:100%"></label></div>`;
+ ["ga","gb","gc"].forEach(id=>$(id).addEventListener("input",graphUpdate));
+ ["t1","t2","ta"].forEach(id=>$(id).addEventListener("input",triUpdate));
+ graphUpdate();triUpdate();
+}
+function graphUpdate(){
+ const a=+$("ga").value,b=+$("gb").value,c=+$("gc").value;
+ $("sa").textContent=a;$("sb").textContent=b;$("sc").textContent=c;
+ let d="";
+ for(let x=-6;x<=6.001;x+=0.1){const y=Math.max(-10,Math.min(10,a*x*x+b*x+c));d+=(d?" L":"M")+(150+x*25).toFixed(1)+" "+(150-y*15).toFixed(1)}
+ $("gpath").setAttribute("d",d);
+ let info=`y = ${a}x² ${b>=0?"+ ":"− "}${Math.abs(b)}x ${c>=0?"+ ":"− "}${Math.abs(c)}. `;
+ if(a===0){info+="При a = 0 это прямая, парабола не строится.";$("gv").setAttribute("cx",-10)}
+ else{
+   const xv=-b/(2*a),yv=a*xv*xv+b*xv+c;
+   $("gv").setAttribute("cx",(150+xv*25).toFixed(1));
+   $("gv").setAttribute("cy",(150-Math.max(-10,Math.min(10,yv))*15).toFixed(1));
+   info+=`Вершина (${xv.toFixed(2)}; ${yv.toFixed(2)}). `;
+   const D=b*b-4*a*c;
+   if(D<0)info+="Корней нет (D < 0).";
+   else if(D===0)info+=`Один корень x = ${xv.toFixed(2)}.`;
+   else{const r1=(-b-Math.sqrt(D))/(2*a),r2=(-b+Math.sqrt(D))/(2*a);info+=`Корни: ${Math.min(r1,r2).toFixed(2)} и ${Math.max(r1,r2).toFixed(2)}.`}
+ }
+ $("ginfo").textContent=info;
+}
+function triUpdate(){
+ const s1=+$("t1").value,s2=+$("t2").value,ang=+$("ta").value,r=ang*Math.PI/180;
+ $("s1v").textContent=s1;$("s2v").textContent=s2;$("tav").textContent=ang;
+ const k=170/Math.max(s1,s2);
+ const P=[[20,230],[20+s1*k,230],[20+s2*Math.cos(r)*k,230-s2*Math.sin(r)*k]];
+ $("tri").setAttribute("points",P.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" "));
+ const S=s1*s2*Math.sin(r)/2,c=Math.sqrt(s1*s1+s2*s2-2*s1*s2*Math.cos(r));
+ $("tinfo").textContent=`Площадь S = ½·${s1}·${s2}·sin ${ang}° = ${S.toFixed(2)}. Третья сторона по теореме косинусов: ${c.toFixed(2)}.`;
+}
+
+// 8. Помощник: правила, без сервера (настоящий ИИ требует защищённого бэкенда)
+const HELP=[
+ [/устал|страшно|не могу|плохо|бросить/i,()=>"Ты делаешь больше, чем кажется. Даже 10 минут в день дают результат. Начнём с одного задания на слабой теме? 💜"],
+ [/повтор/i,()=>{const d=dueList();return d.length?"Сейчас стоит повторить: "+d.map(c=>topicName(c)).join(", ")+". Нажми «Мои слабые места».":"Ничего не просрочено. Можно пройти диагностику во вкладке «План»."}],
+ [/слаб/i,()=>"Слабые темы сейчас: "+sortedWeak().slice(0,3).map(x=>topicName(x.c)).join(", ")+"."],
+ [/график|парабол/i,()=>"Во вкладке «Графики» двигай ползунки a, b и c: увидишь вершину и корни параболы."],
+ [/процент/i,()=>"Чтобы найти p% от a, умножь a на p/100. Например, 15% от 240 = 240 · 0,15 = 36."],
+ [/уравн/i,()=>"Что делаешь с одной частью уравнения, делай и с другой. Попробуй «Решаем по шагам» во вкладке «Игры»."]
+];
+function helperReply(t){for(const [re,fn] of HELP)if(re.test(t))return fn();return "Я пока отвечаю по простым правилам: спроси про повторение, слабые темы, проценты, уравнения или графики. Полноценный ИИ-помощник потребует отдельного защищённого сервера."}
+function addMsg(t,who){const d=document.createElement("div");d.className="bubble "+(who==="me"?"me":"bot");d.textContent=t;$("chat").appendChild(d);$("chat").scrollTop=1e9}
+function helperSend(){const inp=$("hin"),t=inp.value.trim();if(!t)return;addMsg(t,"me");inp.value="";setTimeout(()=>addMsg(helperReply(t),"bot"),200)}
+
+// ===== Сборка интерфейса =====
+const st=document.createElement("style");
+st.textContent=`.cell{aspect-ratio:1;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:11px;padding:2px;cursor:pointer;color:var(--ink);line-height:1.1}.cell.open{background:#f0eaff}.cell:disabled{cursor:default}.bubble{padding:9px 12px;border-radius:14px;margin:6px 0;max-width:85%}.bubble.me{background:var(--purple);color:#fff;margin-left:auto}.bubble.bot{background:#f0eaff}`;
+document.head.appendChild(st);
+const app=document.querySelector(".app"),foot=document.querySelector(".foot");
+function addPanel(id,html){const s=document.createElement("section");s.id=id;s.className="panel";s.innerHTML=html;app.insertBefore(s,foot)}
+addPanel("plan",`<h2 class="section-title">Персональный план</h2><div class="card"><p class="muted">Диагностика из 14 заданий (по 2 на каждую тему) покажет сильные и слабые темы. План пересчитывается после каждой тренировки.</p><button class="btn" onclick="startQuiz('diag')">Пройти диагностику</button></div><div id="planBox"></div>`);
+addPanel("games",`<h2 class="section-title">Игры и задания дня</h2><div class="card"><h3>Задания дня</h3><div id="dailyBox"></div></div><div class="card"><h3>Сапёр с формулами</h3><p class="muted">Открывай клетки с формулами и не попадай на 💣.</p><div id="sapBox"><button class="btn" onclick="sapperStart()">Начать игру</button></div></div><div class="card"><h3>Найди ошибку в решении</h3><div id="findBox"></div></div><div class="card"><h3>Решаем по шагам</h3><div id="solveBox"></div></div>`);
+addPanel("graphs",`<div id="gbox"></div>`);
+addPanel("helper",`<h2 class="section-title">Помощник</h2><div class="card"><div id="chat" style="max-height:340px;overflow:auto"></div><div class="row" style="margin-top:10px"><input id="hin" class="answer" placeholder="Спроси про тему или повторение"><button class="btn" onclick="helperSend()">Отправить</button></div><div class="row" style="margin-top:8px"><button class="btn secondary" onclick="startQuiz('weak')">Дай задание</button></div></div>`);
+const nav=document.querySelector("nav");
+[["plan","🧭 План"],["games","🎮 Игры"],["graphs","📐 Графики"],["helper","🤖 Помощник"]].forEach(([id,t])=>{const b=document.createElement("button");b.dataset.tab=id;b.textContent=t;b.onclick=()=>showTab(id);nav.appendChild(b)});
+nav.querySelectorAll('button[data-tab="progress"],button[data-tab="topics"]').forEach(b=>b.addEventListener("click",()=>{if(b.dataset.tab==="progress")renderProfile();else renderReminders()}));
+$("practice").insertAdjacentHTML("beforeend",`<div class="row" style="margin-top:14px"><button class="btn" onclick="startQuiz('weak')">🎯 Мои слабые места</button><button class="btn secondary" onclick="startQuiz('speed')">⚡ Викторина на скорость</button></div><p class="muted" style="font-size:13px">«Слабые места» — темы, которые пора повторить по интервалам, либо три самые слабые.</p>`);
+$("progress").insertAdjacentHTML("beforeend",'<div id="profile"></div>');
+$("topics").insertAdjacentHTML("afterbegin",'<div id="reminders"></div>');
+document.querySelector(".hero h1").insertAdjacentHTML("afterbegin",'<span id="av"></span> ');
+let beforeSolved=0;
+$("resetStats").addEventListener("click",()=>{beforeSolved=solved;setTimeout(()=>{if(beforeSolved>0&&solved===0){tstats={};errors=[];review={};SV("mathTopicStats",tstats);SV("mathErrors",errors);SV("mathReview",review);SV("mathPerfect",false);renderProfile()}},0)});
+$("hin").addEventListener("keydown",e=>{if(e.key==="Enter")helperSend()});
+
+// Запуск
+if(avatarIdx>0&&xp<AVATARS[avatarIdx].need)avatarIdx=0;
+applyTheme();heroAv();renderProfile();renderReminders();dailyRender();findRender();solveRender();sapRender_init();buildGraphs();
+addMsg("Привет! Я помогу с планом, повторением и разбором ошибок 💜","bot");
+function sapRender_init(){$("sapBox").innerHTML='<button class="btn" onclick="sapperStart()">Начать игру</button>'}
+</script>
+<script>
+// ===== Профильная математика: новые темы, задания, графики и фигуры =====
+const PROFILE_CATS=["trig","logs","deriv","integ"];
+const PROFILE_TOPICS=[
+{id:"trig",emoji:"〰️",name:"Тригонометрия",level:"Профиль: задания 5, 9, 13",intro:"Синус и косинус — координаты точки на единичной окружности. Большинство задач решается приведением угла к острому и знанием стандартных значений.",
+sections:[
+["1. Единичная окружность","Для угла α точка окружности имеет координаты (cos α; sin α). Отсюда основное тождество: sin²α + cos²α = 1."],
+["2. Стандартные значения","sin 30° = 1/2, sin 45° = √2/2, sin 60° = √3/2, sin 90° = 1. cos 60° = 1/2, cos 90° = 0, cos 0° = 1."],
+["3. Тангенс и котангенс","tg α = sin α / cos α, ctg α = cos α / sin α. Тангенс не определён там, где cos α = 0."],
+["4. Формулы приведения","sin(π − α) = sin α, cos(π − α) = −cos α, sin(π + α) = −sin α, cos(π + α) = −cos α. Знак определяется четвертью, в которой лежит угол."],
+["5. Двойной угол","sin 2α = 2 sin α cos α; cos 2α = cos²α − sin²α = 1 − 2sin²α."],
+["6. Простейшие уравнения","sin x = a при |a| ≤ 1: x = (−1)ⁿ arcsin a + πn. cos x = a при |a| ≤ 1: x = ±arccos a + 2πn."]],
+formulas:["sin²α + cos²α = 1","tg α = sin α / cos α","sin 2α = 2 sin α cos α","cos x = a ⇒ x = ±arccos a + 2πn"],
+example:"sin 150° = sin(180° − 30°) = sin 30° = 0,5.",
+algorithm:["Приведи угол к острому с помощью формул приведения.","Определи знак функции по четверти.","Вспомни значение для стандартного угла.","Для уравнения запиши всю серию решений."],
+mistakes:"Частые ошибки: потерять знак при приведении и забыть серию решений с +2πn."},
+{id:"logs",emoji:"🔡",name:"Логарифмы",level:"Профиль: задания 5, 7, 13",intro:"Логарифм — показатель степени. Свойства логарифмов позволяют упрощать выражения и сводить сложные уравнения к степенным.",
+sections:[
+["1. Определение","log_a b = c означает, что a^c = b, где a > 0, a ≠ 1, b > 0."],
+["2. Основные свойства","log_a(xy) = log_a x + log_a y; log_a(x/y) = log_a x − log_a y; log_a(x^p) = p·log_a x. Также a^(log_a b) = b и log_a a = 1."],
+["3. Переход к новому основанию","log_a b = log_c b / log_c a. Удобно, когда в задаче разные основания."],
+["4. Показательные уравнения","a^f(x) = a^g(x) при a > 0, a ≠ 1 равносильно f(x) = g(x)."],
+["5. Логарифмические уравнения","log_a f(x) = log_a g(x) ⇔ f(x) = g(x) при условии f(x) > 0 и g(x) > 0. Проверка ОДЗ обязательна."],
+["6. Сравнение логарифмов","При a > 1 функция log_a возрастает, при 0 < a < 1 убывает. Это помогает сравнивать значения без вычислений."]],
+formulas:["log_a b = c ⇔ a^c = b","log_a(xy) = log_a x + log_a y","log_a b = log_c b / log_c a","log_a(x^p) = p·log_a x"],
+example:"log₂(2³·2⁴) = log₂(2⁷) = 7. Здесь мы сложили показатели степеней при умножении.",
+algorithm:["Найди ОДЗ: аргументы положительны, основание больше нуля и не равно 1.","Примени свойства, чтобы свести выражение к одному логарифму.","Реши уравнение относительно аргумента.","Проверь корни по ОДЗ."],
+mistakes:"Частая ошибка: log_a(x + y) не равно log_a x + log_a y. Свойство работает только для произведения и частного."},
+{id:"deriv",emoji:"📉",name:"Производная",level:"Профиль: задания 7, 12, 15",intro:"Производная показывает скорость изменения функции. Её применяют для касательных, промежутков монотонности и наибольших и наименьших значений.",
+sections:[
+["1. Правила дифференцирования","(xⁿ)′ = n·xⁿ⁻¹; (c)′ = 0; (u + v)′ = u′ + v′; (u·v)′ = u′v + uv′; (u/v)′ = (u′v − uv′)/v²."],
+["2. Геометрический смысл","f′(x₀) — угловой коэффициент касательной в точке x₀. Уравнение касательной: y = f(x₀) + f′(x₀)(x − x₀)."],
+["3. Монотонность","Если f′(x) > 0 на промежутке, функция возрастает. Если f′(x) < 0, убывает."],
+["4. Экстремумы","Точка x₀ — точка экстремума, если f′ меняет знак в ней. Смена с «+» на «−» даёт максимум, с «−» на «+» — минимум."],
+["5. Наибольшее и наименьшее на отрезке","Сравни значения функции на концах отрезка и в критических точках, которые лежат внутри отрезка."]],
+formulas:["(xⁿ)′ = n·xⁿ⁻¹","y = f(x₀) + f′(x₀)(x − x₀)","(uv)′ = u′v + uv′"],
+example:"f(x) = x³ − 3x. f′(x) = 3x² − 3 = 0 при x = ±1. f(−1) = 2 — максимум, f(1) = −2 — минимум.",
+algorithm:["Найди производную.","Реши f′(x) = 0 и отметь точки на числовой прямой.","Определи знак f′ на промежутках.","Для отрезка сравни значения на концах и в критических точках."],
+mistakes:"Частая ошибка: путать f′(x₀) с f(x₀). Производная — это наклон касательной, а не значение функции."},
+{id:"integ",emoji:"∫",name:"Интеграл и площадь",level:"Профиль: задания 12, 17",intro:"Определённый интеграл позволяет находить площадь под графиком и накопленное изменение величины.",
+sections:[
+["1. Первообразная","F — первообразная для f, если F′(x) = f(x). Для степеней: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C."],
+["2. Формула Ньютона — Лейбница","∫ от a до b f(x) dx = F(b) − F(a), где F — любая первообразная функции f."],
+["3. Площадь под графиком","Если f(x) ≥ 0 на отрезке [a; b], то площадь фигуры под графиком равна ∫ от a до b f(x) dx."],
+["4. Площадь между кривыми","Если f(x) ≥ g(x) на [a; b], площадь между ними равна ∫ от a до b (f(x) − g(x)) dx. Найди точки пересечения, чтобы задать пределы."]],
+formulas:["∫ от a до b f dx = F(b) − F(a)","∫ xⁿ dx = xⁿ⁺¹/(n+1) + C","S = ∫ от a до b (f − g) dx"],
+example:"∫ от 0 до 2 от 3x² dx = x³ |от 0 до 2 = 8 − 0 = 8.",
+algorithm:["Найди первообразную.","Подставь верхний и нижний пределы.","Вычти: сначала F(b), затем F(a).","Для площади проверь знак функции на отрезке."],
+mistakes:"Частая ошибка: вычитать пределы в обратном порядке и забывать знак функции при вычислении площади."}
+];
+PROFILE_TOPICS.forEach(t=>topics.push(t));
+CATS.push(...PROFILE_CATS);
+function renderTopicGrid(){
+ $("topicGrid").innerHTML=topics.map(t=>`<button class="topic" data-id="${t.id}"><span class="emoji">${t.emoji}</span><strong>${t.name}</strong><small>${t.level}</small></button>`).join("");
+ document.querySelectorAll("#topicGrid .topic").forEach(b=>b.onclick=()=>showTopic(b.dataset.id));
+}
+
+// Генераторы профильных заданий
+const sg=(n,v)=>(n>=0?" + ":" − ")+Math.abs(n)+v;
+function makeProfileTask(cat){
+ let q,ans,exp,key;
+ if(cat==="trig"){
+   const th=30*rand(0,11);
+   if(rand(0,1)===0){ans=Number(Math.sin(th*Math.PI/180).toFixed(3));q=`Найди sin ${th}°. Ответ округли до тысячных.`;exp=`sin ${th}° = ${ans}.`;key=`tr0-${th}`}
+   else{ans=Number(Math.cos(th*Math.PI/180).toFixed(3));q=`Найди cos ${th}°. Ответ округли до тысячных.`;exp=`cos ${th}° = ${ans}.`;key=`tr1-${th}`}
+ }else if(cat==="logs"){
+   const a=rand(2,5),m=rand(1,6),n=rand(1,6);
+   if(rand(0,1)===0){ans=m+n;q=`Вычисли log_${a}(${a}^${m} · ${a}^${n}).`;exp=`При умножении показатели складываются: ${a}^${m}·${a}^${n} = ${a}^${m+n}. Значит, log_${a}(${a}^${m+n}) = ${m+n}.`;key=`lg0-${a}-${m}-${n}`}
+   else{ans=m-n;q=`Вычисли log_${a}(${a}^${m} / ${a}^${n}).`;exp=`При делении показатели вычитаются: ${a}^${m}/${a}^${n} = ${a}^${m-n}. Ответ: ${m-n}.`;key=`lg1-${a}-${m}-${n}`}
+ }else if(cat==="deriv"){
+   const a=rand(1,3),b=rand(-3,3),c=rand(-5,5),x0=rand(-2,2);
+   ans=3*a*x0*x0+2*b*x0+c;
+   q=`Найди f′(${x0}), если f(x) = ${a}x³${sg(b,"x²")}${sg(c,"x")}.`;
+   exp=`f′(x) = ${3*a}x²${sg(2*b,"x")}${sg(c,"")}. Подставляем x = ${x0}: f′(${x0}) = ${ans}.`;key=`dr-${a}-${b}-${c}-${x0}`;
+ }else{
+   const k=rand(1,4),m=rand(-3,3),n=rand(1,4);
+   ans=Number((k*n*n/2+m*n).toFixed(2));
+   q=`Вычисли определённый интеграл: ∫ от 0 до ${n} от (${k}x${sg(m,"")}) dx.`;
+   exp=`Первообразная: ${k}x²/2${m?sg(m,"x"):""}. Подставляем пределы: ${k}·${n}²/2${m?` ${m<0?"−":"+"} ${Math.abs(m)}·${n}`:""} = ${ans}.`;key=`in-${k}-${m}-${n}`;
+ }
+ return {cat,q,ans,exp,key};
+}
+function newUnique(cat){
+ for(let i=0;i<20000;i++){
+   const t=PROFILE_CATS.includes(cat)?makeProfileTask(cat):makeTask(cat);
+   if(!seen.has(t.key)){seen.add(t.key);return t}
+ }
+ return null;
+}
+// Диагностика теперь охватывает все разделы, включая профильные
+function startQuiz(only){
+ let cats=CATS,n=10;
+ if(only==="weak"){const d=dueList();cats=d.length?d:sortedWeak().slice(0,3).map(x=>x.c);mode="weak"}
+ else if(only==="diag"){n=CATS.length*2;mode="diag"}
+ else if(only==="speed"){cats=["percent","functions","powers","equations"];n=15;mode="speed"}
+ else if(only==="daily"){cats=sortedWeak().slice(0,3).map(x=>x.c);n=3;mode="daily";if(daily.date!==today())daily={date:today(),claimed:false};SV("mathDaily",daily)}
+ else if(CATS.includes(only)){cats=[only];mode="normal"}
+ else mode="normal";
+ round=buildRound(cats,n);idx=0;correct=0;gained=0;perfect=true;roundStart=Date.now();
+ showTab("practice");renderQuestion();
+}
+window.startQuiz=startQuiz;
+
+// Графики функций с касательной
+const FN={
+ parab:{n:"y = ax² + bx",f:(x,a,b)=>a*x*x+b*x},
+ cubic:{n:"y = ax³ + bx",f:(x,a,b)=>a*x**3+b*x},
+ hyper:{n:"y = a/x + b",f:(x,a,b)=>x===0?NaN:a/x+b},
+ sqrt:{n:"y = a√x + b",f:(x,a,b)=>x<0?NaN:a*Math.sqrt(x)+b},
+ exp:{n:"y = a·2ˣ + b",f:(x,a,b)=>a*2**x+b},
+ log:{n:"y = a·log₂x + b",f:(x,a,b)=>x<=0?NaN:a*Math.log2(x)+b},
+ sin:{n:"y = a·sin(bx)",f:(x,a,b)=>a*Math.sin(b*x)},
+ abs:{n:"y = a|x| + b",f:(x,a,b)=>a*Math.abs(x)+b}
+};
+function fnUpdate(){
+ const F=FN[$("fk").value],a=+$("fa").value,b=+$("fb").value,x0=+$("fx").value;
+ $("fav").textContent=a;$("fbv").textContent=b;$("fxv").textContent=x0;
+ let d="",pen=false;
+ for(let x=-6;x<=6.001;x+=0.05){
+   const y=F.f(x,a,b);
+   if(!Number.isFinite(y)||Math.abs(y)>10){pen=false;continue}
+   d+=(pen?" L":" M")+(150+x*25).toFixed(1)+" "+(150-y*15).toFixed(1);pen=true;
+ }
+ $("fpath").setAttribute("d",d);
+ const cl=v=>Math.max(-10,Math.min(10,v));
+ const y0=F.f(x0,a,b),h=1e-4,slope=(F.f(x0+h,a,b)-F.f(x0-h,a,b))/(2*h);
+ if(Number.isFinite(y0)&&Number.isFinite(slope)){
+   const t1=y0+slope*(-6-x0),t2=y0+slope*(6-x0);
+   $("ftan").setAttribute("x1",0);$("ftan").setAttribute("y1",(150-cl(t1)*15).toFixed(1));
+   $("ftan").setAttribute("x2",300);$("ftan").setAttribute("y2",(150-cl(t2)*15).toFixed(1));
+   $("fpt").setAttribute("cx",(150+x0*25).toFixed(1));$("fpt").setAttribute("cy",(150-cl(y0)*15).toFixed(1));
+   $("finfo").textContent=`f(${x0}) ≈ ${y0.toFixed(2)}, f′(${x0}) ≈ ${slope.toFixed(2)}. Касательная: y ≈ ${y0.toFixed(2)} + ${slope.toFixed(2)}(x − ${x0}).`;
+ }else{
+   $("ftan").setAttribute("x1",0);$("ftan").setAttribute("y1",0);$("ftan").setAttribute("x2",0);$("ftan").setAttribute("y2",0);
+   $("fpt").setAttribute("cx",-10);
+   $("finfo").textContent=`В точке x = ${x0} функция не определена.`;
+ }
+}
+
+// Тела вращения: цилиндр, конус, шар
+function bodyUpdate(){
+ const kind=$("bk").value,R=+$("br").value,H=+$("bh").value;
+ $("brv").textContent=R;$("bhv").textContent=H;
+ const k=Math.min(110/(2*R),190/H),w=2*R*k,h=H*k,ry=w*0.25;
+ let svg="",info="";
+ if(kind==="cyl"){
+   svg=`<rect x="${(150-w/2).toFixed(1)}" y="${(230-h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="#f0eaff" stroke="#8062d8" stroke-width="2"/><ellipse cx="150" cy="${(230-h).toFixed(1)}" rx="${(w/2).toFixed(1)}" ry="${ry.toFixed(1)}" fill="#e3d9ff" stroke="#8062d8" stroke-width="2"/><ellipse cx="150" cy="230" rx="${(w/2).toFixed(1)}" ry="${ry.toFixed(1)}" fill="none" stroke="#8062d8" stroke-width="2" stroke-dasharray="4 3"/>`;
+   info=`Цилиндр: V = πR²H = ${R*R*H}π ≈ ${(R*R*H*Math.PI).toFixed(1)}. Полная поверхность S = 2πR(R + H) = ${2*R*(R+H)}π ≈ ${(2*R*(R+H)*Math.PI).toFixed(1)}.`;
+ }else if(kind==="cone"){
+   svg=`<polygon points="${(150-w/2).toFixed(1)},230 ${(150+w/2).toFixed(1)},230 150,${(230-h).toFixed(1)}" fill="#f0eaff" stroke="#8062d8" stroke-width="2"/><ellipse cx="150" cy="230" rx="${(w/2).toFixed(1)}" ry="${ry.toFixed(1)}" fill="none" stroke="#8062d8" stroke-width="2" stroke-dasharray="4 3"/>`;
+   const l=Math.sqrt(R*R+H*H);
+   info=`Конус: V = πR²H/3 = ${(R*R*H/3).toFixed(2)}π ≈ ${(R*R*H/3*Math.PI).toFixed(1)}. Образующая l = √(R² + H²) ≈ ${l.toFixed(2)}. Полная поверхность S = πR(R + l) ≈ ${(Math.PI*R*(R+l)).toFixed(1)}.`;
+ }else{
+   svg=`<circle cx="150" cy="130" r="${(R*11).toFixed(1)}" fill="#f0eaff" stroke="#8062d8" stroke-width="2"/>`;
+   info=`Шар: V = 4πR³/3 = ${(4*R**3/3).toFixed(2)}π ≈ ${(4*R**3/3*Math.PI).toFixed(1)}. Площадь сферы S = 4πR² = ${4*R*R}π ≈ ${(4*R*R*Math.PI).toFixed(1)}.`;
+ }
+ $("bsvg").innerHTML=`<svg viewBox="0 0 300 260" style="width:100%;max-width:320px;background:#fff;border-radius:12px;border:1px solid var(--line)">${svg}</svg>`;
+ $("binfo").textContent=info;
+}
+
+// Вписанный и центральный угол
+function circUpdate(){
+ const th=+$("cth").value;$("ctv").textContent=th;
+ const cx=150,cy=130,r=110,P=d=>[cx+r*Math.cos(d*Math.PI/180),cy-r*Math.sin(d*Math.PI/180)];
+ const A=P(0),B=P(th),C=P(th/2+180),f=p=>p[0].toFixed(1)+","+p[1].toFixed(1);
+ $("csvg").innerHTML=`<svg viewBox="0 0 300 260" style="width:100%;max-width:320px;background:#fff;border-radius:12px;border:1px solid var(--line)">
+ <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#8062d8" stroke-width="2"/>
+ <line x1="${cx}" y1="${cy}" x2="${A[0].toFixed(1)}" y2="${A[1].toFixed(1)}" stroke="#bbb" stroke-dasharray="4 3"/>
+ <line x1="${cx}" y1="${cy}" x2="${B[0].toFixed(1)}" y2="${B[1].toFixed(1)}" stroke="#bbb" stroke-dasharray="4 3"/>
+ <polyline points="${f(A)} ${f(C)} ${f(B)}" fill="none" stroke="#c34d69" stroke-width="2"/>
+ <circle cx="${A[0].toFixed(1)}" cy="${A[1].toFixed(1)}" r="4" fill="#8062d8"/><circle cx="${B[0].toFixed(1)}" cy="${B[1].toFixed(1)}" r="4" fill="#8062d8"/><circle cx="${C[0].toFixed(1)}" cy="${C[1].toFixed(1)}" r="4" fill="#c34d69"/>
+ <text x="${cx+4}" y="${cy-6}" font-size="13">O</text><text x="${(A[0]+6).toFixed(1)}" y="${(A[1]+14).toFixed(1)}" font-size="13">A</text><text x="${(B[0]+6).toFixed(1)}" y="${(B[1]-6).toFixed(1)}" font-size="13">B</text><text x="${(C[0]+6).toFixed(1)}" y="${(C[1]+14).toFixed(1)}" font-size="13">C</text>
+ </svg>`;
+ $("cinfo").textContent=`Центральный угол AOB = ${th}°. Вписанный угол ACB, опирающийся на ту же дугу, равен ${th/2}°.`;
+}
+
+// Сборка новых карточек в раздел «Графики»
+function buildExtraGraphs(){
+ const opts=Object.entries(FN).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");
+ $("gbox").insertAdjacentHTML("beforeend",`
+ <div class="card"><h3>Функции и касательная</h3>
+ <select id="fk" style="width:100%;padding:8px;border-radius:10px;border:1px solid var(--line)">${opts}</select>
+ <svg viewBox="0 0 300 300" style="width:100%;max-width:320px;background:#fff;border-radius:12px;border:1px solid var(--line);margin-top:8px">
+ <line x1="0" y1="150" x2="300" y2="150" stroke="#cfc7e6"/><line x1="150" y1="0" x2="150" y2="300" stroke="#cfc7e6"/>
+ <path id="fpath" fill="none" stroke="#8062d8" stroke-width="2.5"/><line id="ftan" stroke="#c34d69" stroke-width="1.5" stroke-dasharray="5 3"/><circle id="fpt" r="4" fill="#c34d69"/></svg>
+ <p id="finfo" class="muted"></p>
+ <label>a = <span id="fav">1</span><input type="range" min="-3" max="3" step="0.5" value="1" id="fa" style="width:100%"></label>
+ <label>b = <span id="fbv">0</span><input type="range" min="-3" max="3" step="0.5" value="0" id="fb" style="width:100%"></label>
+ <label>x₀ (точка касания) = <span id="fxv">1</span><input type="range" min="-5" max="5" step="0.5" value="1" id="fx" style="width:100%"></label></div>
+ <div class="card"><h3>Тела вращения</h3>
+ <select id="bk" style="width:100%;padding:8px;border-radius:10px;border:1px solid var(--line)"><option value="cyl">Цилиндр</option><option value="cone">Конус</option><option value="sph">Шар</option></select>
+ <div id="bsvg" style="margin-top:8px"></div><p id="binfo" class="muted"></p>
+ <label>Радиус R = <span id="brv">3</span><input type="range" min="1" max="8" step="1" value="3" id="br" style="width:100%"></label>
+ <label>Высота H = <span id="bhv">5</span><input type="range" min="1" max="10" step="1" value="5" id="bh" style="width:100%"></label></div>
+ <div class="card"><h3>Вписанный и центральный угол</h3>
+ <div id="csvg"></div><p id="cinfo" class="muted"></p>
+ <label>Центральный угол AOB = <span id="ctv">60</span>°<input type="range" min="20" max="170" step="5" value="60" id="cth" style="width:100%"></label></div>`);
+ ["fk"].forEach(id=>$(id).addEventListener("change",fnUpdate));
+ ["fa","fb","fx"].forEach(id=>$(id).addEventListener("input",fnUpdate));
+ $("bk").addEventListener("change",bodyUpdate);
+ ["br","bh"].forEach(id=>$(id).addEventListener("input",bodyUpdate));
+ $("cth").addEventListener("input",circUpdate);
+ fnUpdate();bodyUpdate();circUpdate();
+}
+
+// Итоговая настройка
+const h1=document.querySelector(".hero h1");
+[...h1.childNodes].forEach(n=>{if(n.nodeType===3&&n.textContent.includes("Математика"))n.textContent=" Профильная математика ЕГЭ 💜"});
+document.title="Профильная математика ЕГЭ";
+document.querySelector("#plan .muted").textContent="Диагностика по всем разделам профиля: по 2 задания на тему. План пересчитывается после каждой тренировки.";
+renderTopicGrid();
+buildExtraGraphs();
+</script>
+<script>
+// ===== Исправления: выбор типа графика и фигуры, иконки игр, «Найди пару» вместо сапёра =====
+const st2=document.createElement("style");
+st2.textContent=`.sel{width:100%;padding:9px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);margin-bottom:8px;font-size:15px}.plot{width:100%;max-width:320px;background:#fff;border-radius:12px;border:1px solid var(--line);display:block;margin:8px 0}.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}.tile{border:1px solid var(--line);background:#fff;border-radius:18px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink);font-weight:700;font-size:14px;box-shadow:0 5px 18px #44306a0a}.tile .ti{font-size:34px}.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.pcard{min-height:62px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:13px;padding:6px;color:var(--ink);line-height:1.2}.pcard.ok{background:#e9f7ef}`;
+document.head.appendChild(st2);
+
+// --- График функции: выбор типа ---
+const PF={
+ quad:{n:"y = ax² + bx + c",f:(x,a,b,c)=>a*x*x+b*x+c},
+ vert:{n:"y = a(x − b)² + c",f:(x,a,b,c)=>a*(x-b)**2+c},
+ cub:{n:"y = ax³ + bx + c",f:(x,a,b,c)=>a*x**3+b*x+c}
+};
+function pU(){
+ const k=$("pk").value,a=+$("pa").value,b=+$("pb").value,c=+$("pc").value,F=PF[k];
+ $("pav").textContent=a;$("pbv").textContent=b;$("pcv").textContent=c;
+ let d="",pen=false;
+ for(let x=-6;x<=6.001;x+=0.05){const y=F.f(x,a,b,c);if(!Number.isFinite(y)||Math.abs(y)>10){pen=false;continue}d+=(pen?" L":" M")+(150+x*25).toFixed(1)+" "+(150-y*15).toFixed(1);pen=true}
+ $("ppath").setAttribute("d",d);
+ const cl=v=>Math.max(-10,Math.min(10,v));
+ let info="",px=0,py=c;
+ if(k==="quad"){
+   if(a===0)info="a = 0: это не парабола.";
+   else{const xv=-b/(2*a),yv=a*xv*xv+b*xv+c,D=b*b-4*a*c;px=xv;py=yv;
+     info=`Вершина (${xv.toFixed(2)}; ${yv.toFixed(2)}). `;
+     if(D<0)info+="Корней нет (D < 0).";
+     else if(D===0)info+=`Один корень x = ${xv.toFixed(2)}.`;
+     else{const r1=(-b-Math.sqrt(D))/(2*a),r2=(-b+Math.sqrt(D))/(2*a);info+=`Корни: ${Math.min(r1,r2).toFixed(2)} и ${Math.max(r1,r2).toFixed(2)}.`}}
+ }else if(k==="vert"){px=b;py=c;info=`Вершина (${b}; ${c}). Ветви ${a>0?"вверх":a<0?"вниз":"— прямая"}.`}
+ else{info=`f(0) = ${c}. Производная f′(x) = 3ax² + b. Экстремумы есть при ab < 0: `+(a*b<0?`x = ±√(${(-b/(3*a)).toFixed(2)}).`:"в этом случае их нет.");}
+ $("ppt").setAttribute("cx",(150+px*25).toFixed(1));$("ppt").setAttribute("cy",(150-cl(py)*15).toFixed(1));
+ $("pinfo").textContent=F.n+". "+info;
+}
+
+// --- Касательная (формула выводится аккуратно) ---
+function fnUpdate(){
+ const F=FN[$("fk").value],a=+$("fa").value,b=+$("fb").value,x0=+$("fx").value;
+ $("fav").textContent=a;$("fbv").textContent=b;$("fxv").textContent=x0;
+ let d="",pen=false;
+ for(let x=-6;x<=6.001;x+=0.05){const y=F.f(x,a,b);if(!Number.isFinite(y)||Math.abs(y)>10){pen=false;continue}d+=(pen?" L":" M")+(150+x*25).toFixed(1)+" "+(150-y*15).toFixed(1);pen=true}
+ $("fpath").setAttribute("d",d);
+ const cl=v=>Math.max(-10,Math.min(10,v));
+ const y0=F.f(x0,a,b),h=1e-4,slope=(F.f(x0+h,a,b)-F.f(x0-h,a,b))/(2*h);
+ if(Number.isFinite(y0)&&Number.isFinite(slope)){
+   const t1=y0+slope*(-6-x0),t2=y0+slope*(6-x0);
+   $("ftan").setAttribute("x1",0);$("ftan").setAttribute("y1",(150-cl(t1)*15).toFixed(1));
+   $("ftan").setAttribute("x2",300);$("ftan").setAttribute("y2",(150-cl(t2)*15).toFixed(1));
+   $("fpt").setAttribute("cx",(150+x0*25).toFixed(1));$("fpt").setAttribute("cy",(150-cl(y0)*15).toFixed(1));
+   $("finfo").textContent=`f(${x0}) ≈ ${y0.toFixed(2)}, f′(${x0}) ≈ ${slope.toFixed(2)}. Касательная: y = ${y0.toFixed(2)} ${slope>=0?"+":"−"} ${Math.abs(slope).toFixed(2)}·(x − ${x0}).`;
+ }else{
+   $("ftan").setAttribute("x1",0);$("ftan").setAttribute("y1",0);$("ftan").setAttribute("x2",0);$("ftan").setAttribute("y2",0);
+   $("fpt").setAttribute("cx",-10);$("finfo").textContent=`В точке x = ${x0} функция не определена.`;
+ }
+}
+
+// --- Фигуры: треугольник, параллелограмм, прямоугольник ---
+function figU(){
+ const k=$("fg").value,s1=+$("f1").value,s2=+$("f2").value,ang=+$("fang").value,r=ang*Math.PI/180;
+ $("f1v").textContent=s1;$("f2v").textContent=s2;$("fangv").textContent=ang;
+ $("fangrow").style.display=k==="rect"?"none":"block";
+ const K=130/(s1+s2),A=[20,230],B=[20+s1*K,230],D0=[20+s2*Math.cos(r)*K,230-s2*Math.sin(r)*K],C=[B[0]+(D0[0]-A[0]),B[1]+(D0[1]-A[1])];
+ let pts,info;
+ if(k==="tri"){
+   pts=[A,B,D0];const S=s1*s2*Math.sin(r)/2,c=Math.sqrt(s1*s1+s2*s2-2*s1*s2*Math.cos(r));
+   info=`Треугольник: S = ½·${s1}·${s2}·sin ${ang}° ≈ ${S.toFixed(2)}. Третья сторона c ≈ ${c.toFixed(2)} (теорема косинусов).`;
+ }else if(k==="par"){
+   pts=[A,B,C,D0];
+   info=`Параллелограмм: S = ${s1}·${s2}·sin ${ang}° ≈ ${(s1*s2*Math.sin(r)).toFixed(2)}. Диагонали: d₁ ≈ ${Math.sqrt(s1*s1+s2*s2+2*s1*s2*Math.cos(r)).toFixed(2)}, d₂ ≈ ${Math.sqrt(s1*s1+s2*s2-2*s1*s2*Math.cos(r)).toFixed(2)}.`;
+ }else{
+   pts=[A,B,[20+s1*K,230-s2*K],[20,230-s2*K]];
+   info=`Прямоугольник: S = ${s1}·${s2} = ${s1*s2}. Диагональ d = √(${s1}² + ${s2}²) ≈ ${Math.sqrt(s1*s1+s2*s2).toFixed(2)}.`;
+ }
+ $("fsvg").innerHTML=`<svg viewBox="0 0 300 250" class="plot"><polygon points="${pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" fill="#f0eaff" stroke="#8062d8" stroke-width="2"/></svg>`;
+ $("finf").textContent=info;
+}
+
+// --- Тела вращения и вписанный угол (те же ids, что и раньше) ---
+function bodyUpdate(){
+ const kind=$("bk").value,R=+$("br").value,H=+$("bh").value;
+ $("brv").textContent=R;$("bhv").textContent=H;
+ const k=Math.min(110/(2*R),190/H),w=2*R*k,h=H*k,ry=w*0.25;
+ let svg="",info="";
+ if(kind==="cyl"){
+   svg=`<rect x="${(150-w/2).toFixed(1)}" y="${(230-h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="#f0eaff" stroke="#8062d8" stroke-width="2"/><ellipse cx="150" cy="${(230-h).toFixed(1)}" rx="${(w/2).toFixed(1)}" ry="${ry.toFixed(1)}" fill="#e3d9ff" stroke="#8062d8" stroke-width="2"/><ellipse cx="150" cy="230" rx="${(w/2).toFixed(1)}" ry="${ry.toFixed(1)}" fill="none" stroke="#8062d8" stroke-width="2" stroke-dasharray="4 3"/>`;
+   info=`Цилиндр: V = πR²H = ${R*R*H}π ≈ ${(R*R*H*Math.PI).toFixed(1)}. Полная поверхность S = 2πR(R + H) = ${2*R*(R+H)}π ≈ ${(2*R*(R+H)*Math.PI).toFixed(1)}.`;
+ }else if(kind==="cone"){
+   svg=`<polygon points="${(150-w/2).toFixed(1)},230 ${(150+w/2).toFixed(1)},230 150,${(230-h).toFixed(1)}" fill="#f0eaff" stroke="#8062d8" stroke-width="2"/><ellipse cx="150" cy="230" rx="${(w/2).toFixed(1)}" ry="${ry.toFixed(1)}" fill="none" stroke="#8062d8" stroke-width="2" stroke-dasharray="4 3"/>`;
+   const l=Math.sqrt(R*R+H*H);
+   info=`Конус: V = πR²H/3 = ${(R*R*H/3).toFixed(2)}π ≈ ${(R*R*H/3*Math.PI).toFixed(1)}. Образующая l = √(R² + H²) ≈ ${l.toFixed(2)}. Полная поверхность S = πR(R + l) ≈ ${(Math.PI*R*(R+l)).toFixed(1)}.`;
+ }else{
+   svg=`<circle cx="150" cy="130" r="${(R*11).toFixed(1)}" fill="#f0eaff" stroke="#8062d8" stroke-width="2"/>`;
+   info=`Шар: V = 4πR³/3 = ${(4*R**3/3).toFixed(2)}π ≈ ${(4*R**3/3*Math.PI).toFixed(1)}. Площадь сферы S = 4πR² = ${4*R*R}π ≈ ${(4*R*R*Math.PI).toFixed(1)}.`;
+ }
+ $("bsvg").innerHTML=`<svg viewBox="0 0 300 260" class="plot">${svg}</svg>`;
+ $("binfo").textContent=info;
+}
+function circUpdate(){
+ const th=+$("cth").value;$("ctv").textContent=th;
+ const cx=150,cy=130,r=110,P=d=>[cx+r*Math.cos(d*Math.PI/180),cy-r*Math.sin(d*Math.PI/180)];
+ const A=P(0),B=P(th),C=P(th/2+180),f=p=>p[0].toFixed(1)+","+p[1].toFixed(1);
+ $("csvg").innerHTML=`<svg viewBox="0 0 300 260" class="plot">
+ <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#8062d8" stroke-width="2"/>
+ <line x1="${cx}" y1="${cy}" x2="${A[0].toFixed(1)}" y2="${A[1].toFixed(1)}" stroke="#bbb" stroke-dasharray="4 3"/>
+ <line x1="${cx}" y1="${cy}" x2="${B[0].toFixed(1)}" y2="${B[1].toFixed(1)}" stroke="#bbb" stroke-dasharray="4 3"/>
+ <polyline points="${f(A)} ${f(C)} ${f(B)}" fill="none" stroke="#c34d69" stroke-width="2"/>
+ <circle cx="${A[0].toFixed(1)}" cy="${A[1].toFixed(1)}" r="4" fill="#8062d8"/><circle cx="${B[0].toFixed(1)}" cy="${B[1].toFixed(1)}" r="4" fill="#8062d8"/><circle cx="${C[0].toFixed(1)}" cy="${C[1].toFixed(1)}" r="4" fill="#c34d69"/>
+ <text x="${cx+4}" y="${cy-6}" font-size="13">O</text><text x="${(A[0]+6).toFixed(1)}" y="${(A[1]+14).toFixed(1)}" font-size="13">A</text><text x="${(B[0]+6).toFixed(1)}" y="${(B[1]-6).toFixed(1)}" font-size="13">B</text><text x="${(C[0]+6).toFixed(1)}" y="${(C[1]+14).toFixed(1)}" font-size="13">C</text>
+ </svg>`;
+ $("cinfo").textContent=`Центральный угол AOB = ${th}°. Вписанный угол ACB, опирающийся на ту же дугу, равен ${th/2}°.`;
+}
+
+// --- Пересборка раздела «Графики»: все карточки с выбором типа ---
+function buildAllGraphs(){
+ const opt=o=>Object.entries(o).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");
+ const axes=`<line x1="0" y1="150" x2="300" y2="150" stroke="#cfc7e6"/><line x1="150" y1="0" x2="150" y2="300" stroke="#cfc7e6"/>`;
+ $("gbox").innerHTML=`
+ <h2 class="section-title">Графики и фигуры</h2>
+ <div class="card"><h3>График функции</h3>
+ <select id="pk" class="sel">${opt(PF)}</select>
+ <svg viewBox="0 0 300 300" class="plot">${axes}<path id="ppath" fill="none" stroke="#8062d8" stroke-width="2.5"/><circle id="ppt" r="4" fill="#c34d69"/></svg>
+ <p id="pinfo" class="muted"></p>
+ <label>a = <span id="pav">1</span><input type="range" min="-3" max="3" step="0.5" value="1" id="pa" style="width:100%"></label>
+ <label>b = <span id="pbv">0</span><input type="range" min="-10" max="10" step="1" value="0" id="pb" style="width:100%"></label>
+ <label>c = <span id="pcv">-3</span><input type="range" min="-10" max="10" step="1" value="-3" id="pc" style="width:100%"></label></div>
+ <div class="card"><h3>Касательная к графику</h3>
+ <select id="fk" class="sel">${opt(FN)}</select>
+ <svg viewBox="0 0 300 300" class="plot">${axes}<path id="fpath" fill="none" stroke="#8062d8" stroke-width="2.5"/><line id="ftan" stroke="#c34d69" stroke-width="1.5" stroke-dasharray="5 3"/><circle id="fpt" r="4" fill="#c34d69"/></svg>
+ <p id="finfo" class="muted"></p>
+ <label>a = <span id="fav">1</span><input type="range" min="-3" max="3" step="0.5" value="1" id="fa" style="width:100%"></label>
+ <label>b = <span id="fbv">0</span><input type="range" min="-3" max="3" step="0.5" value="0" id="fb" style="width:100%"></label>
+ <label>x₀ (точка касания) = <span id="fxv">1</span><input type="range" min="-5" max="5" step="0.5" value="1" id="fx" style="width:100%"></label></div>
+ <div class="card"><h3>Фигуры на плоскости</h3>
+ <select id="fg" class="sel"><option value="tri">Треугольник (две стороны и угол)</option><option value="par">Параллелограмм</option><option value="rect">Прямоугольник</option></select>
+ <div id="fsvg"></div><p id="finf" class="muted"></p>
+ <label>Сторона 1: <span id="f1v">4</span><input type="range" min="1" max="10" step="1" value="4" id="f1" style="width:100%"></label>
+ <label>Сторона 2: <span id="f2v">5</span><input type="range" min="1" max="10" step="1" value="5" id="f2" style="width:100%"></label>
+ <div id="fangrow"><label>Угол между сторонами: <span id="fangv">60</span>°<input type="range" min="20" max="150" step="5" value="60" id="fang" style="width:100%"></label></div></div>
+ <div class="card"><h3>Тела вращения</h3>
+ <select id="bk" class="sel"><option value="cyl">Цилиндр</option><option value="cone">Конус</option><option value="sph">Шар</option></select>
+ <div id="bsvg"></div><p id="binfo" class="muted"></p>
+ <label>Радиус R = <span id="brv">3</span><input type="range" min="1" max="8" step="1" value="3" id="br" style="width:100%"></label>
+ <label>Высота H = <span id="bhv">5</span><input type="range" min="1" max="10" step="1" value="5" id="bh" style="width:100%"></label></div>
+ <div class="card"><h3>Вписанный и центральный угол</h3>
+ <div id="csvg"></div><p id="cinfo" class="muted"></p>
+ <label>Центральный угол AOB = <span id="ctv">60</span>°<input type="range" min="20" max="170" step="5" value="60" id="cth" style="width:100%"></label></div>`;
+ $("pk").addEventListener("change",pU);["pa","pb","pc"].forEach(id=>$(id).addEventListener("input",pU));
+ $("fk").addEventListener("change",fnUpdate);["fa","fb","fx"].forEach(id=>$(id).addEventListener("input",fnUpdate));
+ $("fg").addEventListener("change",figU);["f1","f2","fang"].forEach(id=>$(id).addEventListener("input",figU));
+ $("bk").addEventListener("change",bodyUpdate);["br","bh"].forEach(id=>$(id).addEventListener("input",bodyUpdate));
+ $("cth").addEventListener("input",circUpdate);
+ pU();fnUpdate();figU();bodyUpdate();circUpdate();
+}
+
+// --- Игры: иконки, по нажатию открывается игра ---
+const GAMES=[
+ {k:"daily",i:"🎯",n:"Задания дня"},
+ {k:"pair",i:"🃏",n:"Найди пару"},
+ {k:"find",i:"🔎",n:"Найди ошибку"},
+ {k:"solve",i:"🪜",n:"Пошаговые решения"},
+ {k:"speed",i:"⚡",n:"Викторина на скорость"}
+];
+function gamesHome(){$("gameArea").innerHTML="";$("gtiles").style.display="grid"}
+function openGame(k){
+ if(k==="speed"){startQuiz("speed");return}
+ $("gtiles").style.display="none";
+ const back=`<button class="btn secondary" style="margin-bottom:10px" onclick="gamesHome()">← Все игры</button>`;
+ if(k==="daily"){$("gameArea").innerHTML=back+`<div class="card"><h3>Задания дня</h3><div id="dailyBox"></div></div>`;dailyRender()}
+ else if(k==="find"){$("gameArea").innerHTML=back+`<div class="card"><h3>Найди ошибку в решении</h3><div id="findBox"></div></div>`;findRender()}
+ else if(k==="solve"){$("gameArea").innerHTML=back+`<div class="card"><h3>Пошаговые решения</h3><div id="solveBox"></div></div>`;solveRender()}
+ else if(k==="pair"){$("gameArea").innerHTML=back+`<div class="card"><h3>Найди пару</h3><p class="muted">Соедини формулу с её смыслом.</p><div id="pairBox"></div></div>`;pairStart()}
+}
+const PAIRS=[["Площадь круга","πR²"],["Длина окружности","2πR"],["Объём шара","4πR³/3"],["Объём цилиндра","πR²H"],["sin²α + cos²α","1"],["Производная xⁿ","n·xⁿ⁻¹"],["log_a(xy)","log_a x + log_a y"],["Дискриминант","b² − 4ac"]];
+let pg=null;
+function pairStart(){
+ const pick=[...PAIRS].sort(()=>Math.random()-0.5).slice(0,6),cards=[];
+ pick.forEach((p,i)=>{cards.push({id:i,t:p[0]});cards.push({id:i,t:p[1]})});
+ cards.sort(()=>Math.random()-0.5);
+ pg={cards,open:[],done:new Set(),moves:0,paid:false};pairRender();
+}
+function pairRender(){
+ const grid=pg.cards.map((c,i)=>{const shown=pg.done.has(c.id)||pg.open.includes(i);
+   return `<button class="pcard ${pg.done.has(c.id)?"ok":""}" onclick="pairPick(${i})">${shown?c.t:"?"}</button>`}).join("");
+ const total=pg.cards.length/2,won=pg.done.size===total;
+ $("pairBox").innerHTML=`<div class="pgrid">${grid}</div><p class="muted">${won?`Все пары найдены за ${pg.moves} ходов 🎉`:`Ходов: ${pg.moves}. Найдено пар: ${pg.done.size} из ${total}`}</p><button class="btn secondary" onclick="pairStart()">Новая игра</button>`;
+}
+function pairPick(i){
+ if(pg.open.length===2||pg.open.includes(i)||pg.done.has(pg.cards[i].id))return;
+ pg.open.push(i);
+ if(pg.open.length===2){
+   pg.moves++;
+   const [a,b]=pg.open;
+   if(pg.cards[a].id===pg.cards[b].id){
+     pg.done.add(pg.cards[a].id);pg.open=[];
+     if(pg.done.size===pg.cards.length/2&&!pg.paid){pg.paid=true;xp+=15;save();renderProfile()}
+     pairRender();
+   }else{
+     pairRender();
+     setTimeout(()=>{pg.open=[];pairRender()},800);
+   }
+   return;
+ }
+ pairRender();
+}
+
+// Сборка: иконки в игры, графики с выбором типов
+$("games").innerHTML=`<h2 class="section-title">Игры</h2><div class="tiles" id="gtiles">${GAMES.map(g=>`<button class="tile" onclick="openGame('${g.k}')"><span class="ti">${g.i}</span><span>${g.n}</span></button>`).join("")}</div><div id="gameArea"></div>`;
+buildAllGraphs();
+</script>
+<script>
+// ===== Найди ошибку: 10 многошаговых заданий профиля =====
+const FIND2=[
+{q:"Реши уравнение log₂(x − 1) + log₂(x + 1) = 3",s:["ОДЗ: x > 1","log₂((x − 1)(x + 1)) = 3","(x − 1)(x + 1) = 2³ = 8","x² − 1 = 8, откуда x² = 7","x = ±√7","С учётом ОДЗ: x = √7"],bad:3,e:"x² − 1 = 8 даёт x² = 9, значит x = ±3. По ОДЗ подходит только x = 3."},
+{q:"Реши уравнение cos 2x = 1/2",s:["cos 2x = 1/2","2x = ±π/3 + 2πn","x = ±π/6 + 2πn","Ответ: x = ±π/6 + 2πn"],bad:2,e:"При делении аргумента на 2 период тоже делится на 2: x = ±π/6 + πn."},
+{q:"Найди точки экстремума функции f(x) = x³ − 6x² + 9x",s:["f′(x) = 3x² − 12x + 9","3x² − 12x + 9 = 0 ⇔ x² − 4x + 3 = 0","x = 1 и x = 3 — критические точки","На (1; 3) производная положительна","x = 1 — максимум, x = 3 — минимум"],bad:3,e:"f′(x) = 3(x − 1)(x − 3). При x = 2 получаем f′(2) = −3 < 0, значит на (1; 3) производная отрицательна."},
+{q:"Найди площадь фигуры, ограниченной графиками y = x² и y = x",s:["x² = x ⇒ x = 0 и x = 1 — пределы интегрирования","На (0; 1) прямая y = x лежит выше параболы","S = ∫₀¹ (x² − x) dx","S = [x³/3 − x²/2] от 0 до 1 = 1/3 − 1/2 = −1/6","Ответ: S = −1/6"],bad:2,e:"Площадь берётся как ∫ (верхняя − нижняя): S = ∫₀¹ (x − x²) dx = 1/2 − 1/3 = 1/6."},
+{q:"Найди третью сторону треугольника со сторонами 3 и 4 и углом 60° между ними",s:["c² = a² + b² − 2ab·cos C","c² = 9 + 16 + 2·3·4·(1/2)","c² = 25 + 12 = 37","c = √37","Ответ: c = √37"],bad:1,e:"Знак минус обязателен: c² = 9 + 16 − 2·3·4·(1/2) = 25 − 12 = 13, значит c = √13."},
+{q:"Найди объём конуса с радиусом 3 и высотой 4",s:["Образующая l = √(3² + 4²) = 5","V = (1/3)πR²h","V = (1/3)π·3·4 = 4π","Ответ: V = 4π"],bad:2,e:"R² = 9, поэтому V = (1/3)π·9·4 = 12π."},
+{q:"Реши неравенство log_{1/2} x > −1",s:["ОДЗ: x > 0","−1 = log_{1/2} 2, поэтому log_{1/2} x > log_{1/2} 2","Основание меньше 1, значит x > 2","Ответ: x ∈ (2; +∞)"],bad:2,e:"При основании 1/2 < 1 знак неравенства меняется: x < 2. С учётом ОДЗ получаем x ∈ (0; 2)."},
+{q:"Бросают два игральных кубика. Найди вероятность, что сумма очков равна 7",s:["Всего исходов: 6·6 = 36","Благоприятных: (1;6), (2;5), (3;4), (4;3), (5;2), (6;1) — 6 исходов","P = 6/36 = 1/5","Ответ: 1/5"],bad:2,e:"6/36 = 1/6. Ответ: 1/6."},
+{q:"Найди область определения y = √(x² − 4)/(x − 3)",s:["x² − 4 ≥ 0 ⇒ x ≤ −2 или x ≥ 2","x − 3 ≠ 0 ⇒ x ≠ 3","D(y) = (−∞; −2] ∪ [2; +∞)","Ответ: D(y) = (−∞; −2] ∪ [2; +∞)"],bad:2,e:"Знаменатель не равен нулю, поэтому x = 3 исключается: D(y) = (−∞; −2] ∪ [2; 3) ∪ (3; +∞)."},
+{q:"Найди сумму первых 10 членов арифметической прогрессии: a₁ = 5, d = 3",s:["S₁₀ = (2a₁ + 9d)/2 · 10","S₁₀ = (2·5 + 10·3)/2 · 10","S₁₀ = (10 + 27)/2 · 10 = 185","Ответ: S₁₀ = 185"],bad:1,e:"Разность умножается на n − 1 = 9, а не на 10: S₁₀ = (10 + 27)/2 · 10 = 185."}
+];
+FIND.splice(0,FIND.length,...FIND2);
+function findRender(){
+ const P=FIND[fi%FIND.length];
+ $("findBox").innerHTML=`<p class="muted">Задача ${fi%FIND.length+1} из ${FIND.length}. Найди первый неверный шаг.</p><p><b>${P.q}</b></p>`+
+ P.s.map((s,i)=>`<button class="btn secondary" style="display:block;width:100%;margin:6px 0;text-align:left" onclick="findPick(${i})">Шаг ${i+1}: ${s}</button>`).join("")+`<div id="findFb"></div>`;
+}
+function findPick(i){
+ const P=FIND[fi%FIND.length];
+ let msg,ok=false;
+ if(i===P.bad){ok=true;msg="Верно, это первая ошибка. "+P.e}
+ else if(i<P.bad)msg="Этот шаг верный, ищи дальше.";
+ else msg="Этот шаг уже после ошибки. Ищи более ранний шаг.";
+ $("findFb").innerHTML=`<div class="feedback ${ok?"good":"bad"}">${msg}</div>`+(ok?`<button class="btn" style="margin-top:8px" onclick="fi++;findRender()">Следующая задача</button>`:"");
+}
+
+// ===== Теория профильной математики: основные блоки и теоремы =====
+const PROFILE2=[
+{id:"geo_theorems",emoji:"📐",name:"Теоремы планиметрии",level:"Теория профиля",intro:"Основные теоремы треугольников и окружностей, которые нужны для задач 16 и 14 профильного уровня.",
+sections:[
+["1. Фалес и подобие","Параллельные прямые отсекают на сторонах угла пропорциональные отрезки. Для подобных фигур с коэффициентом k периметры относятся как k, площади — как k²."],
+["2. Теорема синусов и косинусов","a/sin A = b/sin B = c/sin C = 2R. c² = a² + b² − 2ab·cos C."],
+["3. Медиана, биссектриса, высота","Медиана: m_a = ½√(2b² + 2c² − a²). Биссектриса делит сторону пропорционально прилежащим сторонам: BD/DC = AB/AC. Высота: h_a = 2S/a."],
+["4. Площадь треугольника","S = ½ab·sin C; S = p·r (p — полупериметр, r — радиус вписанной окружности); S = abc/(4R); формула Герона S = √(p(p−a)(p−b)(p−c))."],
+["5. Окружности","Радиус вписанной окружности r = S/p. Радиус описанной R = abc/(4S). Отрезки касательных из одной точки равны. Теорема о касательной и секущей: PA² = PB·PC."],
+["6. Вписанные и описанные четырёхугольники","Четырёхугольник вписан в окружность, если сумма противоположных углов равна 180°. Четырёхугольник описан около окружности, если суммы противоположных сторон равны. Средняя линия трапеции равна полусумме оснований."]],
+formulas:["a/sin A = 2R","c² = a² + b² − 2ab·cos C","S = pr","PA² = PB·PC"],
+example:"В треугольнике стороны 3 и 4 с углом 60° между ними: c² = 9 + 16 − 12 = 13, c = √13.",
+algorithm:["Найди, что связано с углом: синус или косинус.","Выбери теорему: синусов для углов и сторон, косинусов для трёх сторон.","Подставь значения и вычисли.","Проверь, что сторона меньше суммы двух других."],
+mistakes:"Частая ошибка: забыть знак минус в теореме косинусов и путать вписанный и описанный четырёхугольники."},
+{id:"stereo_theorems",emoji:"🧊",name:"Теоремы стереометрии",level:"Теория профиля",intro:"Признаки параллельности и перпендикулярности, углы в пространстве и объёмы тел, которые нужны для задачи 14.",
+sections:[
+["1. Параллельность","Прямая параллельна плоскости, если параллельна прямой в этой плоскости. Плоскости параллельны, если две пересекающиеся прямые одной плоскости параллельны другой плоскости."],
+["2. Перпендикулярность","Прямая перпендикулярна плоскости, если перпендикулярна двум пересекающимся прямым в этой плоскости."],
+["3. Теорема о трёх перпендикулярах","Наклонная перпендикулярна прямой в плоскости тогда и только тогда, когда её проекция перпендикулярна этой прямой."],
+["4. Углы","Угол между прямой и плоскостью — угол с её проекцией на плоскость. Двугранный угол измеряется линейным углом. Угол между скрещивающимися прямыми — угол между параллельными им прямыми, проведёнными через одну точку."],
+["5. Расстояния","Расстояние от точки до плоскости — длина перпендикуляра. Расстояние между скрещивающимися прямыми — длина их общего перпендикуляра."],
+["6. Объёмы","Призма V = S·h. Пирамида V = S·h/3. Усечённая пирамида V = h(S₁ + √(S₁S₂) + S₂)/3. Конус V = πR²h/3. Усечённый конус V = πh(R² + Rr + r²)/3. Шар V = 4πR³/3, S = 4πR²."],
+["7. Вписанные и описанные тела","Центр сферы, описанной около прямоугольного параллелепипеда, — середина диагонали, радиус R = d/2. Вписанный шар касается всех граней многогранника."]],
+formulas:["V_пирамиды = S·h/3","V_шара = 4πR³/3","d = √(a² + b² + c²)","R_описанной = d/2"],
+example:"Конус с радиусом 3 и высотой 4: V = (1/3)π·9·4 = 12π.",
+algorithm:["Нарисуй тело и отметь высоту и радиусы.","Найди прямоугольный треугольник, в котором есть нужный угол или расстояние.","Примени теорему Пифагора или тригонометрию.","Подставь в формулу объёма или площади."],
+mistakes:"Частая ошибка: принять наклонное ребро за высоту пирамиды или конуса."},
+{id:"trig_full",emoji:"〰️",name:"Тригонометрия: тождества и уравнения",level:"Теория профиля",intro:"Полный набор тождеств, формул и методов решения, который нужен для задач 13 и 5 профильного уровня.",
+sections:[
+["1. Следствия основного тождества","1 + tg²α = 1/cos²α; 1 + ctg²α = 1/sin²α; tg α · ctg α = 1."],
+["2. Сложение аргументов","sin(α ± β) = sin α cos β ± cos α sin β; cos(α ± β) = cos α cos β ∓ sin α sin β."],
+["3. Сумма и разность","sin α + sin β = 2 sin((α + β)/2) cos((α − β)/2); cos α + cos β = 2 cos((α + β)/2) cos((α − β)/2); cos α − cos β = −2 sin((α + β)/2) sin((α − β)/2)."],
+["4. Понижение степени","sin²α = (1 − cos 2α)/2; cos²α = (1 + cos 2α)/2."],
+["5. Простейшие уравнения","sin x = a: x = (−1)ⁿ arcsin a + πn. cos x = a: x = ±arccos a + 2πn. tg x = a: x = arctg a + πn. ctg x = a: x = arcctg a + πn."],
+["6. Однородные уравнения","a sin²x + b sin x cos x + c cos²x = 0: делим на cos²x и получаем квадратное уравнение относительно tg x."]],
+formulas:["sin²α + cos²α = 1","sin 2α = 2 sin α cos α","cos x = a ⇒ x = ±arccos a + 2πn","tg x = a ⇒ x = arctg a + πn"],
+example:"sin x = 1/2: x = (−1)ⁿ·π/6 + πn.",
+algorithm:["Приведи уравнение к одному аргументу и одной функции.","Выбери формулу: тождество, понижение степени или сумму в произведение.","Запиши общее решение.","Отбери корни по заданному промежутку."],
+mistakes:"Частая ошибка: делить на cos x или sin x, не проверив, что они не равны нулю, и терять серии решений."},
+{id:"exp_log_full",emoji:"🔡",name:"Показательные и логарифмические неравенства",level:"Теория профиля",intro:"Методы решения показательных и логарифмических уравнений и неравенств для задач 13 и 15.",
+sections:[
+["1. Показательные неравенства","a^f(x) > a^g(x): при a > 1 знак сохраняется, при 0 < a < 1 знак меняется на противоположный."],
+["2. Логарифмические неравенства","log_a f(x) > log_a g(x): при a > 1 получаем f(x) > g(x) > 0; при 0 < a < 1 получаем 0 < f(x) < g(x)."],
+["3. Замена переменной","Уравнение 4ˣ − 3·2ˣ + 2 = 0 записываем как t² − 3t + 2 = 0, где t = 2ˣ > 0. После решения возвращаемся к x."],
+["4. Свойства логарифмов","log_a b = 1/log_b a; log_a b · log_b c = log_a c; a^(log_a b) = b."],
+["5. ОДЗ","Аргумент логарифма положителен, основание положительно и не равно 1. Всегда учитывай ОДЗ в ответе."]],
+formulas:["log_a b = 1/log_b a","a^(log_a b) = b","0 < a < 1 меняет знак неравенства"],
+example:"log_{1/2} x > −1 ⇒ x ∈ (0; 2) с учётом ОДЗ и смены знака.",
+algorithm:["Найди ОДЗ.","Определи основание: больше или меньше единицы.","Выбери, сохранять знак или менять.","Проверь ответ по ОДЗ."],
+mistakes:"Частая ошибка: не поменять знак неравенства при основании меньше единицы."},
+{id:"deriv_full",emoji:"📉",name:"Производная: таблица и применение",level:"Теория профиля",intro:"Таблица производных, правило цепочки и задачи на наибольшее и наименьшее значение.",
+sections:[
+["1. Таблица производных","(sin x)′ = cos x; (cos x)′ = −sin x; (eˣ)′ = eˣ; (aˣ)′ = aˣ·ln a; (ln x)′ = 1/x; (log_a x)′ = 1/(x·ln a); (√x)′ = 1/(2√x); (tg x)′ = 1/cos²x."],
+["2. Правило цепочки","(f(g(x)))′ = f′(g(x))·g′(x)."],
+["3. Касательная","y = f(x₀) + f′(x₀)(x − x₀)."],
+["4. Монотонность и экстремумы","Где f′ > 0, функция возрастает; где f′ < 0, убывает. Точки, где f′ меняет знак, — точки экстремума."],
+["5. Наибольшее и наименьшее на отрезке","Сравни значения функции на концах отрезка и в критических точках внутри отрезка."],
+["6. Задачи на оптимизацию","Вырази величину через одну переменную, найди производную, найди экстремум, проверь границы области."]],
+formulas:["(sin x)′ = cos x","(eˣ)′ = eˣ","(f(g))′ = f′(g)·g′","y = f(x₀) + f′(x₀)(x − x₀)"],
+example:"f(x) = x³ − 6x² + 9x: f′ = 3(x − 1)(x − 3), максимум в x = 1, минимум в x = 3.",
+algorithm:["Найди производную по таблице и правилам.","Реши f′(x) = 0 и отметь критические точки.","Определи знаки f′ на промежутках.","Для отрезка сравни значения в точках."],
+mistakes:"Частая ошибка: забыть производную внутренней функции в правиле цепочки."},
+{id:"integ_full",emoji:"∫",name:"Интеграл: таблица и объём тел",level:"Теория профиля",intro:"Таблица интегралов, формула Ньютона — Лейбница, площади и объёмы тел вращения.",
+sections:[
+["1. Таблица интегралов","∫xⁿ dx = xⁿ⁺¹/(n + 1) + C; ∫ dx/x = ln|x| + C; ∫eˣ dx = eˣ + C; ∫ sin x dx = −cos x + C; ∫ cos x dx = sin x + C; ∫ dx/cos²x = tg x + C; ∫ dx/sin²x = −ctg x + C; ∫ aˣ dx = aˣ/ln a + C."],
+["2. Формула Ньютона — Лейбница","∫ от a до b f(x) dx = F(b) − F(a)."],
+["3. Площадь фигуры","Если f ≥ g на [a; b], то S = ∫ от a до b (f − g) dx."],
+["4. Объём тела вращения","При вращении криволинейной трапеции вокруг оси Ox: V = π∫ от a до b (f(x))² dx."],
+["5. Свойства","Интеграл суммы равен сумме интегралов; постоянный множитель выносится за знак интеграла."]],
+formulas:["∫ dx/x = ln|x| + C","V = π∫ f² dx","S = ∫ (f − g) dx"],
+example:"∫ от 0 до 2 от 3x² dx = x³ от 0 до 2 = 8.",
+algorithm:["Найди первообразную по таблице.","Подставь пределы в правильном порядке.","Для площади определи верхнюю и нижнюю функции.","Для объёма возведи функцию в квадрат и умножь на π."],
+mistakes:"Частая ошибка: вычислить V без возведения в квадрат или не учесть знак при вычитании пределов."},
+{id:"funcs_full",emoji:"📈",name:"Свойства функций и преобразования графиков",level:"Теория профиля",intro:"Свойства функций и правила построения графиков, которые используются в задачах 11, 12 и 15.",
+sections:[
+["1. Область определения","Чётный корень — подкоренное выражение неотрицательно. Знаменатель не равен нулю. Аргумент логарифма положителен."],
+["2. Чётность и нечётность","f(−x) = f(x) — чётная, симметрична относительно Oy. f(−x) = −f(x) — нечётная, симметрична относительно начала координат."],
+["3. Периодичность","sin x и cos x имеют период 2π, tg x и ctg x — период π."],
+["4. Монотонность и экстремумы","Определяются по знаку производной."],
+["5. Преобразования графиков","f(x) + b — сдвиг вверх на b; f(x + a) — сдвиг влево на a; f(kx) — сжатие по оси Ox; |f(x)| — отражение отрицательной части вверх; f(|x|) — симметрия относительно Oy."],
+["6. Множество значений","Найди наименьшее и наибольшее значение функции или выясни, что они не ограничены."]],
+formulas:["f(|x|) — симметрична относительно Oy","|f(x)| — отражение отрицательной части"],
+example:"y = |x² − 4|: график y = x² − 4 с отражённой частью ниже оси Ox.",
+algorithm:["Найди область определения.","Определи чётность и периодичность.","Построй график по преобразованиям.","Найди экстремумы и множество значений."],
+mistakes:"Частая ошибка: путать сдвиг f(x + a) со сдвигом f(x) + a."},
+{id:"prog_seq",emoji:"🔢",name:"Прогрессии",level:"Теория профиля",intro:"Арифметическая и геометрическая прогрессии, бесконечная убывающая геометрическая прогрессия.",
+sections:[
+["1. Арифметическая прогрессия","aₙ = a₁ + (n − 1)d; Sₙ = (a₁ + aₙ)n/2 = (2a₁ + (n − 1)d)n/2. Характеристическое свойство: aₙ = (aₙ₋₁ + aₙ₊₁)/2."],
+["2. Геометрическая прогрессия","bₙ = b₁·qⁿ⁻¹; Sₙ = b₁(qⁿ − 1)/(q − 1). Характеристическое свойство: bₙ² = bₙ₋₁·bₙ₊₁."],
+["3. Бесконечно убывающая","При |q| < 1: S = b₁/(1 − q)."],
+["4. Типичные задачи","Найди n по сумме, восстанови прогрессию по двум членам, сравни суммы двух прогрессий."]],
+formulas:["Sₙ = (2a₁ + (n − 1)d)·n/2","bₙ = b₁qⁿ⁻¹","S = b₁/(1 − q)"],
+example:"a₁ = 5, d = 3: S₁₀ = (10 + 27)/2·10 = 185.",
+algorithm:["Определи тип прогрессии.","Выпиши известные величины: a₁, d или b₁, q, n.","Подставь в нужную формулу.","Проверь, что ответ согласуется с условием."],
+mistakes:"Частая ошибка: умножать d на n вместо n − 1."},
+{id:"econ",emoji:"💰",name:"Экономические задачи",level:"Теория профиля",intro:"Простые и сложные проценты, кредиты и вклады — основа задачи 17.",
+sections:[
+["1. Простой процент","S = P(1 + r·t), где P — начальная сумма, r — ставка, t — срок."],
+["2. Сложный процент","S = P(1 + r)ⁿ. Каждый период проценты начисляются на уже накопленную сумму."],
+["3. Кредит с дифференцированными платежами","Основной долг уменьшается равными частями, проценты считаются от остатка долга."],
+["4. Кредит с аннуитетными платежами","Платёж постоянный. Составляется уравнение по годам: остаток долга после каждого года должен стать нулём."],
+["5. Как решать задачи","Заведи таблицу по годам: остаток долга, проценты, платёж. Переменная — обычно сумма платежа или долга."]],
+formulas:["S = P(1 + r·t)","S = P(1 + r)ⁿ"],
+example:"Вклад 1000 под 10% годовых на 2 года со сложным процентом: 1000·1,1² = 1210.",
+algorithm:["Запиши условие в виде таблицы по годам.","Выбери формулу: простой или сложный процент.","Составь уравнение по условию.","Реши и проверь, что остаток долга равен нулю."],
+mistakes:"Частая ошибка: считать сложный процент как простой, складывая проценты, а не умножая коэффициенты."},
+{id:"params",emoji:"🧩",name:"Задачи с параметром: основные приёмы",level:"Теория профиля",intro:"Общие приёмы для задач с параметром (задания 17–18). Полная отработка требует большой практики.",
+sections:[
+["1. Идея","Параметр — число, которое нужно исследовать. Ответ обычно зависит от значения параметра."],
+["2. Графический приём","Строим график в координатах (x; a) или сравниваем графики функций при разных a."],
+["3. Дискриминант и Виета","Для квадратного уравнения условие существования корней — D ≥ 0. Сумма корней x₁ + x₂ = −b/a, произведение x₁x₂ = c/a."],
+["4. Разбор случаев","Рассмотри отдельно a = 0, a > 0, a < 0, если уравнение может стать линейным или поменять знак коэффициентов."],
+["5. Пример","x² − 2ax + 1 = 0 имеет корни при D = 4a² − 4 ≥ 0, то есть при |a| ≥ 1."]],
+formulas:["D = b² − 4ac ≥ 0","x₁ + x₂ = −b/a","x₁x₂ = c/a"],
+example:"x² − 2ax + 1 = 0: корни существуют при |a| ≥ 1.",
+algorithm:["Выпиши, при каких значениях параметра меняется вид уравнения.","Разбери каждый случай отдельно.","Найди условия, которые нужны по задаче.","Запиши ответ в виде множества значений параметра."],
+mistakes:"Частая ошибка: забыть случай, когда коэффициент при старшей степени равен нулю."},
+{id:"vectors_coord",emoji:"🧭",name:"Векторы и координаты в пространстве",level:"Теория профиля",intro:"Координатный метод для задачи 14: векторы, углы, расстояния и уравнения плоскости.",
+sections:[
+["1. Длина вектора","|a| = √(x² + y² + z²)."],
+["2. Скалярное произведение","a·b = x₁x₂ + y₁y₂ + z₁z₂ = |a||b|·cos φ."],
+["3. Угол между векторами","cos φ = (a·b)/(|a||b|)."],
+["4. Уравнение плоскости","ax + by + cz + d = 0; вектор (a; b; c) — нормаль."],
+["5. Расстояние от точки до плоскости","d = |ax₀ + by₀ + cz₀ + d| / √(a² + b² + c²)."],
+["6. Сфера","(x − a)² + (y − b)² + (z − c)² = R² — уравнение сферы с центром (a; b; c)."]],
+formulas:["a·b = x₁x₂ + y₁y₂ + z₁z₂","cos φ = a·b/(|a||b|)","d = |ax₀ + by₀ + cz₀ + d|/√(a² + b² + c²)"],
+example:"Векторы (1; 0; 0) и (1; 1; 0): cos φ = 1/(1·√2) = √2/2, угол 45°.",
+algorithm:["Введи систему координат, удобную для фигуры.","Выпиши координаты нужных точек.","Найди векторы и примени формулы.","Проверь разумность ответа."],
+mistakes:"Частая ошибка: перепутать координаты точки и координаты вектора между точками."},
+{id:"prob_full",emoji:"🎲",name:"Комбинаторика и вероятность",level:"Теория профиля",intro:"Формулы подсчёта исходов, условная вероятность и формула Бернулли для задач 4 и 10.",
+sections:[
+["1. Комбинаторика","Перестановки: n!. Размещения: A_n^k = n!/(n − k)!. Сочетания: C_n^k = n!/(k!(n − k)!)."],
+["2. Классическая вероятность","P(A) = m/n, где m — благоприятные исходы, n — все равновозможные исходы."],
+["3. Сложение и умножение","Для несовместных: P(A ∪ B) = P(A) + P(B). Для независимых: P(A ∩ B) = P(A)·P(B)."],
+["4. Условная вероятность","P(A|B) = P(A ∩ B)/P(B)."],
+["5. Формула Бернулли","P_n(k) = C_n^k·pᵏ·(1 − p)ⁿ⁻ᵏ для n независимых испытаний."],
+["6. Геометрическая вероятность","P = (мера благоприятной области) / (мера всей области)."],
+["7. Математическое ожидание","E = Σ xᵢ·pᵢ."]],
+formulas:["C_n^k = n!/(k!(n − k)!)","P_n(k) = C_n^k·pᵏ(1 − p)ⁿ⁻ᵏ","E = Σ xᵢpᵢ"],
+example:"Два кубика, сумма 7: 6 исходов из 36, P = 1/6.",
+algorithm:["Определи, что считаем: исходы или вероятности.","Выбери формулу: сочетания, сложение, умножение или Бернулли.","Посчитай благоприятные исходы.","Проверь, что вероятность от 0 до 1."],
+mistakes:"Частая ошибка: путать размещения и сочетания, а также складывать вероятности совместных событий."}
+];
+PROFILE2.forEach(t=>topics.push(t));
+renderTopicGrid();
+</script>
+<script>
+// ===== Таймер в викторине на скорость =====
+let spStart=0,spTimer=null;
+$("quizArea").insertAdjacentHTML("beforebegin",'<div id="timerBox" class="tag" style="display:none;margin-bottom:8px;font-size:15px"></div>');
+function tickTimer(){
+ const s=Math.floor((Date.now()-spStart)/1000);
+ $("timerBox").textContent="⏱ "+String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+}
+function stopTimer(){if(spTimer){clearInterval(spTimer);spTimer=null}}
+
+function startQuiz(only){
+ let cats=CATS,n=10;
+ if(only==="weak"){const d=dueList();cats=d.length?d:sortedWeak().slice(0,3).map(x=>x.c);mode="weak"}
+ else if(only==="diag"){n=CATS.length*2;mode="diag"}
+ else if(only==="speed"){cats=["percent","functions","powers","equations"];n=15;mode="speed"}
+ else if(only==="daily"){cats=sortedWeak().slice(0,3).map(x=>x.c);n=3;mode="daily";if(daily.date!==today())daily={date:today(),claimed:false};SV("mathDaily",daily)}
+ else if(CATS.includes(only)){cats=[only];mode="normal"}
+ else mode="normal";
+ round=buildRound(cats,n);idx=0;correct=0;gained=0;perfect=true;roundStart=Date.now();
+ stopTimer();
+ if(mode==="speed"){
+   spStart=roundStart;$("timerBox").style.display="inline-block";tickTimer();
+   spTimer=setInterval(tickTimer,250);
+ }else{$("timerBox").style.display="none"}
+ showTab("practice");renderQuestion();
+}
+window.startQuiz=startQuiz;
+
+function finishRound(){
+ $("bar").style.width="100%";
+ if(mode==="diag"){$("quizArea").innerHTML="<h3>Диагностика пройдена 🎯</h3><p>План обновлён по твоим ответам.</p>";$("qCategory").textContent="Диагностика";showTab("plan");return}
+ if(mode==="speed"){
+   stopTimer();tickTimer();
+   const sec=Math.round((Date.now()-roundStart)/1000);
+   $("quizArea").innerHTML=`<h3>Готово! ⚡</h3><p>Правильных: <b>${correct} из ${round.length}</b> за <b>${sec} с</b></p><button class="btn" id="again">Ещё раз</button>`;
+   $("qCategory").textContent="Скорость";$("again").onclick=()=>startQuiz("speed");renderProfile();return;
+ }
+ let bonus=0;
+ if(mode==="daily"&&correct===round.length&&!daily.claimed){bonus=30;xp+=bonus;daily.claimed=true;SV("mathDaily",daily);save()}
+ if(perfect&&round.length)SV("mathPerfect",true);
+ $("quizArea").innerHTML=`<h3>Тренировка завершена! 🎉</h3><p>Правильных ответов: <b>${correct} из ${round.length}</b></p><p>Получено опыта: +${gained+bonus}${bonus?" (включая бонус дня)":""}</p><button class="btn" id="again">Новая тренировка</button>`;
+ $("qCategory").textContent="Результат";$("again").onclick=()=>startQuiz();
+ renderProfile();dailyRender();
+}
+</script>
+
+<script>
+// ===== Помощник: ответы на вопросы по сайту =====
+const SITE_FAQ=[
+ {re:/таймер|секундомер|время|скорост/i,ans:"Таймер (⏱) идёт в «Викторине на скорость». Запустить её можно во вкладке «✏️ Тренажёр» по кнопке «⚡ На скорость» или в «🎮 Игры». Раунд из 15 заданий, время останавливается, когда все задания решены."},
+ {re:/сбро|удал|очист|заново/i,ans:"Сбросить прогресс можно во вкладке «✏️ Тренажёр» кнопкой «Сбросить прогресс и историю». Удалятся опыт, статистика и история заданий на этом устройстве. Действие подтверждается через окно."},
+ {re:/xp|опыт|уровень|очк/i,ans:"XP (опыт) даётся за задания: +10 за верный ответ и +2 за попытку в тренировке, +5 за первое верное задание в банке, +15 за найденные пары в «Найди пару», +10 за сапёра, +30 за все верные задания дня (раз в день). Каждые 100 XP — новый уровень."},
+ {re:/аватар|персонаж|оформлен/i,ans:"Аватары и темы оформления — во вкладке «🏆 Прогресс». Аватары открываются за XP, а темы оформления — за достижения."},
+ {re:/достижен|награ/i,ans:"Достижения видны во вкладке «🏆 Прогресс». Например: «Первый шаг» (1 задание), «Точность» (10 верных), «Трудолюбие» (50 заданий), «Без ошибок» (тренировка без ошибок)."},
+ {re:/план|диагност|тест|слаб/i,ans:"Вкладка «🧭 План»: пройдите диагностику (по 2 задания на каждую тему), и сайт покажет слабые и сильные темы. План пересчитывается после каждой тренировки. Кнопка «🎯 Мои слабые места» даёт задания по темам, которые пора повторить."},
+ {re:/повтор|интервал|напомин/i,ans:"Если тема решена неверно, она попадает в напоминание «Пора повторить» через день. Правильные ответы сдвигают повтор на 3, 7, 14 и 30 дней. Напоминание видно в «📚 Темы» и в «🏆 Прогресс»."},
+ {re:/найди ошиб|ошибк/i,ans:"«Найди ошибку» (🔎 в разделе «🎮 Игры»): дано решение из 4–6 шагов, нужно найти первый неверный шаг. Шаги после ошибки помечаются как «уже после ошибки»."},
+ {re:/пар|память|карточ/i,ans:"«Найди пару» (🃏 в «🎮 Игры»): соедините формулу с её смыслом. Откройте две карточки; совпавшая пара остаётся открытой. Полная победа даёт +15 XP."},
+ {re:/задания дня|дневн|ежедн/i,ans:"«Задания дня» (🎯 в «🎮 Игры»): три задания на слабых темах. Если все три верны, +30 XP. Бонус можно получить один раз в день."},
+ {re:/график|парабол|касател/i,ans:"«📐 Графики»: выберите тип функции в карточке и двигайте ползунки. Касательная считается автоматически в выбранной точке x₀."},
+ {re:/фигур|треуг|параллелог|прямоуг|тел|цилиндр|конус|шар|окруж|вписан|центральн/i,ans:"В «📐 Графики» есть карточки «Фигуры на плоскости» (треугольник, параллелограмм, прямоугольник), «Тела вращения» (цилиндр, конус, шар) и «Вписанный и центральный угол»."},
+ {re:/тем[аы]|теори|формул|конспект/i,ans:"Теория — во вкладке «📚 Темы». Нажмите на карточку темы, чтобы увидеть разделы, формулы, пример, алгоритм и типичные ошибки. Кнопка «Тренироваться по теме» запускает тренировку по этой теме."},
+ {re:/тренир|тренаж|задани/i,ans:"Тренажёр — вкладка «✏️ Тренажёр»: 10 заданий в раунде по случайным темам. Ответ вводится числом, Enter тоже проверяет ответ. После проверки показывается правильный ответ и объяснение."},
+ {re:/пошагов|решени|шаг/i,ans:"«Пошаговые решения» (🪜 в «🎮 Игры»): выбирайте следующий шаг. Неверный выбор сопровождается подсказкой, верный — объяснением."},
+ {re:/сохран|браузер|устройств|телефон|другом/i,ans:"Прогресс хранится в памяти браузера этого устройства. На другом устройстве или после очистки данных сайта история не переносится."},
+ {re:/видео|ролик/i,ans:"Видео в приложении нет: вместо него интерактивные графики, игры и пошаговые решения."},
+ {re:/как.*(начать|работ|пользов)|с чего|что.*умеет|инструкц|помощь/i,ans:"Сайт состоит из вкладок: «📚 Темы» (теория), «✏️ Тренажёр» (задания), «🧭 План» (диагностика), «🎮 Игры», «📐 Графики», «🤖 Помощник» (это окно) и «🏆 Прогресс». Начните с диагностики в «🧭 План», а потом тренируйтесь по слабым темам."}
+];
+const SITE_MENU="Могу рассказать о разделах: Темы, Тренажёр, План, Игры, Графики, Прогресс, таймер в викторине, XP и достижения, сброс прогресса. Например: «как работает таймер» или «где теория по производным».";
+function helperReply(t){
+ for(const [re,fn] of HELP) if(re.test(t)) return fn();
+ for(const f of SITE_FAQ) if(f.re.test(t)) return f.ans;
+ if(/привет|здравств|добр/i.test(t)) return "Привет! Я помогаю с сайтом и подготовкой к ЕГЭ. "+SITE_MENU;
+ if(/спасибо|благодар/i.test(t)) return "Пожалуйста! Удачи в подготовке 💜";
+ return "Не нашёл ответ на этот вопрос. "+SITE_MENU;
+}
+</script>
+<script>
+// ===== Экзамен наоборот: дан ответ, восстанови ход решения =====
+const shuffleStep=st=>{const cor=st.o[st.c];const o=[...st.o].sort(()=>Math.random()-0.5);return {...st,o,c:o.indexOf(cor)}};
+const RV_GEN={
+ lin:()=>{const a=rand(2,9),x=rand(-4,9),b=rand(-20,20)||5,c=a*x+b;
+   return {ans:"x = "+x,title:`Решите уравнение ${a}x${sg(b,"")} = ${c}`,steps:[
+     {q:"Какое первое действие?",o:[(b>=0?`Вычесть ${b} из обеих частей`:`Прибавить ${-b} к обеим частям`),`Разделить обе части на ${a}`,`Умножить обе части на ${a}`],c:0,h:"Сначала избавимся от свободного члена.",e:`${a}x = ${c-b}.`},
+     {q:"Что дальше?",o:[`Разделить обе части на ${a}`,`Умножить обе части на ${a}`,`Прибавить ${a} к обеим частям`],c:0,h:"Нужно убрать коэффициент при x.",e:`x = ${c-b} ÷ ${a} = ${x}.`}]}},
+ pct:()=>{const base=rand(3,20)*50,p=[10,15,20,25][rand(0,3)],res=base*(100+p)/100;
+   return {ans:res+" ₽",title:`Цену ${base} ₽ повысили на ${p}%. Найдите новую цену.`,steps:[
+     {q:"Как записать увеличение на p%?",o:[`Умножить на ${(100+p)/100}`,`Разделить на ${p}`,`Прибавить ${p}`],c:0,h:"Увеличение на p% — умножение на (1 + p/100).",e:`1 + ${p}/100 = ${(100+p)/100}.`},
+     {q:"Чему равна новая цена?",o:[`${res}`,`${base+p}`,`${res-base}`],c:0,h:"Умножаем исходную цену на коэффициент.",e:`${base} · ${(100+p)/100} = ${res}.`}]}},
+ sqrt:()=>{const k=rand(2,6),n=rand(2,9),x=rand(1,10),m=n*n-k*x;
+   return {ans:"x = "+x,title:`Решите уравнение √(${k}x${sg(m,"")}) = ${n}`,steps:[
+     {q:"Что сделать первым?",o:["Возвести обе части в квадрат",`Разделить обе части на ${k}`,"Извлечь корень из обеих частей"],c:0,h:"Чтобы убрать корень, возведём обе части в квадрат.",e:`${k}x${sg(m,"")} = ${n*n}.`},
+     {q:"Что дальше?",o:["Перенести слагаемое с противоположным знаком",`Умножить обе части на ${k}`,`Разделить обе части на ${n}`],c:0,h:"Нужно оставить слагаемое с x в левой части.",e:`${k}x = ${n*n-m}.`},
+     {q:"Чему равен x?",o:[`Разделить на ${k}`,`Умножить на ${k}`,`Вычесть ${k}`],c:0,h:"Коэффициент при x убираем делением.",e:`x = ${n*n-m} ÷ ${k} = ${x}.`}]}}
+};
+let rv=null;
+function rvNew(){
+ const keys=Object.keys(RV_GEN),k=keys[rand(0,keys.length-1)];
+ const t=RV_GEN[k]();
+ rv={t,s:0,paid:false,steps:t.steps.map(shuffleStep)};
+ rvRender();
+}
+function rvRender(){
+ const box=$("rvBox");
+ const st=rv.steps[rv.s];
+ box.innerHTML=`<span class="tag">Экзамен наоборот</span>
+ <div class="question" style="font-size:17px">${rv.t.title}</div>
+ <div class="example"><b>Ответ:</b> ${rv.t.ans}. Восстанови ход решения.</div>
+ <p class="muted">Шаг ${rv.s+1} из ${rv.steps.length}</p>
+ <p><b>${st.q}</b></p>
+ ${st.o.map((o,i)=>`<button class="btn secondary" style="display:block;width:100%;margin:6px 0;text-align:left" onclick="rvPick(${i})">${o}</button>`).join("")}
+ <div id="rvFb"></div>
+ <div class="row" style="margin-top:10px"><button class="btn secondary" onclick="rvNew()">Другая задача</button></div>`;
+}
+function rvPick(i){
+ const st=rv.steps[rv.s];
+ if(i!==st.c){$("rvFb").innerHTML=`<div class="feedback bad">Не то действие. ${st.h}</div>`;return}
+ const last=rv.s===rv.steps.length-1;
+ $("rvFb").innerHTML=`<div class="feedback good">Верно. ${st.e}</div>`+
+   (last?`<button class="btn" style="margin-top:8px" onclick="rvDone()">Ход восстановлен</button>`:`<button class="btn" style="margin-top:8px" onclick="rvNext()">Дальше</button>`);
+}
+function rvNext(){rv.s++;rvRender()}
+function rvDone(){
+ let extra="";
+ if(!rv.paid){rv.paid=true;xp+=10;save();renderProfile();extra=" +10 XP"}
+ $("rvFb").innerHTML=`<div class="feedback good"><b>Ход решения восстановлен!${extra} 🎉</b></div><button class="btn" style="margin-top:8px" onclick="rvNew()">Новая задача</button>`;
+}
+// плитка режима в разделе «Игры»
+$("gtiles").insertAdjacentHTML("beforeend",'<button class="tile" onclick="openGame(\'reverse\')"><span class="ti">🔁</span><span>Экзамен наоборот</span></button>');
+// открытие игр, включая новый режим
+function openGame(k){
+ if(k==="speed"){startQuiz("speed");return}
+ $("gtiles").style.display="none";
+ const back=`<button class="btn secondary" style="margin-bottom:10px" onclick="gamesHome()">← Все игры</button>`;
+ if(k==="reverse"){$("gameArea").innerHTML=back+`<div class="card" id="rvBox"></div>`;rvNew()}
+ else if(k==="daily"){$("gameArea").innerHTML=back+`<div class="card"><h3>Задания дня</h3><div id="dailyBox"></div></div>`;dailyRender()}
+ else if(k==="find"){$("gameArea").innerHTML=back+`<div class="card"><h3>Найди ошибку в решении</h3><div id="findBox"></div></div>`;findRender()}
+ else if(k==="solve"){$("gameArea").innerHTML=back+`<div class="card"><h3>Пошаговые решения</h3><div id="solveBox"></div></div>`;solveRender()}
+ else if(k==="pair"){$("gameArea").innerHTML=back+`<div class="card"><h3>Найди пару</h3><p class="muted">Соедини формулу с её смыслом.</p><div id="pairBox"></div></div>`;pairStart()}
+}
+</script>
+<script>
+// ===== Популярные вопросы помощника =====
+SITE_FAQ.unshift(
+ {re:/история ошиб|мои ошиб|где.*ошиб|ошибк.*(посмотр|где|истор)/i,ans:"Ошибки видны во вкладке «🏆 Прогресс», блок «История ошибок»: дата, тема, задание, ваш ответ и правильный. Хранятся последние 50 ошибок."},
+ {re:/не сохраня|пропал|потерял|исчез/i,ans:"Прогресс хранится в памяти браузера. Он пропадает, если очистить данные сайта, открыть режим инкогнито или зайти с другого браузера или устройства. Занимайтесь в одном и том же браузере на одном устройстве."},
+ {re:/телеграм|telegram|бот|мини.?апп/i,ans:"В Telegram приложение открывается как Mini App: нужна публичная ссылка HTTPS и бот, который открывает эту страницу (настраивается через @BotFather). Прогресс в Telegram хранится отдельно от браузера."},
+ {re:/структур.*егэ|балл|первичн|шкал|перевод|сколько.*задан|часть 1|часть 2/i,ans:"Профильный ЕГЭ по математике: 19 заданий. Первая часть (1–12) — краткий ответ, вторая (13–19) — развёрнутое решение. Перевод первичных баллов в тестовые меняется от года к году: актуальную шкалу смотрите на fipi.ru."},
+ {re:/экзамен наоборот|наоборот/i,ans:"«Экзамен наоборот» (🔁 в «🎮 Игры»): вам показывают ответ, а вы выбираете шаги решения по порядку. Так тренируется логика: видно, какой шаг ведёт к ответу."},
+ {re:/сообщить|баг|не работает|связ|разработ/i,ans:"Если что-то не работает, обновите страницу и откройте сайт в другом браузере. Если проблема остаётся, опишите, что вы делали и что видите, и передайте это разработчику."},
+ {re:/браузер|ios|android|safari|chrome|установ/i,ans:"Сайт открывается в любом современном браузере (Safari, Chrome) и в Telegram. Установка не нужна."}
+);
+const POPULAR=["Как начать?","Что такое XP и уровни?","Как пройти диагностику?","Где история ошибок?","Как работает таймер?","Что такое «Экзамен наоборот»?","Как сбросить прогресс?","Почему не сохраняется прогресс?","Как открыть в Telegram?","Какая структура ЕГЭ?","Есть ли видео?","Как сообщить об ошибке?"];
+function helperAsk(q){$("hin").value=q;helperSend()}
+$("hin").closest(".row").insertAdjacentHTML("beforebegin",`<div class="row" style="margin-bottom:8px">${POPULAR.map(q=>`<button class="btn secondary" style="font-size:13px;padding:8px 10px" onclick="helperAsk(this.textContent)">${q}</button>`).join("")}</div>`);
+</script>
+</body></html>
